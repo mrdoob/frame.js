@@ -6,8 +6,7 @@ var FadeInEffect = function ( properties ) {
 
 	var material = new THREE.MeshBasicMaterial( {
 		color: properties.color,
-		opacity: 0,
-		depthTest: false
+		opacity: 0
 	} );
 
 	var scene = new THREE.Scene();
