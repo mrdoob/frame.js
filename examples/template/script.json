@@ -4,9 +4,9 @@
 	},
 
 	"timeline": [
-		[ 0, 1, 20, "FadeInEffect", { "color": 16711680 } ],
-		[ 0, 2, 3, "FadeInEffect", { "color": 65280 } ],
-		[ 0, 3, 4, "FadeInEffect", { "color": 255 } ]
+		[ 0, 1, 20, "FadeInEffect", { "color": "red" } ],
+		[ 0, 2, 3, "FadeInEffect", { "color": "green" } ],
+		[ 0, 3, 4, "FadeInEffect", { "color": "blue" } ]
 	],
 
 	"curves": [

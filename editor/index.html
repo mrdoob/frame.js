@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>frame.js editor</title>
+		<style>
+			body {
+				background-color: #333;
+				font-family: Arial, sans-serif;
+				font-size: 14px;
+				margin: 0;
+				overflow: hidden;
+			}
+
+			hr {
+				border: 0px;
+				border-top: 1px solid #ccc;
+			}
+
+			.menubar {
+				background-color: #444;
+				padding: 0px;
+				margin: 0px;
+			}
+
+				.menubar .menu {
+					float: left;
+					width: 50px;
+					cursor: pointer;
+				}
+
+					.menubar .menu .options {
+						display: none;
+						padding: 5px 0px;
+						background-color: #fff;
+						width: 140px;
+					}
+
+					.menubar .menu:hover .options {
+						display: block;
+					}
+
+						.menubar .menu .options hr {
+							border-color: #ddd;
+						}
+
+						.menubar .menu .options .option {
+							color: #aaa;
+							background-color: transparent;
+							padding: 5px 10px;
+							margin: 0px !important;
+						}
+
+							.menubar .menu .options .option:hover {
+								color: #fff;
+								background-color: #08f;
+							}
+
+			.properties {
+				background-color: #333;
+			}
+
+			.viewport {
+				background-color: #000;
+			}
+
+			.properties {
+				background-color: #555;
+			}
+
+		</style>
+	</head>
+	<body>
+
+		<script src="../build/frame.min.js"></script>
+
+		<script src="js/libs/signals.min.js"></script>
+
+		<script src="js/UI.js"></script>
+		<script src="js/ui/Menubar.js"></script>
+		<script src="js/ui/Menubar.File.js"></script>
+		<script src="js/ui/Menubar.Edit.js"></script>
+		<script src="js/ui/Menubar.Add.js"></script>
+		<script src="js/ui/Menubar.Help.js"></script>
+		<script src="js/ui/Properties.js"></script>
+		<script src="js/ui/Viewport.js"></script>
+		<script src="js/ui/Timeline.js"></script>
+
+		<script>
+
+			window.URL = window.URL || window.webkitURL;
+			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+
+			var SIGNALS = signals;
+
+			var signals = {
+
+			};
+
+			var menubar = new Menubar( signals );
+			menubar.setWidth( '100%' );
+			menubar.setHeight( '32px' );
+			document.body.appendChild( menubar.dom );
+
+			var properties = new Properties( signals );
+			properties.setTop( '32px' );
+			properties.setWidth( '300px' );
+			properties.setHeight( '-webkit-calc(100% - 400px - 32px)' );
+			document.body.appendChild( properties.dom );
+
+			var viewport = new Viewport( signals );
+			viewport.setLeft( '300px' );
+			viewport.setTop( '32px' );
+			viewport.setWidth( '-webkit-calc(100% - 300px)' );
+			viewport.setHeight( '-webkit-calc(100% - 400px - 32px)' );
+			document.body.appendChild( viewport.dom );
+
+			var timeline = new Timeline( signals );
+			timeline.setWidth( '100%' );
+			timeline.setHeight( '200px' );
+			document.body.appendChild( timeline.dom );
+
+		</script>
+	</body>
+</html>
