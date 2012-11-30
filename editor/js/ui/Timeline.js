@@ -9,7 +9,7 @@ var Timeline = function ( signals ) {
 	var scale = 32;
 
 	var marks = document.createElement( 'div' );
-	marks.style.width = '2048px';
+	marks.style.width = '2512px';
 	marks.style.height = '16px';
 	marks.style.background = 'url(' + ( function () {
 	
@@ -27,12 +27,17 @@ var Timeline = function ( signals ) {
 		return canvas.toDataURL();
 
 	}() ) + ')';
+	marks.addEventListener( 'mousedown', function ( event ) {
+		
+		signals.setTime.dispatch( event.offsetX / scale );
+		
+	}, false );
 	container.dom.appendChild( marks );
 
 	var grid = document.createElement( 'div' );
 	grid.style.position = 'absolute';
 	grid.style.top = '16px';
-	grid.style.width = '2048px';
+	grid.style.width = '2512px';
 	grid.style.height = '-webkit-calc(100% - 16px)';
 	grid.style.background = 'url(' + ( function () {
 	
