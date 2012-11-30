@@ -6,6 +6,7 @@ var FRAME = ( function () {
 
 		Effect: function () {
 
+			this.name = null;
 			this.init = function ( callback ) {};
 			this.load = function ( callback ) {};
 			this.start = function ( value ) {};
@@ -63,6 +64,12 @@ var FRAME = ( function () {
 				add: function ( element ) {
 
 					elements.push( element );
+					this.sort();
+
+				},
+
+				sort: function () {
+
 					elements.sort( function ( a, b ) { return a.start - b.start; } );
 
 				},

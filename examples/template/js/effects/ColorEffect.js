@@ -1,4 +1,4 @@
-var FadeInEffect = function ( properties ) {
+var ColorEffect = function ( properties ) {
 
 	FRAME.Effect.call( this );
 
@@ -6,7 +6,7 @@ var FadeInEffect = function ( properties ) {
 
 	var material = new THREE.MeshBasicMaterial( {
 		color: properties.color,
-		opacity: 0,
+		opacity: properties.opacity,
 		transparent: true
 	} );
 
@@ -17,11 +17,10 @@ var FadeInEffect = function ( properties ) {
 
 	this.render = function ( value ) {
 
-		material.opacity = 1 - value;
 		renderer.render( scene, camera );
 
 	};
 
 };
 
-FadeInEffect.prototype = Object.create( FRAME.Effect );
+ColorEffect.prototype = Object.create( FRAME.Effect );

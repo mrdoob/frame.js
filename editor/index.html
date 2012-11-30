@@ -66,13 +66,14 @@
 			.properties {
 				background-color: #555;
 			}
+			.timeline {
+				background-color: #666; 
+			}
 
 		</style>
 	</head>
 	<body>
-
-		<script src="../build/frame.min.js"></script>
-
+		
 		<script src="js/libs/signals.min.js"></script>
 
 		<script src="js/UI.js"></script>
@@ -85,6 +86,16 @@
 		<script src="js/ui/Viewport.js"></script>
 		<script src="js/ui/Timeline.js"></script>
 
+		<!-- <script src="../build/frame.min.js"></script> -->
+		<script src="../src/Frame.js"></script>
+		
+		<script src="../examples/template/js/libs/raf.min.js"></script>
+		<script src="../examples/template/js/libs/three.min.js"></script>
+		<script src="../examples/template/js/effects/ClearEffect.js"></script>
+		<script src="../examples/template/js/effects/ColorEffect.js"></script>
+		<script src="../examples/template/js/effects/FadeInEffect.js"></script>
+		<script src="../examples/template/js/effects/ShaderEffect.js"></script>		
+		
 		<script>
 
 			window.URL = window.URL || window.webkitURL;
@@ -93,7 +104,12 @@
 			var SIGNALS = signals;
 
 			var signals = {
-
+				// actions
+				setTime: new SIGNALS.Signal(),
+				addTimelineElement: new SIGNALS.Signal(),
+				// events
+				timeChanged: new SIGNALS.Signal(),
+				timelineElementChanged: new SIGNALS.Signal()
 			};
 
 			var menubar = new Menubar( signals );
@@ -104,21 +120,120 @@
 			var properties = new Properties( signals );
 			properties.setTop( '32px' );
 			properties.setWidth( '300px' );
-			properties.setHeight( '-webkit-calc(100% - 400px - 32px)' );
+			properties.setHeight( '-webkit-calc(100% - 200px - 32px)' );
 			document.body.appendChild( properties.dom );
 
 			var viewport = new Viewport( signals );
 			viewport.setLeft( '300px' );
 			viewport.setTop( '32px' );
 			viewport.setWidth( '-webkit-calc(100% - 300px)' );
-			viewport.setHeight( '-webkit-calc(100% - 400px - 32px)' );
+			viewport.setHeight( '-webkit-calc(100% - 200px - 32px)' );
 			document.body.appendChild( viewport.dom );
 
 			var timeline = new Timeline( signals );
+			timeline.setTop( '-webkit-calc(100% - 200px)' );
 			timeline.setWidth( '100%' );
 			timeline.setHeight( '200px' );
 			document.body.appendChild( timeline.dom );
 
+			//
+			
+			var json = {
+				"metadata": {
+					"version": 1
+				},
+			
+				"timeline": [
+					[ 0, 0, 60, "ClearEffect" ],
+					[ 1, 0, 14, "ShaderEffect", { "url": "../examples/template/files/shaders/lights.fs", "speed": 10 } ],
+					[ 2, 0, 14, "FadeInEffect", { "color": "black" } ],
+					[ 1, 14, 21, "ShaderEffect", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": 0.75, "mouseY": 0.75 } ],
+					[ 1, 21, 28, "ShaderEffect", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": -0.75, "mouseY": 0.25 } ],
+					[ 1, 28, 35, "ShaderEffect", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20 } ],
+					[ 1, 35, 42, "ShaderEffect", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20, "offset": 450 } ],
+					[ 2, 35, 37, "FadeInEffect", { "color": "white" } ],
+					[ 1, 42, 49, "ShaderEffect", { "url": "../examples/template/files/shaders/field.fs", "speed": 20 } ],
+					[ 2, 42, 44, "FadeInEffect", { "color": "white" } ],
+					[ 1, 49, 56, "ShaderEffect", { "url": "../examples/template/files/shaders/field.fs", "speed": 20, "offset": 450 } ],
+					[ 1, 56, 70, "ShaderEffect", { "url": "../examples/template/files/shaders/blobs.fs", "speed": 10 } ],
+					[ 2, 56, 60, "FadeInEffect", { "color": "white" } ]
+				],
+			
+				"curves": [
+				]
+			}
+			
+			for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
+				
+				var data = json.timeline[ i ];
+				
+				if ( window[ data[ 3 ] ] === undefined ) {
+					
+					console.log( 'FRAME: Missing effect: ' + data[ 3 ] );
+					continue;
+					
+				}
+				
+				var element = new FRAME.TimelineElement(
+					data[ 0 ],
+					data[ 1 ],
+					data[ 2 ],
+					new window[ data[ 3 ] ]( data[ 4 ] )
+				);
+				
+				signals.addTimelineElement.dispatch( element );
+				
+			}
+			
+			//
+			
+			var time = 0;
+			
+			var audio = document.createElement( 'audio' );
+			audio.src = '../examples/template/files/lug00ber-bastion-amstel.mp3';
+			
+			signals.setTime.add( function ( value ) {
+				
+				time = value;
+				signals.timeChanged.dispatch( time );
+				if ( audio.duration > 0 ) audio.currentTime = value;
+				
+			} );
+			
+			document.addEventListener( 'keydown', function ( event ) {
+
+				switch ( event.keyCode ) {
+					
+					case 32: // 
+						if ( audio.paused === true ) {
+							audio.play();
+							animate();
+						} else {
+							audio.pause();
+							pause();
+						}
+						break;
+					case 37: //
+						signals.setTime.dispatch( time - 1 );
+						break;
+					case 39: //
+						signals.setTime.dispatch( time + 1 );
+						break;
+					
+				}
+
+			} );
+			
+			var animate = function () {
+				requestAnimationFrame( animate );
+				time = audio.currentTime;
+				signals.timeChanged.dispatch( time );
+			};
+			
+			var pause = function () {
+				cancelAnimationFrame( animate );	
+			};
+			
 		</script>
 	</body>
 </html>
