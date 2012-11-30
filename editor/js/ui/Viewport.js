@@ -17,7 +17,7 @@ var Viewport = function ( signals ) {
 	renderer.setSize( 800, 600 );
 	renderer.autoClear = false;
 	renderer.domElement.style.maxWidth = '100%';
-	renderer.domElement.style.maxHeight = '100%';
+	renderer.domElement.style.height = '100%';
 	container.dom.appendChild( renderer.domElement );
 	
 	var time = 0;
