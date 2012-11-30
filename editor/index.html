@@ -123,18 +123,18 @@
 			properties.setHeight( '-webkit-calc(100% - 200px - 32px)' );
 			document.body.appendChild( properties.dom );
 
+			var timeline = new Timeline( signals );
+			timeline.setTop( '-webkit-calc(100% - 200px)' );
+			timeline.setWidth( '100%' );
+			timeline.setHeight( '200px' );
+			document.body.appendChild( timeline.dom );
+
 			var viewport = new Viewport( signals );
 			viewport.setLeft( '300px' );
 			viewport.setTop( '32px' );
 			viewport.setWidth( '-webkit-calc(100% - 300px)' );
 			viewport.setHeight( '-webkit-calc(100% - 200px - 32px)' );
 			document.body.appendChild( viewport.dom );
-
-			var timeline = new Timeline( signals );
-			timeline.setTop( '-webkit-calc(100% - 200px)' );
-			timeline.setWidth( '100%' );
-			timeline.setHeight( '200px' );
-			document.body.appendChild( timeline.dom );
 
 			//
 			
@@ -187,6 +187,7 @@
 			
 			//
 			
+			var fullscreen = false;
 			var time = 0;
 			
 			var audio = document.createElement( 'audio' );
@@ -204,7 +205,22 @@
 
 				switch ( event.keyCode ) {
 					
-					case 32: // 
+					case 27:
+						if ( fullscreen === false ) {
+							viewport.setLeft( '0px' );
+							viewport.setTop( '0px' );
+							viewport.setWidth( '100%' );
+							viewport.setHeight( '100%' );
+							fullscreen = true;
+						} else {
+							viewport.setLeft( '300px' );
+							viewport.setTop( '32px' );
+							viewport.setWidth( '-webkit-calc(100% - 300px)' );
+							viewport.setHeight( '-webkit-calc(100% - 200px - 32px)' );
+							fullscreen = false;
+						}
+						break;
+					case 32:
 						if ( audio.paused === true ) {
 							audio.play();
 							animate();
