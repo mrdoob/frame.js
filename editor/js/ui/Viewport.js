@@ -9,7 +9,7 @@ var Viewport = function ( signals ) {
 	audio.controls = true;
 	audio.src = 'files/lug00ber-bastion-amstel.mp3';
 	document.body.appendChild( audio );
-	
+
 	document.body.appendChild( document.createElement( 'br' ) );
 	*/
 
@@ -19,14 +19,14 @@ var Viewport = function ( signals ) {
 	renderer.domElement.style.maxWidth = '100%';
 	renderer.domElement.style.height = '100%';
 	container.dom.appendChild( renderer.domElement );
-	
+
 	var time = 0;
 
 	var timeline = new FRAME.Timeline();
 
 	var render = function () {
 
-		timeline.render( time );		
+		timeline.render( time );
 
 	};
 

@@ -12,11 +12,11 @@ var Timeline = function ( signals ) {
 	marks.style.width = '2512px';
 	marks.style.height = '16px';
 	marks.style.background = 'url(' + ( function () {
-	
+
 		var canvas = document.createElement( 'canvas' );
 		canvas.width = scale;
 		canvas.height = 16;
-	
+
 		var context = canvas.getContext( '2d' );
 		context.fillStyle = '#aaa';
 		context.fillRect( 0, 0, 1, 12 );
@@ -28,9 +28,9 @@ var Timeline = function ( signals ) {
 
 	}() ) + ')';
 	marks.addEventListener( 'mousedown', function ( event ) {
-		
+
 		signals.setTime.dispatch( event.offsetX / scale );
-		
+
 	}, false );
 	container.dom.appendChild( marks );
 
@@ -40,11 +40,11 @@ var Timeline = function ( signals ) {
 	grid.style.width = '2512px';
 	grid.style.height = '-webkit-calc(100% - 16px)';
 	grid.style.background = 'url(' + ( function () {
-	
+
 		var canvas = document.createElement( 'canvas' );
 		canvas.width = 1;
 		canvas.height = 32;
-	
+
 		var context = canvas.getContext( '2d' );
 		context.fillStyle = '#555';
 		context.fillRect( 0, 0, 1, 1 );
@@ -63,11 +63,11 @@ var Timeline = function ( signals ) {
 	time.style.height = '100%';
 	time.style.cursor = 'move';
 	time.style.background = 'url(' + ( function () {
-	
+
 		var canvas = document.createElement( 'canvas' );
 		canvas.width = 16;
 		canvas.height = 1;
-	
+
 		var context = canvas.getContext( '2d' );
 		context.fillStyle = '#f00';
 		context.fillRect( 8, 0, 1, 1 );
@@ -116,9 +116,9 @@ var Timeline = function ( signals ) {
 		dom.style.borderBottom = '1px solid #66f';
 		// dom.textContent = typeof element.effect;
 		dom.addEventListener( 'mousedown', function ( event ) {
-	
+
 			var onMouseMove = function ( event ) {
-	
+
 				var movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
 				dom.style.left = ( dom.offsetLeft + movementX ) + 'px';
@@ -129,19 +129,19 @@ var Timeline = function ( signals ) {
 				console.log( element.start );
 
 				signals.timelineElementChanged.dispatch( element );
-	
+
 			};
-	
+
 			var onMouseUp = function ( event ) {
-	
+
 				document.removeEventListener( 'mousemove', onMouseMove );
 				document.removeEventListener( 'mouseup', onMouseUp );
-	
+
 			};
-	
+
 			document.addEventListener( 'mousemove', onMouseMove, false );
 			document.addEventListener( 'mouseup', onMouseUp, false );
-	
+
 		}, false );
 
 		this.dom = dom;
@@ -158,7 +158,7 @@ var Timeline = function ( signals ) {
 		grid.appendChild( block.dom );
 
 	} );
-	
+
 	signals.timeChanged.add( function ( value ) {
 
 		time.style.left = ( value * scale ) - 8 + 'px';
