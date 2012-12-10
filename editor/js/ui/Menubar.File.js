@@ -4,7 +4,7 @@ Menubar.File = function ( signals ) {
 	container.setClass( 'menu' );
 
 	var title = new UI.Panel();
-	title.setTextContent( 'File' ).setColor( '#666' );
+	title.setTextContent( 'File' ).setColor( '#888' );
 	title.setMargin( '0px' );
 	title.setPadding( '8px' );
 	container.add( title );

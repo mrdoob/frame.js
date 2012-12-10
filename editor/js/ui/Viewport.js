@@ -19,7 +19,7 @@ var Viewport = function ( signals ) {
 
 	var render = function () {
 
-		timeline.render( time );
+		timeline.update( time );
 
 	};
 

@@ -9,9 +9,9 @@ var FRAME = ( function () {
 			this.parameters = { input: {}, output: {} };
 			this.init = function ( callback ) {};
 			this.load = function ( callback ) {};
-			this.start = function ( t ) {};
-			this.end = function ( t ) {};
-			this.update = function ( t ) {};
+			this.start = function ( value ) {};
+			this.end = function ( value ) {};
+			this.update = function ( value ) {};
 
 		},
 
@@ -50,7 +50,7 @@ var FRAME = ( function () {
 
 				},
 
-				render: function ( time ) {
+				update: function ( time ) {
 
 					if ( time < prevtime ) {
 

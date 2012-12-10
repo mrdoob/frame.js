@@ -3,10 +3,10 @@ var Timeline = function ( signals ) {
 	var container = new UI.Panel( 'absolute' );
 	container.setClass( 'timeline' );
 
-	var labels = new UI.Panel( 'absolute' );
-	labels.setWidth( '300px' );
-	labels.setHeight( '100%' );
-	labels.dom.style.background = '#666 url(' + ( function () {
+	var panel = new UI.Panel( 'absolute' );
+	panel.setWidth( '300px' );
+	panel.setHeight( '100%' );
+	panel.dom.style.background = '#666 url(' + ( function () {
 
 		var canvas = document.createElement( 'canvas' );
 		canvas.width = 1;
@@ -18,10 +18,36 @@ var Timeline = function ( signals ) {
 		return canvas.toDataURL();
 
 	}() ) + ')';
-	labels.dom.style.backgroundPosition = '0px 32px';
-	container.add( labels );
+	container.add( panel );
 
-	//
+	// controls
+
+	var controls = new UI.Panel( 'absolute' );
+	controls.setPadding( '5px 4px' );
+	panel.add( controls );
+
+	var button = new UI.Button();
+	button.setLabel( '<<' );
+	button.onClick( function () { signals.backwards.dispatch() } );
+	controls.add( button );
+
+	var button = new UI.Button();
+	button.setLabel( '>' );
+	button.onClick( function () { signals.play.dispatch() } );
+	controls.add( button );
+
+	var button = new UI.Button();
+	button.setLabel( '>>' );
+	button.onClick( function () { signals.forwards.dispatch() } );
+	controls.add( button );
+
+	var currentTime = new UI.Text();
+	currentTime.setColor( '#bbb' );
+	currentTime.setMarginLeft( '10px' );
+	currentTime.setValue( '0:00.00' );
+	controls.add( currentTime );
+
+	// timeline
 
 	var scale = 32;
 
@@ -188,6 +214,12 @@ var Timeline = function ( signals ) {
 	signals.timeChanged.add( function ( value ) {
 
 		time.style.left = ( value * scale ) - 8 + 'px';
+
+		var minutes = Math.floor( value / 60 );
+		var seconds = value % 60;
+		var padding = seconds < 10 ? '0' : '';
+
+		currentTime.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
 
 	} );
 

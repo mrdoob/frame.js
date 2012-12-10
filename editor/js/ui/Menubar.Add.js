@@ -4,7 +4,7 @@ Menubar.Add = function ( signals ) {
 	container.setClass( 'menu' );
 
 	var title = new UI.Panel();
-	title.setTextContent( 'Add' ).setColor( '#666' );
+	title.setTextContent( 'Add' ).setColor( '#888' );
 	title.setMargin( '0px' );
 	title.setPadding( '8px' );
 	container.add( title );

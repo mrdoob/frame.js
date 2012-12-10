@@ -11,15 +11,18 @@
 				overflow: hidden;
 			}
 
-			hr {
-				border: 0px;
-				border-top: 1px solid #ccc;
+			button {
+				color: #bbb;
+				background-color: transparent;
+				border: 1px solid #999;
+				cursor: pointer;
 			}
 
 			.menubar {
 				background-color: #444;
 				padding: 0px;
 				margin: 0px;
+				z-index: 1;
 			}
 
 				.menubar .menu {
@@ -31,7 +34,7 @@
 					.menubar .menu .options {
 						display: none;
 						padding: 5px 0px;
-						background-color: #fff;
+						background-color: #333;
 						width: 140px;
 					}
 
@@ -44,7 +47,7 @@
 						}
 
 						.menubar .menu .options .option {
-							color: #aaa;
+							color: #888;
 							background-color: transparent;
 							padding: 5px 10px;
 							margin: 0px !important;
@@ -106,13 +109,13 @@
 		<script src="js/ui/Viewport.js"></script>
 		<script src="js/ui/Timeline.js"></script>
 
-		<!-- <script src="../build/frame.min.js"></script> -->
-		<script src="../src/Frame.js"></script>
+		<script src="../build/frame.min.js"></script>
+		<!-- <script src="../src/Frame.js"></script> -->
 
 		<script src="js/modules/threejs/WebGLRendererModule.js"></script>
 		<script src="js/modules/threejs/ClearModule.js"></script>
-		<script src="js/modules/threejs/ColorModule.js"></script>
 		<script src="js/modules/threejs/FadeInModule.js"></script>
+		<script src="js/modules/threejs/ImageModule.js"></script>
 		<script src="js/modules/threejs/ShaderModule.js"></script>
 
 		<script src="../examples/template/js/libs/raf.min.js"></script>
@@ -128,6 +131,9 @@
 
 			var signals = {
 				// actions
+				play: new SIGNALS.Signal(),
+				backwards: new SIGNALS.Signal(),
+				forwards: new SIGNALS.Signal(),
 				setTime: new SIGNALS.Signal(),
 				addTimelineElement: new SIGNALS.Signal(),
 				// events
@@ -148,14 +154,6 @@
 			properties.setHeight( 'calc(100% - 30% - 32px)' );
 			document.body.appendChild( properties.dom );
 
-			var timeline = new Timeline( signals );
-			timeline.setTop( '-webkit-calc(100% - 30%)' );
-			timeline.setTop( '-moz-calc(100% - 30%)' );
-			timeline.setTop( 'calc(100% - 30%)' );
-			timeline.setWidth( '100%' );
-			timeline.setHeight( '30%' );
-			document.body.appendChild( timeline.dom );
-
 			var viewport = new Viewport( signals );
 			viewport.setLeft( '300px' );
 			viewport.setTop( '32px' );
@@ -166,6 +164,14 @@
 			viewport.setHeight( '-moz-calc(100% - 30% - 32px)' );
 			viewport.setHeight( 'calc(100% - 30% - 32px)' );
 			document.body.appendChild( viewport.dom );
+
+			var timeline = new Timeline( signals );
+			timeline.setTop( '-webkit-calc(100% - 30%)' );
+			timeline.setTop( '-moz-calc(100% - 30%)' );
+			timeline.setTop( 'calc(100% - 30%)' );
+			timeline.setWidth( '100%' );
+			timeline.setHeight( '30%' );
+			document.body.appendChild( timeline.dom );
 
 			//
 
@@ -188,7 +194,8 @@
 					[ 3, 42, 44, "FadeInModule", { "color": "white" } ],
 					[ 2, 49, 56, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20, "offset": 450 } ],
 					[ 2, 56, 70, "ShaderModule", { "url": "../examples/template/files/shaders/blobs.fs", "speed": 10 } ],
-					[ 3, 56, 60, "FadeInModule", { "color": "white" } ]
+					[ 3, 56, 70, "ImageModule", { "url": "../examples/template/files/credits.png" } ],
+					[ 4, 56, 60, "FadeInModule", { "color": "white" } ]
 				],
 
 				"curves": [
@@ -236,10 +243,35 @@
 			//
 
 			var fullscreen = false;
-			var time = 0;
+			var time = 0, playing = false;
 
 			var audio = document.createElement( 'audio' );
 			audio.src = '../examples/template/files/lug00ber-bastion-amstel.mp3';
+
+			signals.play.add( function () {
+
+				if ( audio.paused === true ) {
+					playing = true;
+					audio.play();
+					animate();
+				} else {
+					playing = false;
+					audio.pause();
+				}
+
+			} );
+
+			signals.backwards.add( function () {
+
+				signals.setTime.dispatch( time - 1 );
+
+			} );
+
+			signals.forwards.add( function () {
+
+				signals.setTime.dispatch( time + 1 );
+
+			} );
 
 			signals.setTime.add( function ( value ) {
 
@@ -273,13 +305,7 @@
 						}
 						break;
 					case 32:
-						if ( audio.paused === true ) {
-							audio.play();
-							animate();
-						} else {
-							audio.pause();
-							pause();
-						}
+						signals.play.dispatch();
 						break;
 					case 37: //
 						signals.setTime.dispatch( time - 1 );
@@ -294,15 +320,14 @@
 
 			var animate = function () {
 
-				requestAnimationFrame( animate );
+				if ( playing === true ) {
+
+					requestAnimationFrame( animate );
+
+				}
+
 				time = audio.currentTime;
 				signals.timeChanged.dispatch( time );
-
-			};
-
-			var pause = function () {
-
-				cancelAnimationFrame( animate );
 
 			};
 

@@ -1,10 +1,12 @@
-var FadeInModule = function () {
+var ImageModule = function () {
 
 	FRAME.Module.call( this );
 
 	this.parameters.input = {
 
-		color: 0xffffff
+		url: '',
+		color: 0xffffff,
+		opacity : 1
 
 	};
 
@@ -16,7 +18,8 @@ var FadeInModule = function () {
 
 		material = new THREE.MeshBasicMaterial( {
 			color: this.parameters.input.color,
-			opacity: 0,
+			map: THREE.ImageUtils.loadTexture( this.parameters.input.url ),
+			opacity: this.parameters.input.opacity,
 			transparent: true
 		} );
 
@@ -29,7 +32,6 @@ var FadeInModule = function () {
 
 	this.update = function ( t ) {
 
-		material.opacity = 1 - t;
 		renderer.render( scene, camera );
 
 	};

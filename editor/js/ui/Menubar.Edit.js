@@ -4,7 +4,7 @@ Menubar.Edit = function ( signals ) {
 	container.setClass( 'menu' );
 
 	var title = new UI.Panel();
-	title.setTextContent( 'Edit' ).setColor( '#666' );
+	title.setTextContent( 'Edit' ).setColor( '#888' );
 	title.setMargin( '0px' );
 	title.setPadding( '8px' );
 	container.add( title );

@@ -4,7 +4,7 @@ var ColorModule = function () {
 
 	this.parameters.input = {
 
-		color: 'red',
+		color: 0xffffff,
 		opacity : 1
 
 	};

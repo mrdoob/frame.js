@@ -4,7 +4,7 @@ Menubar.Help = function ( signals ) {
 	container.setClass( 'menu' );
 
 	var title = new UI.Panel();
-	title.setTextContent( 'Help' ).setColor( '#666' );
+	title.setTextContent( 'Help' ).setColor( '#888' );
 	title.setMargin( '0px' );
 	title.setPadding( '8px' );
 	container.add( title );
@@ -14,6 +14,22 @@ Menubar.Help = function ( signals ) {
 	var options = new UI.Panel();
 	options.setClass( 'options' );
 	container.add( options );
+
+	// source code
+
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Source code' );
+	option.onClick( function () { window.open( 'https://github.com/mrdoob/frame.js/tree/master/editor', '_blank' ) } );
+	options.add( option );
+
+	// about
+
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'About' );
+	option.onClick( function () { window.open( 'http://github.com/mrdoob/frame.js/', '_blank' ) } );
+	options.add( option );
 
 	return container;
 
