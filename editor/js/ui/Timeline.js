@@ -2,16 +2,23 @@ var Timeline = function ( signals ) {
 
 	var container = new UI.Panel( 'absolute' );
 	container.setClass( 'timeline' );
-	container.dom.style.overflow = 'auto'; // TODO: UIify.
-	container.dom.addEventListener( 'click', function ( event ) {
 
-		signals.setTime.dispatch( ( event.x + this.scrollLeft ) / scale );
-
-	}, false );
+	// var layers =
 
 	//
 
 	var scale = 32;
+
+	var timeline = new UI.Panel( 'absolute' );
+	timeline.setWidth( '100%' );
+	timeline.setHeight( '100%' );
+	timeline.dom.style.overflow = 'auto'; // TODO: UIify.
+	timeline.dom.addEventListener( 'click', function ( event ) {
+
+		signals.setTime.dispatch( ( event.clientX + this.scrollLeft ) / scale );
+
+	}, false );
+	container.add( timeline );
 
 	var marks = document.createElement( 'div' );
 	marks.style.width = '2512px';
@@ -30,13 +37,15 @@ var Timeline = function ( signals ) {
 		return canvas.toDataURL();
 
 	}() ) + ') repeat-x';
-	container.dom.appendChild( marks );
+	timeline.dom.appendChild( marks );
 
 	var grid = document.createElement( 'div' );
 	grid.style.position = 'absolute';
 	grid.style.top = '16px';
 	grid.style.width = '2512px';
 	grid.style.height = '-webkit-calc(100% - 16px)';
+	grid.style.height = '-moz-calc(100% - 16px)';
+	grid.style.height = '-calc(100% - 16px)';
 	grid.style.background = 'url(' + ( function () {
 
 		var canvas = document.createElement( 'canvas' );
@@ -49,7 +58,7 @@ var Timeline = function ( signals ) {
 		return canvas.toDataURL();
 
 	}() ) + ')';
-	container.dom.appendChild( grid );
+	timeline.dom.appendChild( grid );
 
 	//
 
@@ -95,7 +104,7 @@ var Timeline = function ( signals ) {
 		document.addEventListener( 'mouseup', onMouseUp, false );
 
 	}, false );
-	container.dom.appendChild( time );
+	timeline.dom.appendChild( time );
 
 	var Block = ( function ( element ) {
 
