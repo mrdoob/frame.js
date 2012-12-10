@@ -1,6 +1,6 @@
-var FadeInEffect = function ( properties ) {
+var FadeInModule = function ( properties ) {
 
-	FRAME.Effect.call( this );
+	FRAME.Module.call( this );
 
 	var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
 
@@ -15,13 +15,11 @@ var FadeInEffect = function ( properties ) {
 	var object = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), material );
 	scene.add( object );
 
-	this.render = function ( value ) {
+	this.update = function ( t ) {
 
-		material.opacity = 1 - value;
+		material.opacity = 1 - t;
 		renderer.render( scene, camera );
 
 	};
 
 };
-
-FadeInEffect.prototype = Object.create( FRAME.Effect );

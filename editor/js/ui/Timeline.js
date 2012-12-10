@@ -3,6 +3,11 @@ var Timeline = function ( signals ) {
 	var container = new UI.Panel( 'absolute' );
 	container.setClass( 'timeline' );
 	container.dom.style.overflow = 'auto'; // TODO: UIify.
+	container.dom.addEventListener( 'click', function ( event ) {
+
+		signals.setTime.dispatch( ( event.x + this.scrollLeft ) / scale );
+
+	}, false );
 
 	//
 
@@ -19,19 +24,12 @@ var Timeline = function ( signals ) {
 
 		var context = canvas.getContext( '2d' );
 		context.fillStyle = '#aaa';
-		context.fillRect( 0, 0, 1, 12 );
-		context.fillRect( Math.floor( scale / 2 ), 0, 1, 8 );
+		context.fillRect( 0, 8, 1, 8 );
 		context.fillStyle = '#888';
-		context.fillRect( Math.floor( ( scale / 4 ) * 1 ), 0, 1, 8 );
-		context.fillRect( Math.floor( ( scale / 4 ) * 3 ), 0, 1, 8 );
+		context.fillRect( Math.floor( scale / 2 ), 8, 1, 8 );
 		return canvas.toDataURL();
 
-	}() ) + ')';
-	marks.addEventListener( 'mousedown', function ( event ) {
-
-		signals.setTime.dispatch( event.offsetX / scale );
-
-	}, false );
+	}() ) + ') repeat-x';
 	container.dom.appendChild( marks );
 
 	var grid = document.createElement( 'div' );
@@ -99,22 +97,16 @@ var Timeline = function ( signals ) {
 	}, false );
 	container.dom.appendChild( time );
 
-	var blocks = [];
-
 	var Block = ( function ( element ) {
 
 		var dom = document.createElement( 'div' );
+		dom.className = 'block';
 		dom.style.position = 'absolute';
 		dom.style.left = ( element.start * scale ) + 'px';
 		dom.style.top = ( element.layer * 32 ) + 'px';
 		dom.style.width = ( element.duration * scale ) + 'px';
 		dom.style.height = '30px';
-		dom.style.backgroundColor = '#88f';
-		dom.style.borderLeft = '1px solid #aaf';
-		dom.style.borderTop = '1px solid #aaf';
-		dom.style.borderRight = '1px solid #66f';
-		dom.style.borderBottom = '1px solid #66f';
-		// dom.textContent = typeof element.effect;
+		dom.innerHTML = '<div class="name">' + element.name + '</div>';
 		dom.addEventListener( 'mousedown', function ( event ) {
 
 			var onMouseMove = function ( event ) {
@@ -125,8 +117,6 @@ var Timeline = function ( signals ) {
 
 				element.start += movementX / scale;
 				element.end += movementX / scale;
-
-				console.log( element.start );
 
 				signals.timelineElementChanged.dispatch( element );
 

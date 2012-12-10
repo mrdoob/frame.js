@@ -4,14 +4,13 @@ var FRAME = ( function () {
 
 		VERSION: 1,
 
-		Effect: function () {
+		Module: function () {
 
-			this.name = null;
 			this.init = function ( callback ) {};
 			this.load = function ( callback ) {};
-			this.start = function ( value ) {};
-			this.end = function ( value ) {};
-			this.render = function ( value ) {};
+			this.start = function ( t ) {};
+			this.end = function ( t ) {};
+			this.update = function ( t ) {};
 
 		},
 
@@ -23,43 +22,6 @@ var FRAME = ( function () {
 			var next = 0, prevtime = 0;
 
 			return {
-
-				load: function ( url ) {
-
-					var scope = this;
-
-					var request = new XMLHttpRequest();
-					request.addEventListener( 'load', function ( event ) {
-
-						var json = JSON.parse( event.target.responseText );
-
-						for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
-
-							var data = json.timeline[ i ];
-
-							if ( window[ data[ 3 ] ] === undefined ) {
-
-								console.log( 'FRAME: Missing effect: ' + data[ 3 ] );
-								continue;
-
-							}
-
-							var element = new FRAME.TimelineElement(
-								data[ 0 ],
-								data[ 1 ],
-								data[ 2 ],
-								new window[ data[ 3 ] ]( data[ 4 ] )
-							);
-
-							scope.add( element );
-
-						}
-
-					}, false );
-					request.open( 'GET', url, true );
-					request.send( null );
-
-				},
 
 				add: function ( element ) {
 
@@ -109,7 +71,7 @@ var FRAME = ( function () {
 						if ( element.end > time ) {
 
 							active.push( element );
-							element.effect.start( ( time - element.start ) / element.duration );
+							element.module.start( ( time - element.start ) / element.duration );
 
 						}
 
@@ -128,7 +90,7 @@ var FRAME = ( function () {
 						if ( element.end < time ) {
 
 							active.splice( i, 1 );
-							element.effect.end( ( time - element.start ) / element.duration );
+							element.module.end( ( time - element.start ) / element.duration );
 							continue;
 
 						}
@@ -144,7 +106,7 @@ var FRAME = ( function () {
 					for ( var i = 0, l = active.length; i < l; i ++ ) {
 
 						var element = active[ i ];
-						element.effect.render( ( time - element.start ) / element.duration );
+						element.module.update( ( time - element.start ) / element.duration );
 
 					}
 
@@ -163,13 +125,14 @@ var FRAME = ( function () {
 
 		},
 
-		TimelineElement: function ( layer, start, end, effect ) {
+		TimelineElement: function ( name, layer, start, end, module ) {
 
+			this.name = name;
 			this.layer = layer;
 			this.start = start;
 			this.end = end;
 			this.duration = end - start;
-			this.effect = effect;
+			this.module = module;
 
 		}
 

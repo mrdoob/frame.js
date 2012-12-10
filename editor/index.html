@@ -70,6 +70,26 @@
 				background-color: #666; 
 			}
 
+				.timeline .block {
+					background-color: #88f;
+					border-left: 1px solid #aaf;
+					border-top: 1px solid #aaf;
+					border-right: 1px solid #66f;
+					border-bottom: 1px solid #66f;
+					overflow: hidden;
+				}
+				.timeline .block:hover {
+
+					background-color: #99f;
+
+				}
+
+					.timeline .block .name {
+						margin: 7px 10px;
+						color: #449;
+						cursor: default;
+					}
+
 		</style>
 	</head>
 	<body>
@@ -89,12 +109,14 @@
 		<!-- <script src="../build/frame.min.js"></script> -->
 		<script src="../src/Frame.js"></script>
 
+		<script src="js/modules/ClearModule.js"></script>
+		<script src="js/modules/ColorModule.js"></script>
+		<script src="js/modules/FadeInModule.js"></script>
+		<script src="js/modules/ShaderModule.js"></script>
+
 		<script src="../examples/template/js/libs/raf.min.js"></script>
 		<script src="../examples/template/js/libs/three.min.js"></script>
-		<script src="../examples/template/js/effects/ClearEffect.js"></script>
-		<script src="../examples/template/js/effects/ColorEffect.js"></script>
-		<script src="../examples/template/js/effects/FadeInEffect.js"></script>
-		<script src="../examples/template/js/effects/ShaderEffect.js"></script>
+
 
 		<script>
 
@@ -120,20 +142,20 @@
 			var properties = new Properties( signals );
 			properties.setTop( '32px' );
 			properties.setWidth( '300px' );
-			properties.setHeight( '-webkit-calc(100% - 200px - 32px)' );
+			properties.setHeight( '-webkit-calc(100% - 30% - 32px)' );
 			document.body.appendChild( properties.dom );
 
 			var timeline = new Timeline( signals );
-			timeline.setTop( '-webkit-calc(100% - 200px)' );
+			timeline.setTop( '-webkit-calc(100% - 30%)' );
 			timeline.setWidth( '100%' );
-			timeline.setHeight( '200px' );
+			timeline.setHeight( '30%' );
 			document.body.appendChild( timeline.dom );
 
 			var viewport = new Viewport( signals );
 			viewport.setLeft( '300px' );
 			viewport.setTop( '32px' );
 			viewport.setWidth( '-webkit-calc(100% - 300px)' );
-			viewport.setHeight( '-webkit-calc(100% - 200px - 32px)' );
+			viewport.setHeight( '-webkit-calc(100% - 30% - 32px)' );
 			document.body.appendChild( viewport.dom );
 
 			//
@@ -144,19 +166,19 @@
 				},
 
 				"timeline": [
-					[ 0, 0, 60, "ClearEffect" ],
-					[ 1, 0, 14, "ShaderEffect", { "url": "../examples/template/files/shaders/lights.fs", "speed": 10 } ],
-					[ 2, 0, 14, "FadeInEffect", { "color": "black" } ],
-					[ 1, 14, 21, "ShaderEffect", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": 0.75, "mouseY": 0.75 } ],
-					[ 1, 21, 28, "ShaderEffect", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": -0.75, "mouseY": 0.25 } ],
-					[ 1, 28, 35, "ShaderEffect", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20 } ],
-					[ 1, 35, 42, "ShaderEffect", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20, "offset": 450 } ],
-					[ 2, 35, 37, "FadeInEffect", { "color": "white" } ],
-					[ 1, 42, 49, "ShaderEffect", { "url": "../examples/template/files/shaders/field.fs", "speed": 20 } ],
-					[ 2, 42, 44, "FadeInEffect", { "color": "white" } ],
-					[ 1, 49, 56, "ShaderEffect", { "url": "../examples/template/files/shaders/field.fs", "speed": 20, "offset": 450 } ],
-					[ 1, 56, 70, "ShaderEffect", { "url": "../examples/template/files/shaders/blobs.fs", "speed": 10 } ],
-					[ 2, 56, 60, "FadeInEffect", { "color": "white" } ]
+					[ 0, 0, 60, "ClearModule" ],
+					[ 1, 0, 14, "ShaderModule", { "url": "../examples/template/files/shaders/lights.fs", "speed": 10 } ],
+					[ 2, 0, 14, "FadeInModule", { "color": "black" } ],
+					[ 1, 14, 21, "ShaderModule", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": 0.75, "mouseY": 0.75 } ],
+					[ 1, 21, 28, "ShaderModule", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": -0.75, "mouseY": 0.25 } ],
+					[ 1, 28, 35, "ShaderModule", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20 } ],
+					[ 1, 35, 42, "ShaderModule", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20, "offset": 450 } ],
+					[ 2, 35, 37, "FadeInModule", { "color": "white" } ],
+					[ 1, 42, 49, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20 } ],
+					[ 2, 42, 44, "FadeInModule", { "color": "white" } ],
+					[ 1, 49, 56, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20, "offset": 450 } ],
+					[ 1, 56, 70, "ShaderModule", { "url": "../examples/template/files/shaders/blobs.fs", "speed": 10 } ],
+					[ 2, 56, 60, "FadeInModule", { "color": "white" } ]
 				],
 
 				"curves": [
@@ -167,19 +189,20 @@
 
 				var data = json.timeline[ i ];
 
+				var layer = data[ 0 ];
+				var start = data[ 1 ];
+				var end = data[ 2 ];
+				var module = data[ 3 ];
+				var parameters = data[ 4 ];
+
 				if ( window[ data[ 3 ] ] === undefined ) {
 
-					console.log( 'FRAME: Missing effect: ' + data[ 3 ] );
+					console.log( 'FRAME: Missing module: ' + module );
 					continue;
 
 				}
 
-				var element = new FRAME.TimelineElement(
-					data[ 0 ],
-					data[ 1 ],
-					data[ 2 ],
-					new window[ data[ 3 ] ]( data[ 4 ] )
-				);
+				var element = new FRAME.TimelineElement( module, layer, start, end, new window[ module ]( parameters ) );
 
 				signals.addTimelineElement.dispatch( element );
 
