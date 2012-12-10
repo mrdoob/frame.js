@@ -67,15 +67,15 @@
 				background-color: #555;
 			}
 			.timeline {
-				background-color: #666; 
+				background-color: #555;
 			}
 
 				.timeline .block {
 					background-color: #88f;
 					border-left: 1px solid #aaf;
 					border-top: 1px solid #aaf;
-					border-right: 1px solid #66f;
-					border-bottom: 1px solid #66f;
+					border-right: 1px solid #77f;
+					border-bottom: 1px solid #77f;
 					overflow: hidden;
 				}
 				.timeline .block:hover {
@@ -109,10 +109,11 @@
 		<!-- <script src="../build/frame.min.js"></script> -->
 		<script src="../src/Frame.js"></script>
 
-		<script src="js/modules/ClearModule.js"></script>
-		<script src="js/modules/ColorModule.js"></script>
-		<script src="js/modules/FadeInModule.js"></script>
-		<script src="js/modules/ShaderModule.js"></script>
+		<script src="js/modules/threejs/WebGLRendererModule.js"></script>
+		<script src="js/modules/threejs/ClearModule.js"></script>
+		<script src="js/modules/threejs/ColorModule.js"></script>
+		<script src="js/modules/threejs/FadeInModule.js"></script>
+		<script src="js/modules/threejs/ShaderModule.js"></script>
 
 		<script src="../examples/template/js/libs/raf.min.js"></script>
 		<script src="../examples/template/js/libs/three.min.js"></script>
@@ -174,19 +175,20 @@
 				},
 
 				"timeline": [
-					[ 0, 0, 60, "ClearModule" ],
-					[ 1, 0, 14, "ShaderModule", { "url": "../examples/template/files/shaders/lights.fs", "speed": 10 } ],
-					[ 2, 0, 14, "FadeInModule", { "color": "black" } ],
-					[ 1, 14, 21, "ShaderModule", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": 0.75, "mouseY": 0.75 } ],
-					[ 1, 21, 28, "ShaderModule", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": -0.75, "mouseY": 0.25 } ],
-					[ 1, 28, 35, "ShaderModule", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20 } ],
-					[ 1, 35, 42, "ShaderModule", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20, "offset": 450 } ],
-					[ 2, 35, 37, "FadeInModule", { "color": "white" } ],
-					[ 1, 42, 49, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20 } ],
-					[ 2, 42, 44, "FadeInModule", { "color": "white" } ],
-					[ 1, 49, 56, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20, "offset": 450 } ],
-					[ 1, 56, 70, "ShaderModule", { "url": "../examples/template/files/shaders/blobs.fs", "speed": 10 } ],
-					[ 2, 56, 60, "FadeInModule", { "color": "white" } ]
+					[ 0, 0, 70, "WebGLRendererModule" ],
+					[ 1, 0, 70, "ClearModule" ],
+					[ 2, 0, 14, "ShaderModule", { "url": "../examples/template/files/shaders/lights.fs", "speed": 10 } ],
+					[ 3, 0, 14, "FadeInModule", { "color": "black" } ],
+					[ 2, 14, 21, "ShaderModule", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": 0.75, "mouseY": 0.75 } ],
+					[ 2, 21, 28, "ShaderModule", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": -0.75, "mouseY": 0.25 } ],
+					[ 2, 28, 35, "ShaderModule", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20 } ],
+					[ 2, 35, 42, "ShaderModule", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20, "offset": 450 } ],
+					[ 3, 35, 37, "FadeInModule", { "color": "white" } ],
+					[ 2, 42, 49, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20 } ],
+					[ 3, 42, 44, "FadeInModule", { "color": "white" } ],
+					[ 2, 49, 56, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20, "offset": 450 } ],
+					[ 2, 56, 70, "ShaderModule", { "url": "../examples/template/files/shaders/blobs.fs", "speed": 10 } ],
+					[ 3, 56, 60, "FadeInModule", { "color": "white" } ]
 				],
 
 				"curves": [
@@ -200,17 +202,32 @@
 				var layer = data[ 0 ];
 				var start = data[ 1 ];
 				var end = data[ 2 ];
-				var module = data[ 3 ];
+				var moduleName = data[ 3 ];
 				var parameters = data[ 4 ];
 
-				if ( window[ data[ 3 ] ] === undefined ) {
+				if ( window[ moduleName ] === undefined ) {
 
-					console.log( 'FRAME: Missing module: ' + module );
+					console.log( 'FRAME: Missing module: ' + moduleName );
 					continue;
 
 				}
 
-				var element = new FRAME.TimelineElement( module, layer, start, end, new window[ module ]( parameters ) );
+				var module = new window[ moduleName ];
+
+				for ( var key in parameters ) {
+
+					if ( module.parameters.input[ key ] === undefined ) {
+
+						console.log( 'FRAME: [' + moduleName + '] doesn\'t support "' + key + '" as input parameter' );
+						continue;
+
+					}
+
+					module.parameters.input[ key ] = parameters[ key ];
+
+				}
+
+				var element = new FRAME.TimelineElement( moduleName, layer, start, end, module );
 
 				signals.addTimelineElement.dispatch( element );
 

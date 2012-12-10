@@ -1,4 +1,4 @@
-var ClearModule = function ( properties ) {
+var ClearModule = function () {
 
 	FRAME.Module.call( this );
 

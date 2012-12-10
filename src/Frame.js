@@ -6,6 +6,7 @@ var FRAME = ( function () {
 
 		Module: function () {
 
+			this.parameters = { input: {}, output: {} };
 			this.init = function ( callback ) {};
 			this.load = function ( callback ) {};
 			this.start = function ( t ) {};
@@ -25,6 +26,7 @@ var FRAME = ( function () {
 
 				add: function ( element ) {
 
+					element.module.init();
 					elements.push( element );
 					this.sort();
 

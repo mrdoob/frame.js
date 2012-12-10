@@ -13,13 +13,6 @@ var Viewport = function ( signals ) {
 	document.body.appendChild( document.createElement( 'br' ) );
 	*/
 
-	renderer = new THREE.WebGLRenderer(); // TODO: Remove this nasty global
-	renderer.setSize( 800, 600 );
-	renderer.autoClear = false;
-	renderer.domElement.style.maxWidth = '100%';
-	renderer.domElement.style.height = '100%';
-	container.dom.appendChild( renderer.domElement );
-
 	var time = 0;
 
 	var timeline = new FRAME.Timeline();
@@ -40,6 +33,14 @@ var Viewport = function ( signals ) {
 	} );
 
 	signals.addTimelineElement.add( function ( element ) {
+
+		var module = element.module;
+
+		if ( module.parameters.input.dom !== undefined ) {
+
+			module.parameters.input.dom = container.dom;
+
+		}
 
 		timeline.add( element );
 		render();

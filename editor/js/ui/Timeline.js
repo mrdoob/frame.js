@@ -3,50 +3,10 @@ var Timeline = function ( signals ) {
 	var container = new UI.Panel( 'absolute' );
 	container.setClass( 'timeline' );
 
-	// var layers =
-
-	//
-
-	var scale = 32;
-
-	var timeline = new UI.Panel( 'absolute' );
-	timeline.setWidth( '100%' );
-	timeline.setHeight( '100%' );
-	timeline.dom.style.overflow = 'auto'; // TODO: UIify.
-	timeline.dom.addEventListener( 'click', function ( event ) {
-
-		signals.setTime.dispatch( ( event.clientX + this.scrollLeft ) / scale );
-
-	}, false );
-	container.add( timeline );
-
-	var marks = document.createElement( 'div' );
-	marks.style.width = '2512px';
-	marks.style.height = '16px';
-	marks.style.background = 'url(' + ( function () {
-
-		var canvas = document.createElement( 'canvas' );
-		canvas.width = scale;
-		canvas.height = 16;
-
-		var context = canvas.getContext( '2d' );
-		context.fillStyle = '#aaa';
-		context.fillRect( 0, 8, 1, 8 );
-		context.fillStyle = '#888';
-		context.fillRect( Math.floor( scale / 2 ), 8, 1, 8 );
-		return canvas.toDataURL();
-
-	}() ) + ') repeat-x';
-	timeline.dom.appendChild( marks );
-
-	var grid = document.createElement( 'div' );
-	grid.style.position = 'absolute';
-	grid.style.top = '16px';
-	grid.style.width = '2512px';
-	grid.style.height = '-webkit-calc(100% - 16px)';
-	grid.style.height = '-moz-calc(100% - 16px)';
-	grid.style.height = '-calc(100% - 16px)';
-	grid.style.background = 'url(' + ( function () {
+	var labels = new UI.Panel( 'absolute' );
+	labels.setWidth( '300px' );
+	labels.setHeight( '100%' );
+	labels.dom.style.background = '#666 url(' + ( function () {
 
 		var canvas = document.createElement( 'canvas' );
 		canvas.width = 1;
@@ -54,6 +14,66 @@ var Timeline = function ( signals ) {
 
 		var context = canvas.getContext( '2d' );
 		context.fillStyle = '#555';
+		context.fillRect( 0, 0, 1, 1 );
+		return canvas.toDataURL();
+
+	}() ) + ')';
+	labels.dom.style.backgroundPosition = '0px 32px';
+	container.add( labels );
+
+	//
+
+	var scale = 32;
+
+	var timeline = new UI.Panel( 'absolute' );
+	timeline.setLeft( '300px' );
+	timeline.setWidth( '-webkit-calc( 100% - 300px )' );
+	timeline.setHeight( '100%' );
+	timeline.dom.style.overflow = 'auto'; // TODO: UIify.
+	timeline.dom.addEventListener( 'click', function ( event ) {
+
+		signals.setTime.dispatch( ( event.clientX + this.scrollLeft - this.offsetLeft ) / scale );
+
+	}, false );
+	container.add( timeline );
+
+	var marks = new UI.Panel( 'absolute' );
+	marks.setWidth( '2512px' );
+	marks.setHeight( '32px' );
+	marks.dom.style.background = 'url(' + ( function () {
+
+		var canvas = document.createElement( 'canvas' );
+		canvas.width = scale;
+		canvas.height = 8;
+
+		var context = canvas.getContext( '2d' );
+		context.fillStyle = '#aaa';
+		context.fillRect( 0, 0, 1, 8 );
+		context.fillStyle = '#888';
+		context.fillRect( Math.floor( scale / 4 ), 4, 1, 4 );
+		context.fillRect( Math.floor( scale / 4 ) * 2, 4, 1, 4 );
+		context.fillRect( Math.floor( scale / 4 ) * 3, 4, 1, 4 );
+		return canvas.toDataURL();
+
+	}() ) + ') repeat-x';
+	marks.dom.style.backgroundPosition = 'bottom';
+	timeline.add( marks );
+
+	var grid = document.createElement( 'div' );
+	grid.style.position = 'absolute';
+	grid.style.top = '32px';
+	grid.style.width = '2512px';
+	grid.style.height = '-webkit-calc(100% - 32px)';
+	grid.style.height = '-moz-calc(100% - 32px)';
+	grid.style.height = '-calc(100% - 32px)';
+	grid.style.background = 'url(' + ( function () {
+
+		var canvas = document.createElement( 'canvas' );
+		canvas.width = 1;
+		canvas.height = 32;
+
+		var context = canvas.getContext( '2d' );
+		context.fillStyle = '#444';
 		context.fillRect( 0, 0, 1, 1 );
 		return canvas.toDataURL();
 
@@ -86,9 +106,6 @@ var Timeline = function ( signals ) {
 		var onMouseMove = function ( event ) {
 
 			var movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-
-			// time.style.left = ( time.offsetLeft + movementX ) + 'px';
-
 			signals.setTime.dispatch( ( time.offsetLeft + movementX + 8 ) / scale );
 
 		};
@@ -113,16 +130,26 @@ var Timeline = function ( signals ) {
 		dom.style.position = 'absolute';
 		dom.style.left = ( element.start * scale ) + 'px';
 		dom.style.top = ( element.layer * 32 ) + 'px';
-		dom.style.width = ( element.duration * scale ) + 'px';
+		dom.style.width = ( element.duration * scale - 2 ) + 'px';
 		dom.style.height = '30px';
 		dom.innerHTML = '<div class="name">' + element.name + '</div>';
 		dom.addEventListener( 'mousedown', function ( event ) {
 
+			/*
+			var onMouseDownLeft = dom.offsetLeft;
+			var onMouseDownTop = dom.offsetTop;
+
+			var onMouseDownX = event.clientX;
+			var onMouseDownY = event.clientY;
+			*/
+
 			var onMouseMove = function ( event ) {
 
 				var movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
+				// var movementY = event.movementY | event.webkitMovementY | event.mozMovementY | 0;
 
 				dom.style.left = ( dom.offsetLeft + movementX ) + 'px';
+				// dom.style.top = ( dom.offsetTop + movementX ) + 'px';
 
 				element.start += movementX / scale;
 				element.end += movementX / scale;
