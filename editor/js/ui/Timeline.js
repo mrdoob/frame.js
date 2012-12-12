@@ -54,6 +54,8 @@ var Timeline = function ( signals ) {
 	var timeline = new UI.Panel( 'absolute' );
 	timeline.setLeft( '300px' );
 	timeline.setWidth( '-webkit-calc( 100% - 300px )' );
+	timeline.setWidth( '-moz-calc( 100% - 300px )' );
+	timeline.setWidth( 'calc( 100% - 300px )' );
 	timeline.setHeight( '100%' );
 	timeline.dom.style.overflow = 'auto'; // TODO: UIify.
 	timeline.dom.addEventListener( 'click', function ( event ) {
