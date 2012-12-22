@@ -149,27 +149,20 @@
 
 			var properties = new Properties( signals );
 			properties.setTop( '32px' );
-			properties.setWidth( '300px' );
-			properties.setHeight( '-webkit-calc(100% - 30% - 32px)' );
-			properties.setHeight( '-moz-calc(100% - 30% - 32px)' );
-			properties.setHeight( 'calc(100% - 30% - 32px)' );
+			properties.setBottom( '30%' );
+			properties.setLeft( '0px' );
+			properties.setRight( '300px' );
 			document.body.appendChild( properties.dom );
 
 			var viewport = new Viewport( signals );
-			viewport.setLeft( '300px' );
 			viewport.setTop( '32px' );
-			viewport.setWidth( '-webkit-calc(100% - 300px)' );
-			viewport.setWidth( '-moz-calc(100% - 300px)' );
-			viewport.setWidth( 'calc(100% - 300px)' );
-			viewport.setHeight( '-webkit-calc(100% - 30% - 32px)' );
-			viewport.setHeight( '-moz-calc(100% - 30% - 32px)' );
-			viewport.setHeight( 'calc(100% - 30% - 32px)' );
+			viewport.setBottom( '30%' );
+			viewport.setLeft( '300px' );
+			viewport.setRight( '0px' );
 			document.body.appendChild( viewport.dom );
 
 			var timeline = new Timeline( signals );
-			timeline.setTop( '-webkit-calc(100% - 30%)' );
-			timeline.setTop( '-moz-calc(100% - 30%)' );
-			timeline.setTop( 'calc(100% - 30%)' );
+			timeline.setTop( '70%' );
 			timeline.setWidth( '100%' );
 			timeline.setHeight( '30%' );
 			document.body.appendChild( timeline.dom );
