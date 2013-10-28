@@ -21,10 +21,12 @@ var WebGLRendererModule = function () {
 		if ( this.parameters.input.dom !== null ) {
 
 			this.parameters.input.dom.appendChild( renderer.domElement );
-
+            this.parameters.input.dom = null; // TODO: Another hack
 		}
 
 	};
 
 
 };
+
+WebGLRendererModule.prototype = Object.create( FRAME.Module.prototype );

@@ -35,3 +35,5 @@ var ColorModule = function () {
 	};
 
 };
+
+ColorModule.prototype = Object.create( FRAME.Module.prototype );

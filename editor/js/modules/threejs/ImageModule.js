@@ -37,3 +37,5 @@ var ImageModule = function () {
 	};
 
 };
+
+ImageModule.prototype = Object.create( FRAME.Module.prototype );

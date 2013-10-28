@@ -52,3 +52,5 @@ var ShaderModule = function () {
 	};
 
 };
+
+ShaderModule.prototype = Object.create( FRAME.Module.prototype );

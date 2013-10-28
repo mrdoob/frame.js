@@ -1,10 +1,10 @@
-Menubar.File = function ( signals ) {
+Menubar.Add = function ( editor ) {
 
 	var container = new UI.Panel();
 	container.setClass( 'menu' );
 
 	var title = new UI.Panel();
-	title.setTextContent( 'File' ).setColor( '#888' );
+	title.setTextContent( 'Add' ).setColor( '#888' );
 	title.setMargin( '0px' );
 	title.setPadding( '8px' );
 	container.add( title );

@@ -9,3 +9,5 @@ var ClearModule = function () {
 	};
 
 };
+
+ClearModule.prototype = Object.create( FRAME.Module.prototype );

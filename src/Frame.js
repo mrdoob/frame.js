@@ -6,8 +6,10 @@ var FRAME = ( function () {
 
 		Module: function () {
 
-			this.parameters = { input: {}, output: {} };
-			this.init = function ( callback ) {};
+            this.name = '';
+            this.parameters = { input: {}, output: {} };
+
+            this.init = function ( callback ) {};
 			this.load = function ( callback ) {};
 			this.start = function ( value ) {};
 			this.end = function ( value ) {};
@@ -26,7 +28,7 @@ var FRAME = ( function () {
 
 				add: function ( element ) {
 
-					element.module.init();
+					element.module.init( element.parameters );
 					elements.push( element );
 					this.sort();
 
@@ -49,6 +51,8 @@ var FRAME = ( function () {
 					}
 
 				},
+                
+                elements: elements,
 
 				update: function ( time ) {
 
@@ -70,10 +74,10 @@ var FRAME = ( function () {
 
 						}
 
-						if ( element.end > time ) {
+						if ( ( element.start + element.duration ) > time ) {
 
 							active.push( element );
-							element.module.start( ( time - element.start ) / element.duration );
+							element.module.start( ( time - element.start ) / element.duration, element.parameters );
 
 						}
 
@@ -89,7 +93,7 @@ var FRAME = ( function () {
 
 						var element = active[ i ];
 
-						if ( element.end < time ) {
+						if ( ( element.start + element.duration ) < time ) {
 
 							active.splice( i, 1 );
 							element.module.end( ( time - element.start ) / element.duration );
@@ -127,16 +131,23 @@ var FRAME = ( function () {
 
 		},
 
-		TimelineElement: function ( name, layer, start, end, module ) {
+		TimelineElement: function () {
+            
+            var id = 0;
+            
+            return function ( name, layer, start, duration, module, parameters ) {
 
-			this.name = name;
-			this.layer = layer;
-			this.start = start;
-			this.end = end;
-			this.duration = end - start;
-			this.module = module;
+                this.id = id ++;
+    			this.name = name;
+    			this.layer = layer;
+    			this.start = start;
+    			this.duration = duration;
+    			this.module = module;
+                this.parameters = parameters;
+                
+            };
 
-		}
+		}()
 
 	}
 

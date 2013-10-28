@@ -35,3 +35,5 @@ var FadeInModule = function () {
 	};
 
 };
+
+FadeInModule.prototype = Object.create( FRAME.Module.prototype );

@@ -1,9 +1,11 @@
-var Timeline = function ( signals ) {
+var Timeline = function ( editor ) {
 
-	var container = new UI.Panel( 'absolute' );
-	container.setClass( 'timeline' );
+    var signals = editor.signals;
 
-	var panel = new UI.Panel( 'absolute' );
+	var container = new UI.Panel();
+
+	var panel = new UI.Panel();
+	panel.setPosition( 'absolute' );
 	panel.setWidth( '300px' );
 	panel.setHeight( '100%' );
 	panel.dom.style.background = '#666 url(' + ( function () {
@@ -22,7 +24,8 @@ var Timeline = function ( signals ) {
 
 	// controls
 
-	var controls = new UI.Panel( 'absolute' );
+	var controls = new UI.Panel();
+	controls.setPosition( 'absolute' );
 	controls.setPadding( '5px 4px' );
 	panel.add( controls );
 
@@ -51,24 +54,32 @@ var Timeline = function ( signals ) {
 
 	var scale = 32;
 
-	var timeline = new UI.Panel( 'absolute' );
+	var timeline = new UI.Panel();
+	timeline.setPosition( 'absolute' );
 	timeline.setLeft( '300px' );
 	timeline.setWidth( '-webkit-calc( 100% - 300px )' );
 	timeline.setWidth( '-moz-calc( 100% - 300px )' );
 	timeline.setWidth( 'calc( 100% - 300px )' );
 	timeline.setHeight( '100%' );
 	timeline.dom.style.overflow = 'auto'; // TODO: UIify.
-	timeline.dom.addEventListener( 'click', function ( event ) {
-
-		signals.setTime.dispatch( ( event.clientX + this.scrollLeft - this.offsetLeft ) / scale );
-
-	}, false );
+    timeline.dom.addEventListener( 'mousewheel', function ( event ) {
+    
+        scale = Math.max( 1, scale + ( event.wheelDeltaY / 10 ) );
+                
+        for ( var key in blocks ) {
+        
+            blocks[ key ].update();
+            
+        }
+    
+    } );
 	container.add( timeline );
 
-	var marks = new UI.Panel( 'absolute' );
-	marks.setWidth( '2512px' );
-	marks.setHeight( '32px' );
-	marks.dom.style.background = 'url(' + ( function () {
+	var marks = document.createElement( 'div' );
+    marks.style.position = 'absolute';
+    marks.style.width = '8192px';
+	marks.style.height = '32px';
+	marks.style.background = 'url(' + ( function () {
 
 		var canvas = document.createElement( 'canvas' );
 		canvas.width = scale;
@@ -81,11 +92,36 @@ var Timeline = function ( signals ) {
 		context.fillRect( Math.floor( scale / 4 ), 4, 1, 4 );
 		context.fillRect( Math.floor( scale / 4 ) * 2, 4, 1, 4 );
 		context.fillRect( Math.floor( scale / 4 ) * 3, 4, 1, 4 );
+        
 		return canvas.toDataURL();
 
 	}() ) + ') repeat-x';
-	marks.dom.style.backgroundPosition = 'bottom';
-	timeline.add( marks );
+	marks.style.backgroundPosition = 'bottom';
+    marks.addEventListener( 'click', function ( event ) {
+
+        signals.setTime.dispatch( event.offsetX / scale );
+    
+    }, false );
+    marks.addEventListener( 'mousedown', function ( event ) {
+
+    	var onMouseMove = function ( event ) {
+            
+			signals.setTime.dispatch( event.offsetX / scale );
+
+		};
+
+		var onMouseUp = function ( event ) {
+            
+			marks.removeEventListener( 'mousemove', onMouseMove );
+			document.removeEventListener( 'mouseup', onMouseUp );
+
+		};
+
+		marks.addEventListener( 'mousemove', onMouseMove, false );
+		document.addEventListener( 'mouseup', onMouseUp, false );
+
+	}, false );
+	timeline.dom.appendChild( marks );
 
 	var grid = document.createElement( 'div' );
 	grid.style.position = 'absolute';
@@ -116,7 +152,6 @@ var Timeline = function ( signals ) {
 	time.style.left = '-8px';
 	time.style.width = '16px';
 	time.style.height = '100%';
-	time.style.cursor = 'move';
 	time.style.background = 'url(' + ( function () {
 
 		var canvas = document.createElement( 'canvas' );
@@ -126,42 +161,31 @@ var Timeline = function ( signals ) {
 		var context = canvas.getContext( '2d' );
 		context.fillStyle = '#f00';
 		context.fillRect( 8, 0, 1, 1 );
+        
 		return canvas.toDataURL();
 
 	}() ) + ')';
-	time.addEventListener( 'mousedown', function ( event ) {
-
-		var onMouseMove = function ( event ) {
-
-			var movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-			signals.setTime.dispatch( ( time.offsetLeft + movementX + 8 ) / scale );
-
-		};
-
-		var onMouseUp = function ( event ) {
-
-			document.removeEventListener( 'mousemove', onMouseMove );
-			document.removeEventListener( 'mouseup', onMouseUp );
-
-		};
-
-		document.addEventListener( 'mousemove', onMouseMove, false );
-		document.addEventListener( 'mouseup', onMouseUp, false );
-
-	}, false );
 	timeline.dom.appendChild( time );
 
 	var Block = ( function ( element ) {
+        
+        var scope = this;
 
 		var dom = document.createElement( 'div' );
 		dom.className = 'block';
 		dom.style.position = 'absolute';
-		dom.style.left = ( element.start * scale ) + 'px';
-		dom.style.top = ( element.layer * 32 ) + 'px';
-		dom.style.width = ( element.duration * scale - 2 ) + 'px';
-		dom.style.height = '30px';
 		dom.innerHTML = '<div class="name">' + element.name + '</div>';
-		dom.addEventListener( 'mousedown', function ( event ) {
+
+        var onMouseDown = function ( event ) {
+
+            var MODES = { 'MOVE': 0, 'RESIZE': 1 };
+            var mode = MODES.MOVE;
+            
+            if ( event.offsetX > this.offsetWidth - 5 ) {
+                
+                mode = MODES.RESIZE;
+                
+            }
 
 			/*
 			var onMouseDownLeft = dom.offsetLeft;
@@ -170,23 +194,44 @@ var Timeline = function ( signals ) {
 			var onMouseDownX = event.clientX;
 			var onMouseDownY = event.clientY;
 			*/
+            
+            var movementX = 0;
+            var movementY = 0;
 
 			var onMouseMove = function ( event ) {
 
-				var movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-				// var movementY = event.movementY | event.webkitMovementY | event.mozMovementY | 0;
+				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
+				// movementY = event.movementY | event.webkitMovementY | event.mozMovementY | 0;
 
-				dom.style.left = ( dom.offsetLeft + movementX ) + 'px';
-				// dom.style.top = ( dom.offsetTop + movementX ) + 'px';
-
-				element.start += movementX / scale;
-				element.end += movementX / scale;
+                switch ( mode ) {
+                    
+                    case MODES.MOVE:
+        
+        				element.start += movementX / scale;
+                
+                        break;
+                        
+                    case MODES.RESIZE:
+        
+        				element.duration += movementX / scale;
+                        
+                        break;
+                    
+                }
+                
+                update();
 
 				signals.timelineElementChanged.dispatch( element );
 
 			};
 
 			var onMouseUp = function ( event ) {
+                
+                if ( Math.abs( movementX ) < 2 ) {
+                    
+                    editor.select( element )
+                    
+                }
 
 				document.removeEventListener( 'mousemove', onMouseMove );
 				document.removeEventListener( 'mouseup', onMouseUp );
@@ -196,22 +241,63 @@ var Timeline = function ( signals ) {
 			document.addEventListener( 'mousemove', onMouseMove, false );
 			document.addEventListener( 'mouseup', onMouseUp, false );
 
-		}, false );
+		};
+        
+        dom.addEventListener( 'mousedown', onMouseDown, false );
+        
+        var update = function () {
+            
+            dom.style.left = ( element.start * scale ) + 'px';
+        	dom.style.top = ( element.layer * 32 ) + 'px';
+    		dom.style.width = ( element.duration * scale - 2 ) + 'px';
+        	dom.style.height = '30px';
+
+        };
+
+        update();
 
 		this.dom = dom;
+        
+        this.select = function () {
+          
+            dom.className = 'block selected';
+            
+        };
+        
+        this.deselect = function () {
+
+            dom.className = 'block';
+            
+        };
+        
+        this.update = update;
 
 		return this;
 
 	} );
 
 	// signals
+    
 
-	signals.addTimelineElement.add( function ( element ) {
+    var blocks = {};
+
+	signals.elementAdded.add( function ( element ) {
 
 		var block = new Block( element );
 		grid.appendChild( block.dom );
+        
+        blocks[ element.id ] = block;
 
 	} );
+
+    signals.elementRemoved.add( function ( element ) {
+    
+            var block = blocks[ element.id ];
+            grid.removeChild( block.dom )
+            
+            delete blocks[ element.id ];
+    
+    } );
 
 	signals.timeChanged.add( function ( value ) {
 
@@ -222,6 +308,23 @@ var Timeline = function ( signals ) {
 		var padding = seconds < 10 ? '0' : '';
 
 		currentTime.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
+
+	} );
+    
+    // elements handling
+    
+    var selected = null;
+    
+    signals.elementSelected.add( function ( element ) {
+
+        if ( blocks[ selected ] !== undefined ) {
+            
+            blocks[ selected ].deselect();
+            
+        }
+        
+        selected = element.id;
+        blocks[ selected ].select();
 
 	} );
 

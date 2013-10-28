@@ -3,112 +3,22 @@
 	<head>
 		<meta charset="utf-8">
 		<title>frame.js editor</title>
-		<style>
-			body {
-				background-color: #333;
-				font-family: Arial, sans-serif;
-				font-size: 14px;
-				margin: 0;
-				overflow: hidden;
-			}
-
-			button {
-				color: #bbb;
-				background-color: transparent;
-				border: 1px solid #999;
-				cursor: pointer;
-			}
-
-			.menubar {
-				background-color: #444;
-				padding: 0px;
-				margin: 0px;
-				z-index: 1;
-			}
-
-				.menubar .menu {
-					float: left;
-					width: 50px;
-					cursor: pointer;
-				}
-
-					.menubar .menu .options {
-						display: none;
-						padding: 5px 0px;
-						background-color: #333;
-						width: 140px;
-					}
-
-					.menubar .menu:hover .options {
-						display: block;
-					}
-
-						.menubar .menu .options hr {
-							border-color: #ddd;
-						}
-
-						.menubar .menu .options .option {
-							color: #888;
-							background-color: transparent;
-							padding: 5px 10px;
-							margin: 0px !important;
-						}
-
-							.menubar .menu .options .option:hover {
-								color: #fff;
-								background-color: #08f;
-							}
-
-			.properties {
-				background-color: #333;
-			}
-
-			.viewport {
-				background-color: #000;
-			}
-
-			.properties {
-				background-color: #555;
-			}
-			.timeline {
-				background-color: #555;
-			}
-
-				.timeline .block {
-					background-color: #88f;
-					border-left: 1px solid #aaf;
-					border-top: 1px solid #aaf;
-					border-right: 1px solid #77f;
-					border-bottom: 1px solid #77f;
-					overflow: hidden;
-				}
-				.timeline .block:hover {
-
-					background-color: #99f;
-
-				}
-
-					.timeline .block .name {
-						margin: 7px 10px;
-						color: #449;
-						cursor: default;
-					}
-
-		</style>
 	</head>
+	<link id="theme" href="css/dark.css" rel="stylesheet" />
 	<body>
 
 		<script src="js/libs/signals.min.js"></script>
+		<script src="js/libs/ui.js"></script>
 
-		<script src="js/UI.js"></script>
-		<script src="js/ui/Menubar.js"></script>
-		<script src="js/ui/Menubar.File.js"></script>
-		<script src="js/ui/Menubar.Edit.js"></script>
-		<script src="js/ui/Menubar.Add.js"></script>
-		<script src="js/ui/Menubar.Help.js"></script>
-		<script src="js/ui/Properties.js"></script>
-		<script src="js/ui/Viewport.js"></script>
-		<script src="js/ui/Timeline.js"></script>
+        <script src="js/Editor.js"></script>
+		<script src="js/Menubar.js"></script>
+		<script src="js/Menubar.File.js"></script>
+		<script src="js/Menubar.Edit.js"></script>
+		<script src="js/Menubar.Add.js"></script>
+		<script src="js/Menubar.Help.js"></script>
+		<script src="js/Properties.js"></script>
+		<script src="js/Viewport.js"></script>
+		<script src="js/Timeline.js"></script>
 
 		<script src="../build/frame.min.js"></script>
 		<!-- <script src="../src/Frame.js"></script> -->
@@ -125,50 +35,23 @@
 
 		<script>
 
-			window.URL = window.URL || window.webkitURL;
-			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+            var editor = new Editor();
+            var signals = editor.signals;
 
-			var SIGNALS = signals;
-
-			var signals = {
-				// actions
-				play: new SIGNALS.Signal(),
-				backwards: new SIGNALS.Signal(),
-				forwards: new SIGNALS.Signal(),
-				setTime: new SIGNALS.Signal(),
-				addTimelineElement: new SIGNALS.Signal(),
-				// events
-				timeChanged: new SIGNALS.Signal(),
-				timelineElementChanged: new SIGNALS.Signal()
-			};
-
-			var menubar = new Menubar( signals );
-			menubar.setWidth( '100%' );
-			menubar.setHeight( '32px' );
-			document.body.appendChild( menubar.dom );
-
-			var properties = new Properties( signals );
-			properties.setTop( '32px' );
-			properties.setBottom( '30%' );
-			properties.setLeft( '0px' );
-			properties.setRight( '300px' );
+			var properties = new Properties( editor ).setId( 'properties' );
 			document.body.appendChild( properties.dom );
 
-			var viewport = new Viewport( signals );
-			viewport.setTop( '32px' );
-			viewport.setBottom( '30%' );
-			viewport.setLeft( '300px' );
-			viewport.setRight( '0px' );
+    		var viewport = new Viewport( editor ).setId( 'viewport' );
 			document.body.appendChild( viewport.dom );
 
-			var timeline = new Timeline( signals );
-			timeline.setTop( '70%' );
-			timeline.setWidth( '100%' );
-			timeline.setHeight( '30%' );
+			var timeline = new Timeline( editor ).setId( 'timeline' );
 			document.body.appendChild( timeline.dom );
 
-			//
+			var menubar = new Menubar( editor ).setId( 'menubar' );
+			document.body.appendChild( menubar.dom );
 
+			//
+            
 			var json = {
 				"metadata": {
 					"version": 1
@@ -194,7 +77,9 @@
 
 				"curves": [
 				]
-			}
+			};
+
+            var modules = {};
 
 			for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
 
@@ -202,7 +87,7 @@
 
 				var layer = data[ 0 ];
 				var start = data[ 1 ];
-				var end = data[ 2 ];
+				var duration = data[ 2 ];
 				var moduleName = data[ 3 ];
 				var parameters = data[ 4 ];
 
@@ -213,24 +98,42 @@
 
 				}
 
-				var module = new window[ moduleName ];
+                var module;
+
+                if ( modules[ moduleName ] === undefined ) {
+
+    				module = new window[ moduleName ];
+                    module.name = moduleName;
+                    
+                    modules[ moduleName ] = module;
+                    
+                } else {
+                    
+                    module = modules[ moduleName ];
+                    
+                }
 
 				for ( var key in parameters ) {
 
 					if ( module.parameters.input[ key ] === undefined ) {
 
 						console.log( 'FRAME: [' + moduleName + '] doesn\'t support "' + key + '" as input parameter' );
+                        delete parameters[ key ];
 						continue;
 
 					}
 
-					module.parameters.input[ key ] = parameters[ key ];
-
 				}
+                
+                if ( parameters.dom !== undefined ) {
+                
+                	parameters.dom = editor.dom;
+                
+                }
+        
+				var element = new FRAME.TimelineElement( moduleName, layer, start, duration, module, parameters );
 
-				var element = new FRAME.TimelineElement( moduleName, layer, start, end, module );
-
-				signals.addTimelineElement.dispatch( element );
+                editor.add( element );
 
 			}
 
@@ -241,6 +144,7 @@
 
 			var audio = document.createElement( 'audio' );
 			audio.src = '../examples/template/files/lug00ber-bastion_amstel.ogg';
+            document.body.appendChild( audio );
 
 			signals.play.add( function () {
 
@@ -266,46 +170,77 @@
 				signals.setTime.dispatch( time + 1 );
 
 			} );
+            
+            signals.decelerate.add( function () {
+
+                audio.playbackRate -= 0.1;
+
+			} );
+            
+            signals.accelerate.add( function () {
+
+                audio.playbackRate += 0.1;
+
+			} );
 
 			signals.setTime.add( function ( value ) {
 
-				time = value;
+				time = Math.max( 0, value );
 				signals.timeChanged.dispatch( time );
 				if ( audio.duration > 0 ) audio.currentTime = value;
+                
+                location.hash = audio.currentTime;
 
 			} );
+            
+            var hash = location.hash .substr( 1 );
+            
+            if ( hash !== '' ) {
+                
+                signals.setTime.dispatch( hash );
+                
+            }
 
 			document.addEventListener( 'keydown', function ( event ) {
 
 				switch ( event.keyCode ) {
 
-					case 27:
+					case 27: // 9:
+                        
 						if ( fullscreen === false ) {
-							viewport.setLeft( '0px' );
-							viewport.setTop( '0px' );
-							viewport.setWidth( '100%' );
-							viewport.setHeight( '100%' );
+                            // viewport.dom.webkitRequestFullScreen();
+                            viewport.setLeft( '0px' );
+                            viewport.setRight( '0px' );
+                            viewport.setTop( '0px' );
+                            viewport.setBottom( '0px' );
 							fullscreen = true;
 						} else {
-							viewport.setLeft( '300px' );
-							viewport.setTop( '32px' );
-							viewport.setWidth( '-webkit-calc(100% - 300px)' );
-							viewport.setWidth( '-moz-calc(100% - 300px)' );
-							viewport.setWidth( 'calc(100% - 300px)' );
-							viewport.setHeight( '-webkit-calc(100% - 30% - 32px)' );
-							viewport.setHeight( '-moz-calc(100% - 30% - 32px)' );
-							viewport.setHeight( 'calc(100% - 30% - 32px)' );
+                            // document.webkitCancelFullScreen();
+                            viewport.setLeft( '300px' );
+                            viewport.setRight( '0px' );
+                            viewport.setTop( '32px' );
+                            viewport.setBottom( '240px' );
 							fullscreen = false;
 						}
 						break;
 					case 32:
 						signals.play.dispatch();
 						break;
-					case 37: //
+					case 37:
+                        event.preventDefault();
 						signals.setTime.dispatch( time - 1 );
 						break;
-					case 39: //
-						signals.setTime.dispatch( time + 1 );
+					case 39:
+                        event.preventDefault();
+                        signals.setTime.dispatch( time + 1 );
+						break;
+					case 38:
+                        event.preventDefault();
+                        signals.accelerate.dispatch();
+						break;
+        			case 40:
+                        event.preventDefault();
+						signals.decelerate.dispatch();
 						break;
 
 				}
