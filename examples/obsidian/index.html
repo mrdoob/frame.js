@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+        <title>obsidian by xplsv</title>
+        <style>
+            body {
+                background-color: #000000;
+                color: #ffffff;
+                font-family: sans;
+                margin: 0px;
+                overflow: hidden;
+            }
+            hr {
+                border-color: #333;
+                width: 60%;
+            }
+        </style>
+	</head>
+	<body>
+		<script src="js/Frame.js"></script>
+
+		<script src="js/libs/raf.min.js"></script>
+		<script src="js/libs/three.min.js"></script>
+
+        <script src="js/modules/WebGLRendererModule.js"></script>
+    	<script src="js/modules/ClearModule.js"></script>
+		<script src="js/modules/FadeInModule.js"></script>
+        
+        <script src="js/modules/SceneModule.js"></script>
+        <script src="js/modules/Scene2Module.js"></script>
+        <script src="js/modules/Scene2bModule.js"></script>
+        <script src="js/modules/Scene3Module.js"></script>
+        <script src="js/modules/Scene4Module.js"></script>
+        <script src="js/modules/Scene5Module.js"></script>
+        <script src="js/modules/Scene6Module.js"></script>
+        <script src="js/modules/Scene6bModule.js"></script>
+        <script src="js/modules/Scene7Module.js"></script>
+        <script src="js/modules/TextModule.js"></script>
+        
+        <script src="files/fonts/helvetiker_regular.typeface.js"></script>
+        
+		<script>
+
+            var audio = document.createElement( 'audio' );
+    		// audio.controls = true;
+            audio.src = 'files/obsidian.mp3';
+            audio.style.position = 'absolute';
+            document.body.appendChild( audio );
+            
+            var json = {"metadata":{"version":1},"timeline":[[0,0,247.09375,"WebGLRendererModule",{"width":1280,"height":720,"dom":null}],[4,0,4.3125,"FadeInModule",{"color":12312063,"opacity":0.9}],[2,0,14.052395209580844,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],[1,0,247.0625,"ClearModule",{}],[3,4.3125,3.949479594939186,"TextModule",{"text":"xplsv","startPosition":[0,0,20],"endPosition":[0,0,18]}],[3,10.304385479837494,3.7523245278354027,"TextModule",{"text":"presents","startPosition":[0,0,20],"endPosition":[0,0,18]}],[4,13.10237494155758,0.10686839210705572,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.222523546148029,0.09801491711812256,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.33381867574956,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.524806843061466,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.647662866830075,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.820206681001373,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.93287025565171,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[2,14.052395209580844,13.989895209580844,"Scene2Module",{"startPosition":[-20,-20,30],"endPosition":[0,0,2030],"startPositionTarget":[-50,0,0],"endPositionTarget":[25,0,2000]}],[2,28.042290419161688,13.802395209580844,"Scene2bModule",{"startPosition":[400,0,-100],"endPosition":[50,0,2100],"startPositionTarget":[0,0,0],"endPositionTarget":[0,0,2000]}],[2,41.84468562874253,13.802395209580844,"Scene2Module",{"startPosition":[50,-50,300],"endPosition":[-50,-25,1700],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],[2,55.647080838323376,13.802395209580844,"Scene2bModule",{"startPosition":[50,0,100],"endPosition":[150,0,2100],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],[2,69.44947604790423,14.043549989267179,"Scene2Module",{"startPosition":[-100,-100,1100],"endPosition":[-50,0,2100],"startPositionTarget":[0,0,500],"endPositionTarget":[0,0,2000]}],[4,82.27357633279475,1.220062600969306,"FadeInModule",{"color":12312063,"opacity":0.9}],[2,83.49302603717142,27.964287014958565,"Scene3Module",{"startPosition":[-600,0,0],"endPosition":[-600,0,0]}],[3,83.4942100076729,3.50356830892993,"TextModule",{"text":"coding / mr.doob x three.js","startPosition":[0,0,40],"endPosition":[0,0,50]}],[3,87.04752956038395,3.3543145775866465,"TextModule",{"text":"music / om unit x lorn","startPosition":[0,0,40],"endPosition":[0,0,50]}],[3,90.45159538175169,3.4289414432582883,"TextModule",{"text":"graphics / trace","startPosition":[0,0,40],"endPosition":[0,0,50]}],[3,93.93028806879107,3.478692687039383,"TextModule",{"text":"for euskal 2013","startPosition":[0,0,40],"endPosition":[0,0,50]}],[3,97.40898075583046,14.044730422888431,"TextModule",{"text":"OBSIDIAN","color":16711714,"startPosition":[0,0,15],"endPosition":[0,0,20]}],[2,111.45731305212999,13.870537014958565,"Scene4Module",{"startPosition":[0,0,200],"endPosition":[0,0,700]}],[2,125.32785006708855,13.870537014958565,"Scene4Module",{"startPosition":[0,50,50],"endPosition":[300,-100,600]}],[2,139.1983870820471,13.870537014958565,"Scene5Module",{"startPosition":[50,-500,500],"endPosition":[0,50,1500]}],[2,153.06892409700566,13.870537014958565,"Scene6bModule",{"startPosition":[700,30,-500],"endPosition":[200,-100,1800]}],[2,166.93946111196422,13.870537014958565,"Scene6Module",{"startPosition":[100,0,300],"endPosition":[-1000,0,2200]}],[2,180.81446111196422,55.745537014958565,"Scene7Module",{"startPosition":[0,0,50],"endPosition":[0,50,2000],"startPositionTarget":[0,0,0],"endPositionTarget":[0,500,0]}]],"curves":[]};
+
+			var timeline = new FRAME.Timeline();
+            
+            var modules = {};
+
+    		for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
+
+				var data = json.timeline[ i ];
+
+				var layer = data[ 0 ];
+				var start = data[ 1 ];
+				var duration = data[ 2 ];
+				var moduleName = data[ 3 ];
+				var parameters = data[ 4 ];
+
+				if ( window[ moduleName ] === undefined ) {
+
+					console.log( 'FRAME: Missing module: ' + moduleName );
+					continue;
+
+				}
+
+                var module;
+
+                if ( modules[ moduleName ] === undefined ) {
+
+    				module = new window[ moduleName ];
+                    module.name = moduleName;
+                    
+                    modules[ moduleName ] = module;
+                    
+                } else {
+                    
+                    module = modules[ moduleName ];
+                    
+                }
+
+				for ( var key in parameters ) {
+
+					if ( module.parameters.input[ key ] === undefined ) {
+
+						console.log( 'FRAME: [' + moduleName + '] doesn\'t support "' + key + '" as input parameter' );
+                        delete parameters[ key ];
+						continue;
+
+					}
+
+				}
+                
+                if ( parameters.dom !== undefined ) {
+                
+                	parameters.dom = document.body;
+                
+                }
+        
+				var element = new FRAME.TimelineElement( moduleName, layer, start, duration, module, parameters );
+
+                timeline.add( element );
+
+			}
+
+			var animate = function () {
+
+				requestAnimationFrame( animate );
+				timeline.update( audio.currentTime );
+
+			};
+
+            var info = document.createElement( 'div' );
+            info.style.position = 'absolute';
+            info.style.top = '160px';
+            info.style.fontSize = '36px';
+            info.style.textAlign = 'center';
+            info.style.width = '100%'
+            info.innerHTML = '"obsidian" by xplsv<hr />'
+            document.body.appendChild( info );
+
+            var start = function () {
+
+                info.style.display = 'none';
+                                
+                setTimeout( function () {
+                
+                    audio.play();
+        			animate();
+                    
+                }, 2000 );
+                
+            };
+
+            var normal = document.createElement( 'span' );
+            normal.textContent = 'window';
+            normal.style.color = '#ff0022';
+            normal.style.cursor = 'pointer';
+            normal.style.margin = '20px';
+            normal.addEventListener( 'click', function ( event ) {
+
+                start();
+                
+            } );
+            info.appendChild( normal );
+
+            var fullscreen = document.createElement( 'span' );
+            fullscreen.textContent = 'fullscreen';
+            fullscreen.style.color = '#4488ff';
+            fullscreen.style.cursor = 'pointer';
+            fullscreen.style.margin = '20px';
+            fullscreen.addEventListener( 'click', function ( event ) {
+
+                document.body.style.cursor = 'none';
+                document.body.webkitRequestFullScreen();
+                
+                start();
+                
+            } );
+            info.appendChild( fullscreen );
+
+		</script>
+	</body>
+</html>
