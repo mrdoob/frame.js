@@ -2,7 +2,7 @@ var FRAME = ( function () {
 
 	return {
 
-		VERSION: 1,
+		VERSION: 1.1,
 
 		Module: function () {
 
@@ -11,9 +11,9 @@ var FRAME = ( function () {
 
             this.init = function ( callback ) {};
 			this.load = function ( callback ) {};
-			this.start = function ( value ) {};
-			this.end = function ( value ) {};
-			this.update = function ( value ) {};
+			this.start = function ( delta, moduleTime, totalTime, parameters ) {};
+			this.end = function ( delta, moduleTime, totalTime ) {};
+			this.update = function ( delta, moduleTime, totalTime ) {};
 
 		},
 
@@ -77,7 +77,7 @@ var FRAME = ( function () {
 						if ( ( element.start + element.duration ) > time ) {
 
 							active.push( element );
-							element.module.start( ( time - element.start ) / element.duration, element.parameters );
+							element.module.start( ( time - element.start ) / element.duration, time - element.start, time , element.parameters );
 
 						}
 
@@ -96,7 +96,7 @@ var FRAME = ( function () {
 						if ( ( element.start + element.duration ) < time ) {
 
 							active.splice( i, 1 );
-							element.module.end( ( time - element.start ) / element.duration );
+							element.module.end( ( time - element.start ) / element.duration, time - element.start, time );
 							continue;
 
 						}
@@ -112,7 +112,7 @@ var FRAME = ( function () {
 					for ( var i = 0, l = active.length; i < l; i ++ ) {
 
 						var element = active[ i ];
-						element.module.update( ( time - element.start ) / element.duration );
+						element.module.update( ( time - element.start ) / element.duration, time - element.start, time );
 
 					}
 
