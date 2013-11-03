@@ -277,9 +277,9 @@ var Timeline = function ( editor ) {
 	} );
 
 	// signals
-	
 
 	var blocks = {};
+	var selected = null;
 
 	signals.elementAdded.add( function ( element ) {
 
@@ -289,14 +289,18 @@ var Timeline = function ( editor ) {
 		blocks[ element.id ] = block;
 
 	} );
+	
+	signals.elementSelected.add( function ( element ) {
 
-	signals.elementRemoved.add( function ( element ) {
-	
-			var block = blocks[ element.id ];
-			grid.removeChild( block.dom )
+		if ( blocks[ selected ] !== undefined ) {
 			
-			delete blocks[ element.id ];
-	
+			blocks[ selected ].deselect();
+			
+		}
+		
+		selected = element.id;
+		blocks[ selected ].select();
+
 	} );
 
 	signals.timeChanged.add( function ( value ) {
@@ -310,22 +314,14 @@ var Timeline = function ( editor ) {
 		currentTime.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
 
 	} );
-	
-	// elements handling
-	
-	var selected = null;
-	
-	signals.elementSelected.add( function ( element ) {
 
-		if ( blocks[ selected ] !== undefined ) {
+	signals.elementRemoved.add( function ( element ) {
+	
+			var block = blocks[ element.id ];
+			grid.removeChild( block.dom )
 			
-			blocks[ selected ].deselect();
-			
-		}
-		
-		selected = element.id;
-		blocks[ selected ].select();
-
+			delete blocks[ element.id ];
+	
 	} );
 
 	return container;
