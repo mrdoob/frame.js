@@ -14,46 +14,46 @@ Menubar.Edit = function ( editor ) {
 	var options = new UI.Panel();
 	options.setClass( 'options' );
 	container.add( options );
-    
-    // clone
-    
-    var option = new UI.Panel();
-    option.setClass( 'option' );
+	
+	// clone
+	
+	var option = new UI.Panel();
+	option.setClass( 'option' );
 	option.setTextContent( 'Clone' );
 	option.onClick( function () {
-    
-        if ( editor.selected === null ) return;
+	
+		if ( editor.selected === null ) return;
 
-        var selected = editor.selected;
-        
-        var element = new FRAME.TimelineElement(
-            selected.name,
-            selected.layer,
-            selected.start,
-            selected.duration,
-            selected.module,
-            JSON.parse( JSON.stringify( selected.parameters ) )
-        );
-        element.start += element.duration;
+		var selected = editor.selected;
+		
+		var element = new FRAME.TimelineElement(
+			selected.name,
+			selected.layer,
+			selected.start,
+			selected.duration,
+			selected.module,
+			JSON.parse( JSON.stringify( selected.parameters ) )
+		);
+		element.start += element.duration;
 
-        editor.add( element );
-        editor.select( element );
-    
+		editor.add( element );
+		editor.select( element );
+	
 	} );
 	options.add( option );
 
-    // remove
-    
-    var option = new UI.Panel();
-    option.setClass( 'option' );
-    option.setTextContent( 'Remove' );
+	// remove
+	
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Remove' );
 	option.onClick( function () {
-    
-        if ( editor.selected === null ) return;
+	
+		if ( editor.selected === null ) return;
 
-        editor.remove( editor.selected );
-        editor.select( null );
-    
+		editor.remove( editor.selected );
+		editor.select( null );
+	
 	} );
 	options.add( option );
 

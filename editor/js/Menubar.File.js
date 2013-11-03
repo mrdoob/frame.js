@@ -1,6 +1,6 @@
 Menubar.File = function ( editor ) {
 
-    var signals = editor.signals;
+	var signals = editor.signals;
 
 	var container = new UI.Panel();
 	container.setClass( 'menu' );
@@ -17,47 +17,47 @@ Menubar.File = function ( editor ) {
 	options.setClass( 'options' );
 	container.add( options );
 
-    // export
-    
-    var option = new UI.Panel();
+	// export
+	
+	var option = new UI.Panel();
 	option.setClass( 'option' );
 	option.setTextContent( 'Export' );
 	option.onClick( function () {
-    
-        var data = {
-            "metadata": {
+	
+		var data = {
+			"metadata": {
 				"version": 1
 			},
 
 			"timeline": [],
 
 			"curves": []
-        };
-        
-        var elements = editor.timeline.elements;
-        
-        for ( var i = 0, l = elements.length; i < l; i ++ ) {
-            
-            var element = elements[ i ];
-            
-            data.timeline.push( [
-                element.layer,
-                element.start,
-                element.duration,
-                element.module.name,
-                element.parameters
-            ] );
-            
-        }
-        
-        var output = JSON.stringify( data, null );
+		};
+		
+		var elements = editor.timeline.elements;
+		
+		for ( var i = 0, l = elements.length; i < l; i ++ ) {
+			
+			var element = elements[ i ];
+			
+			data.timeline.push( [
+				element.layer,
+				element.start,
+				element.duration,
+				element.module.name,
+				element.parameters
+			] );
+			
+		}
+		
+		var output = JSON.stringify( data, null );
 
 		var blob = new Blob( [ output ], { type: 'text/plain' } );
 		var objectURL = URL.createObjectURL( blob );
 
 		window.open( objectURL, '_blank' );
 		window.focus();
-    
+	
 	} );
 	options.add( option );
 

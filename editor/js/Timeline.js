@@ -1,6 +1,6 @@
 var Timeline = function ( editor ) {
 
-    var signals = editor.signals;
+	var signals = editor.signals;
 
 	var container = new UI.Panel();
 
@@ -62,22 +62,22 @@ var Timeline = function ( editor ) {
 	timeline.setWidth( 'calc( 100% - 300px )' );
 	timeline.setHeight( '100%' );
 	timeline.dom.style.overflow = 'auto'; // TODO: UIify.
-    timeline.dom.addEventListener( 'mousewheel', function ( event ) {
-    
-        scale = Math.max( 1, scale + ( event.wheelDeltaY / 10 ) );
-                
-        for ( var key in blocks ) {
-        
-            blocks[ key ].update();
-            
-        }
-    
-    } );
+	timeline.dom.addEventListener( 'mousewheel', function ( event ) {
+	
+		scale = Math.max( 1, scale + ( event.wheelDeltaY / 10 ) );
+				
+		for ( var key in blocks ) {
+		
+			blocks[ key ].update();
+			
+		}
+	
+	} );
 	container.add( timeline );
 
 	var marks = document.createElement( 'div' );
-    marks.style.position = 'absolute';
-    marks.style.width = '8192px';
+	marks.style.position = 'absolute';
+	marks.style.width = '8192px';
 	marks.style.height = '32px';
 	marks.style.background = 'url(' + ( function () {
 
@@ -92,26 +92,26 @@ var Timeline = function ( editor ) {
 		context.fillRect( Math.floor( scale / 4 ), 4, 1, 4 );
 		context.fillRect( Math.floor( scale / 4 ) * 2, 4, 1, 4 );
 		context.fillRect( Math.floor( scale / 4 ) * 3, 4, 1, 4 );
-        
+		
 		return canvas.toDataURL();
 
 	}() ) + ') repeat-x';
 	marks.style.backgroundPosition = 'bottom';
-    marks.addEventListener( 'click', function ( event ) {
+	marks.addEventListener( 'click', function ( event ) {
 
-        signals.setTime.dispatch( event.offsetX / scale );
-    
-    }, false );
-    marks.addEventListener( 'mousedown', function ( event ) {
+		signals.setTime.dispatch( event.offsetX / scale );
+	
+	}, false );
+	marks.addEventListener( 'mousedown', function ( event ) {
 
-    	var onMouseMove = function ( event ) {
-            
+		var onMouseMove = function ( event ) {
+			
 			signals.setTime.dispatch( event.offsetX / scale );
 
 		};
 
 		var onMouseUp = function ( event ) {
-            
+			
 			marks.removeEventListener( 'mousemove', onMouseMove );
 			document.removeEventListener( 'mouseup', onMouseUp );
 
@@ -161,31 +161,31 @@ var Timeline = function ( editor ) {
 		var context = canvas.getContext( '2d' );
 		context.fillStyle = '#f00';
 		context.fillRect( 8, 0, 1, 1 );
-        
+		
 		return canvas.toDataURL();
 
 	}() ) + ')';
 	timeline.dom.appendChild( time );
 
 	var Block = ( function ( element ) {
-        
-        var scope = this;
+		
+		var scope = this;
 
 		var dom = document.createElement( 'div' );
 		dom.className = 'block';
 		dom.style.position = 'absolute';
 		dom.innerHTML = '<div class="name">' + element.name + '</div>';
 
-        var onMouseDown = function ( event ) {
+		var onMouseDown = function ( event ) {
 
-            var MODES = { 'MOVE': 0, 'RESIZE': 1 };
-            var mode = MODES.MOVE;
-            
-            if ( event.offsetX > this.offsetWidth - 5 ) {
-                
-                mode = MODES.RESIZE;
-                
-            }
+			var MODES = { 'MOVE': 0, 'RESIZE': 1 };
+			var mode = MODES.MOVE;
+			
+			if ( event.offsetX > this.offsetWidth - 5 ) {
+				
+				mode = MODES.RESIZE;
+				
+			}
 
 			/*
 			var onMouseDownLeft = dom.offsetLeft;
@@ -194,44 +194,44 @@ var Timeline = function ( editor ) {
 			var onMouseDownX = event.clientX;
 			var onMouseDownY = event.clientY;
 			*/
-            
-            var movementX = 0;
-            var movementY = 0;
+			
+			var movementX = 0;
+			var movementY = 0;
 
 			var onMouseMove = function ( event ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 				// movementY = event.movementY | event.webkitMovementY | event.mozMovementY | 0;
 
-                switch ( mode ) {
-                    
-                    case MODES.MOVE:
-        
-        				element.start += movementX / scale;
-                
-                        break;
-                        
-                    case MODES.RESIZE:
-        
-        				element.duration += movementX / scale;
-                        
-                        break;
-                    
-                }
-                
-                update();
+				switch ( mode ) {
+					
+					case MODES.MOVE:
+		
+						element.start += movementX / scale;
+				
+						break;
+						
+					case MODES.RESIZE:
+		
+						element.duration += movementX / scale;
+						
+						break;
+					
+				}
+				
+				update();
 
 				signals.timelineElementChanged.dispatch( element );
 
 			};
 
 			var onMouseUp = function ( event ) {
-                
-                if ( Math.abs( movementX ) < 2 ) {
-                    
-                    editor.select( element )
-                    
-                }
+				
+				if ( Math.abs( movementX ) < 2 ) {
+					
+					editor.select( element )
+					
+				}
 
 				document.removeEventListener( 'mousemove', onMouseMove );
 				document.removeEventListener( 'mouseup', onMouseUp );
@@ -242,62 +242,62 @@ var Timeline = function ( editor ) {
 			document.addEventListener( 'mouseup', onMouseUp, false );
 
 		};
-        
-        dom.addEventListener( 'mousedown', onMouseDown, false );
-        
-        var update = function () {
-            
-            dom.style.left = ( element.start * scale ) + 'px';
-        	dom.style.top = ( element.layer * 32 ) + 'px';
-    		dom.style.width = ( element.duration * scale - 2 ) + 'px';
-        	dom.style.height = '30px';
+		
+		dom.addEventListener( 'mousedown', onMouseDown, false );
+		
+		var update = function () {
+			
+			dom.style.left = ( element.start * scale ) + 'px';
+			dom.style.top = ( element.layer * 32 ) + 'px';
+			dom.style.width = ( element.duration * scale - 2 ) + 'px';
+			dom.style.height = '30px';
 
-        };
+		};
 
-        update();
+		update();
 
 		this.dom = dom;
-        
-        this.select = function () {
-          
-            dom.className = 'block selected';
-            
-        };
-        
-        this.deselect = function () {
+		
+		this.select = function () {
+		  
+			dom.className = 'block selected';
+			
+		};
+		
+		this.deselect = function () {
 
-            dom.className = 'block';
-            
-        };
-        
-        this.update = update;
+			dom.className = 'block';
+			
+		};
+		
+		this.update = update;
 
 		return this;
 
 	} );
 
 	// signals
-    
+	
 
-    var blocks = {};
+	var blocks = {};
 
 	signals.elementAdded.add( function ( element ) {
 
 		var block = new Block( element );
 		grid.appendChild( block.dom );
-        
-        blocks[ element.id ] = block;
+		
+		blocks[ element.id ] = block;
 
 	} );
 
-    signals.elementRemoved.add( function ( element ) {
-    
-            var block = blocks[ element.id ];
-            grid.removeChild( block.dom )
-            
-            delete blocks[ element.id ];
-    
-    } );
+	signals.elementRemoved.add( function ( element ) {
+	
+			var block = blocks[ element.id ];
+			grid.removeChild( block.dom )
+			
+			delete blocks[ element.id ];
+	
+	} );
 
 	signals.timeChanged.add( function ( value ) {
 
@@ -310,21 +310,21 @@ var Timeline = function ( editor ) {
 		currentTime.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
 
 	} );
-    
-    // elements handling
-    
-    var selected = null;
-    
-    signals.elementSelected.add( function ( element ) {
+	
+	// elements handling
+	
+	var selected = null;
+	
+	signals.elementSelected.add( function ( element ) {
 
-        if ( blocks[ selected ] !== undefined ) {
-            
-            blocks[ selected ].deselect();
-            
-        }
-        
-        selected = element.id;
-        blocks[ selected ].select();
+		if ( blocks[ selected ] !== undefined ) {
+			
+			blocks[ selected ].deselect();
+			
+		}
+		
+		selected = element.id;
+		blocks[ selected ].select();
 
 	} );
 

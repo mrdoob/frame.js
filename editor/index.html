@@ -10,7 +10,7 @@
 		<script src="js/libs/signals.min.js"></script>
 		<script src="js/libs/ui.js"></script>
 
-        <script src="js/Editor.js"></script>
+		<script src="js/Editor.js"></script>
 		<script src="js/Menubar.js"></script>
 		<script src="js/Menubar.File.js"></script>
 		<script src="js/Menubar.Edit.js"></script>
@@ -26,33 +26,33 @@
 		<script src="../examples/obsidian/js/libs/raf.min.js"></script>
 		<script src="../examples/obsidian/js/libs/three.min.js"></script>
 
-        <script src="../examples/obsidian/js/modules/WebGLRendererModule.js"></script>
+		<script src="../examples/obsidian/js/modules/WebGLRendererModule.js"></script>
 		<script src="../examples/obsidian/js/modules/ClearModule.js"></script>
 		<script src="../examples/obsidian/js/modules/FadeInModule.js"></script>
-    	<script src="../examples/obsidian/js/modules/FadeOutModule.js"></script>
-        
-        <script src="../examples/obsidian/js/modules/TextModule.js"></script>
-        <script src="../examples/obsidian/js/modules/SceneModule.js"></script>
-        <script src="../examples/obsidian/js/modules/Scene2Module.js"></script>
-        <script src="../examples/obsidian/js/modules/Scene2bModule.js"></script>
-        <script src="../examples/obsidian/js/modules/Scene3Module.js"></script>
-        <script src="../examples/obsidian/js/modules/Scene4Module.js"></script>
-        <script src="../examples/obsidian/js/modules/Scene5Module.js"></script>
-        <script src="../examples/obsidian/js/modules/Scene6Module.js"></script>
-        <script src="../examples/obsidian/js/modules/Scene6bModule.js"></script>
-        <script src="../examples/obsidian/js/modules/Scene7Module.js"></script>
+		<script src="../examples/obsidian/js/modules/FadeOutModule.js"></script>
+		
+		<script src="../examples/obsidian/js/modules/TextModule.js"></script>
+		<script src="../examples/obsidian/js/modules/SceneModule.js"></script>
+		<script src="../examples/obsidian/js/modules/Scene2Module.js"></script>
+		<script src="../examples/obsidian/js/modules/Scene2bModule.js"></script>
+		<script src="../examples/obsidian/js/modules/Scene3Module.js"></script>
+		<script src="../examples/obsidian/js/modules/Scene4Module.js"></script>
+		<script src="../examples/obsidian/js/modules/Scene5Module.js"></script>
+		<script src="../examples/obsidian/js/modules/Scene6Module.js"></script>
+		<script src="../examples/obsidian/js/modules/Scene6bModule.js"></script>
+		<script src="../examples/obsidian/js/modules/Scene7Module.js"></script>
 
-        <script src="../examples/obsidian/files/fonts/helvetiker_regular.typeface.js"></script>
+		<script src="../examples/obsidian/files/fonts/helvetiker_regular.typeface.js"></script>
 
 		<script>
 
-            var editor = new Editor();
-            var signals = editor.signals;
+			var editor = new Editor();
+			var signals = editor.signals;
 
 			var properties = new Properties( editor ).setId( 'properties' );
 			document.body.appendChild( properties.dom );
 
-    		var viewport = new Viewport( editor ).setId( 'viewport' );
+			var viewport = new Viewport( editor ).setId( 'viewport' );
 			document.body.appendChild( viewport.dom );
 
 			var timeline = new Timeline( editor ).setId( 'timeline' );
@@ -62,8 +62,8 @@
 			document.body.appendChild( menubar.dom );
 
 			//
-            
-            /*
+			
+			/*
 			var json = {
 				"metadata": {
 					"version": 1
@@ -90,15 +90,15 @@
 				"curves": [
 				]
 			};
-            */
-            
-            /*
-            var json = {"metadata":{"version":1},"timeline":[[0,0,70,"WebGLRendererModule",{"width":1280,"height":720,"dom":null}],[1,0,70,"ClearModule",{}],[4,0,4.3125,"FadeInModule",{"color":16777215}],[2,0,14,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],[3,4.3125,9.6875,"TextModule",{"text":"xplsv","startPosition":[0,0,20],"endPosition":[0,0,18]}],[4,14,14,"FadeInModule",{"color":16777215}]],"curves":[]};
-            */
-            
-            var json = {"metadata":{"version":1},"timeline":[[0,0,247.09375,"WebGLRendererModule",{"width":1280,"height":720,"dom":null}],[4,0,4.3125,"FadeInModule",{"color":12312063,"opacity":0.9}],[2,0,14.052395209580844,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],[1,0,247.0625,"ClearModule",{}],[3,4.3125,3.949479594939186,"TextModule",{"text":"xplsv","startPosition":[0,0,18],"endPosition":[0,0,15]}],[3,10.304385479837494,3.7523245278354027,"TextModule",{"text":"presents","startPosition":[0,0,18],"endPosition":[0,0,15]}],[4,13.10237494155758,0.10686839210705572,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.222523546148029,0.09801491711812256,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.33381867574956,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.524806843061466,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.647662866830075,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.820206681001373,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.93287025565171,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[2,14.052395209580844,13.989895209580844,"Scene2Module",{"startPosition":[-20,-20,30],"endPosition":[0,0,2030],"startPositionTarget":[-50,0,0],"endPositionTarget":[25,0,2000]}],[2,28.042290419161688,13.802395209580844,"Scene2bModule",{"startPosition":[400,0,-100],"endPosition":[50,0,2100],"startPositionTarget":[0,0,0],"endPositionTarget":[0,0,2000]}],[2,41.84468562874253,13.802395209580844,"Scene2Module",{"startPosition":[50,-50,300],"endPosition":[-50,-25,1700],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],[2,55.647080838323376,13.802395209580844,"Scene2bModule",{"startPosition":[50,0,100],"endPosition":[150,0,2100],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],[2,69.44947604790423,14.043549989267179,"Scene2Module",{"startPosition":[-100,-100,1100],"endPosition":[-50,0,2100],"startPositionTarget":[0,0,500],"endPositionTarget":[0,0,2000]}],[4,82.27357633279475,1.220062600969306,"FadeInModule",{"color":12312063,"opacity":0.9}],[2,83.49302603717142,27.964287014958565,"Scene3Module",{"startPosition":[-600,0,0],"endPosition":[-600,0,0]}],[3,83.4942100076729,3.50356830892993,"TextModule",{"text":"coding / mr.doob x three.js","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,87.04752956038395,3.3543145775866465,"TextModule",{"text":"direction / trace","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,90.45159538175169,3.4289414432582883,"TextModule",{"text":"music / om unit x lorn","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,93.93028806879107,3.478692687039383,"TextModule",{"text":"for euskal 2013","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,97.40898075583046,14.044730422888431,"TextModule",{"text":"OBSIDIAN","startPosition":[0,0,20],"endPosition":[0,0,7]}],[2,111.45731305212999,13.870537014958565,"Scene4Module",{"startPosition":[0,0,200],"endPosition":[0,0,700]}],[2,125.32785006708855,13.870537014958565,"Scene4Module",{"startPosition":[0,50,50],"endPosition":[300,-100,600]}],[2,139.1983870820471,13.870537014958565,"Scene5Module",{"startPosition":[50,-500,500],"endPosition":[0,50,1500]}],[2,153.06892409700566,13.870537014958565,"Scene6bModule",{"startPosition":[700,30,-500],"endPosition":[200,-100,1800]}],[2,166.93946111196422,13.870537014958565,"Scene6Module",{"startPosition":[100,0,300],"endPosition":[-1000,0,2200]}],[2,180.81446111196422,55.745537014958565,"Scene7Module",{"startPosition":[0,0,50],"endPosition":[0,50,2000],"startPositionTarget":[0,0,0],"endPositionTarget":[0,500,0]}]],"curves":[]};
+			*/
+			
+			/*
+			var json = {"metadata":{"version":1},"timeline":[[0,0,70,"WebGLRendererModule",{"width":1280,"height":720,"dom":null}],[1,0,70,"ClearModule",{}],[4,0,4.3125,"FadeInModule",{"color":16777215}],[2,0,14,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],[3,4.3125,9.6875,"TextModule",{"text":"xplsv","startPosition":[0,0,20],"endPosition":[0,0,18]}],[4,14,14,"FadeInModule",{"color":16777215}]],"curves":[]};
+			*/
+			
+			var json = {"metadata":{"version":1},"timeline":[[0,0,247.09375,"WebGLRendererModule",{"width":1280,"height":720,"dom":null}],[4,0,4.3125,"FadeInModule",{"color":12312063,"opacity":0.9}],[2,0,14.052395209580844,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],[1,0,247.0625,"ClearModule",{}],[3,4.3125,3.949479594939186,"TextModule",{"text":"xplsv","startPosition":[0,0,18],"endPosition":[0,0,15]}],[3,10.304385479837494,3.7523245278354027,"TextModule",{"text":"presents","startPosition":[0,0,18],"endPosition":[0,0,15]}],[4,13.10237494155758,0.10686839210705572,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.222523546148029,0.09801491711812256,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.33381867574956,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.524806843061466,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.647662866830075,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.820206681001373,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[4,13.93287025565171,0.12014860459045545,"FadeInModule",{"color":12312063,"opacity":0.75}],[2,14.052395209580844,13.989895209580844,"Scene2Module",{"startPosition":[-20,-20,30],"endPosition":[0,0,2030],"startPositionTarget":[-50,0,0],"endPositionTarget":[25,0,2000]}],[2,28.042290419161688,13.802395209580844,"Scene2bModule",{"startPosition":[400,0,-100],"endPosition":[50,0,2100],"startPositionTarget":[0,0,0],"endPositionTarget":[0,0,2000]}],[2,41.84468562874253,13.802395209580844,"Scene2Module",{"startPosition":[50,-50,300],"endPosition":[-50,-25,1700],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],[2,55.647080838323376,13.802395209580844,"Scene2bModule",{"startPosition":[50,0,100],"endPosition":[150,0,2100],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],[2,69.44947604790423,14.043549989267179,"Scene2Module",{"startPosition":[-100,-100,1100],"endPosition":[-50,0,2100],"startPositionTarget":[0,0,500],"endPositionTarget":[0,0,2000]}],[4,82.27357633279475,1.220062600969306,"FadeInModule",{"color":12312063,"opacity":0.9}],[2,83.49302603717142,27.964287014958565,"Scene3Module",{"startPosition":[-600,0,0],"endPosition":[-600,0,0]}],[3,83.4942100076729,3.50356830892993,"TextModule",{"text":"coding / mr.doob x three.js","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,87.04752956038395,3.3543145775866465,"TextModule",{"text":"direction / trace","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,90.45159538175169,3.4289414432582883,"TextModule",{"text":"music / om unit x lorn","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,93.93028806879107,3.478692687039383,"TextModule",{"text":"for euskal 2013","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,97.40898075583046,14.044730422888431,"TextModule",{"text":"OBSIDIAN","startPosition":[0,0,20],"endPosition":[0,0,7]}],[2,111.45731305212999,13.870537014958565,"Scene4Module",{"startPosition":[0,0,200],"endPosition":[0,0,700]}],[2,125.32785006708855,13.870537014958565,"Scene4Module",{"startPosition":[0,50,50],"endPosition":[300,-100,600]}],[2,139.1983870820471,13.870537014958565,"Scene5Module",{"startPosition":[50,-500,500],"endPosition":[0,50,1500]}],[2,153.06892409700566,13.870537014958565,"Scene6bModule",{"startPosition":[700,30,-500],"endPosition":[200,-100,1800]}],[2,166.93946111196422,13.870537014958565,"Scene6Module",{"startPosition":[100,0,300],"endPosition":[-1000,0,2200]}],[2,180.81446111196422,55.745537014958565,"Scene7Module",{"startPosition":[0,0,50],"endPosition":[0,50,2000],"startPositionTarget":[0,0,0],"endPositionTarget":[0,500,0]}]],"curves":[]};
 
-            var modules = {};
+			var modules = {};
 
 			for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
 
@@ -117,42 +117,42 @@
 
 				}
 
-                var module;
+				var module;
 
-                if ( modules[ moduleName ] === undefined ) {
+				if ( modules[ moduleName ] === undefined ) {
 
-    				module = new window[ moduleName ];
-                    module.name = moduleName;
-                    
-                    modules[ moduleName ] = module;
-                    
-                } else {
-                    
-                    module = modules[ moduleName ];
-                    
-                }
+					module = new window[ moduleName ];
+					module.name = moduleName;
+					
+					modules[ moduleName ] = module;
+					
+				} else {
+					
+					module = modules[ moduleName ];
+					
+				}
 
 				for ( var key in parameters ) {
 
 					if ( module.parameters.input[ key ] === undefined ) {
 
 						console.log( 'FRAME: [' + moduleName + '] doesn\'t support "' + key + '" as input parameter' );
-                        delete parameters[ key ];
+						delete parameters[ key ];
 						continue;
 
 					}
 
 				}
-                
-                if ( parameters.dom !== undefined ) {
-                
-                	parameters.dom = editor.dom;
-                
-                }
-        
+				
+				if ( parameters.dom !== undefined ) {
+				
+					parameters.dom = editor.dom;
+				
+				}
+		
 				var element = new FRAME.TimelineElement( moduleName, layer, start, duration, module, parameters );
 
-                editor.add( element );
+				editor.add( element );
 
 			}
 
@@ -162,8 +162,8 @@
 			var time = 0, playing = false;
 
 			var audio = document.createElement( 'audio' );
-    		audio.src = '../examples/obsidian/files/obsidian.ogg';
-            document.body.appendChild( audio );
+			audio.src = '../examples/obsidian/files/obsidian.ogg';
+			document.body.appendChild( audio );
 
 			signals.play.add( function () {
 
@@ -189,16 +189,16 @@
 				signals.setTime.dispatch( time + 1 );
 
 			} );
-            
-            signals.decelerate.add( function () {
+			
+			signals.decelerate.add( function () {
 
-                audio.playbackRate -= 0.1;
+				audio.playbackRate -= 0.1;
 
 			} );
-            
-            signals.accelerate.add( function () {
+			
+			signals.accelerate.add( function () {
 
-                audio.playbackRate += 0.1;
+				audio.playbackRate += 0.1;
 
 			} );
 
@@ -207,38 +207,38 @@
 				time = Math.max( 0, value );
 				signals.timeChanged.dispatch( time );
 				if ( audio.duration > 0 ) audio.currentTime = value;
-                
-                location.hash = audio.currentTime;
+				
+				location.hash = audio.currentTime;
 
 			} );
-            
-            var hash = location.hash .substr( 1 );
-            
-            if ( hash !== '' ) {
-                
-                signals.setTime.dispatch( hash );
-                
-            }
+			
+			var hash = location.hash .substr( 1 );
+			
+			if ( hash !== '' ) {
+				
+				signals.setTime.dispatch( hash );
+				
+			}
 
 			document.addEventListener( 'keydown', function ( event ) {
 
 				switch ( event.keyCode ) {
 
 					case 27: // 9:
-                        
+						
 						if ( fullscreen === false ) {
-                            // viewport.dom.webkitRequestFullScreen();
-                            viewport.setLeft( '0px' );
-                            viewport.setRight( '0px' );
-                            viewport.setTop( '0px' );
-                            viewport.setBottom( '0px' );
+							// viewport.dom.webkitRequestFullScreen();
+							viewport.setLeft( '0px' );
+							viewport.setRight( '0px' );
+							viewport.setTop( '0px' );
+							viewport.setBottom( '0px' );
 							fullscreen = true;
 						} else {
-                            // document.webkitCancelFullScreen();
-                            viewport.setLeft( '300px' );
-                            viewport.setRight( '0px' );
-                            viewport.setTop( '32px' );
-                            viewport.setBottom( '240px' );
+							// document.webkitCancelFullScreen();
+							viewport.setLeft( '300px' );
+							viewport.setRight( '0px' );
+							viewport.setTop( '32px' );
+							viewport.setBottom( '240px' );
 							fullscreen = false;
 						}
 						break;
@@ -246,19 +246,19 @@
 						signals.play.dispatch();
 						break;
 					case 37:
-                        event.preventDefault();
+						event.preventDefault();
 						signals.setTime.dispatch( time - 1 );
 						break;
 					case 39:
-                        event.preventDefault();
-                        signals.setTime.dispatch( time + 1 );
+						event.preventDefault();
+						signals.setTime.dispatch( time + 1 );
 						break;
 					case 38:
-                        event.preventDefault();
-                        signals.accelerate.dispatch();
+						event.preventDefault();
+						signals.accelerate.dispatch();
 						break;
-        			case 40:
-                        event.preventDefault();
+					case 40:
+						event.preventDefault();
 						signals.decelerate.dispatch();
 						break;
 

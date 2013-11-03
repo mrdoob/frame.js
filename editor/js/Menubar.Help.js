@@ -1,6 +1,6 @@
 Menubar.Help = function ( editor ) {
 
-    var signals = editor.signals;
+	var signals = editor.signals;
 
 	var container = new UI.Panel();
 	container.setClass( 'menu' );
