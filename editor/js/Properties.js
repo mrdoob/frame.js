@@ -56,7 +56,6 @@ var Properties = function ( editor ) {
 						.setWidth( '50px' )
 						.onChange( function () {
 
-							console.log(element.parameters[ key ],this.getValue());
 							element.parameters[ key ][0] = this.getValue();
 							signals.timelineElementChanged.dispatch( element );
 
@@ -82,7 +81,6 @@ var Properties = function ( editor ) {
 						.setWidth( '50px' )
 						.onChange( function () {
 
-							console.log(element.parameters[ key ],this.getValue());
 							element.parameters[ key ][0] = this.getValue();
 							signals.timelineElementChanged.dispatch( element );
 
