@@ -12,7 +12,7 @@ var Properties = function ( editor ) {
 
 		container.clear();
 
-		var parameters = element.parameters;
+		var parameters = element.module.parameters.input;
 
 		for ( var key in parameters ) {
 
@@ -21,43 +21,67 @@ var Properties = function ( editor ) {
 			var parameterRow = new UI.Panel();
 			parameterRow.add( new UI.Text( key ).setWidth( '90px' ) );
 
-			switch ( typeof( parameter ) ) {
+			( function ( key ) {
 
-				case 'number':
+				if ( parameter instanceof FRAME.ModuleParameter.Integer ) {
 
-					parameterRow.add(
+					var parameterValue = new UI.Integer()
+						.setValue( element.parameters[ key ] )
+						.setWidth( '150px' )
+						.onChange( function () {
 
-						new UI.Number()
-							.setValue( parameter )
-							.setWidth( '150px' )
-							.onChange( function () {
+							element.parameters[ key ] = this.getValue();
+							signals.timelineElementChanged.dispatch( element );
 
-								element.parameters[ key ] = this.getValue();
+						} );
 
-							} )
+					parameterRow.add( parameterValue );
 
-					);
+				} else if ( parameter instanceof FRAME.ModuleParameter.Float ) {
 
-					break;
+					var parameterValue = new UI.Number()
+						.setValue( element.parameters[ key ] )
+						.setWidth( '150px' )
+						.onChange( function () {
 
-				case 'string':
+							element.parameters[ key ] = this.getValue();
+							signals.timelineElementChanged.dispatch( element );
 
-					parameterRow.add(
+						} );
 
-						new UI.Input()
-							.setValue( parameter )
-							.setWidth( '150px' )
-							.onChange( function () {
+					parameterRow.add( parameterValue );
 
-								element.parameters[ key ] = this.getValue();
+				} else if ( parameter instanceof FRAME.ModuleParameter.String ) {
 
-							} )
+					var parameterValue = new UI.Input()
+						.setValue( element.parameters[ key ] )
+						.setWidth( '150px' )
+						.onKeyUp( function () {
 
-					);
+							element.parameters[ key ] = this.getValue();
+							signals.timelineElementChanged.dispatch( element );
 
-					break;
+						} );
 
-			}
+					parameterRow.add( parameterValue );
+
+				} else if ( parameter instanceof FRAME.ModuleParameter.Color ) {
+
+					var parameterValue = new UI.Color()
+						.setHexValue( element.parameters[ key ] )
+						.setWidth( '150px' )
+						.onChange( function () {
+
+							element.parameters[ key ] = this.getHexValue();
+							signals.timelineElementChanged.dispatch( element );
+
+						} );
+
+					parameterRow.add( parameterValue );
+
+				}
+
+			} )( key );
 
 			container.add( parameterRow );
 

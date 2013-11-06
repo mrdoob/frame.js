@@ -4,9 +4,9 @@ var TextModule = function () {
 
 	this.parameters.input = {
 
-		text: "empty",
-		startPosition: [0, 0, 20],
-		endPosition: [0, 0, 40]
+		text:          new FRAME.ModuleParameter.String( 'text' ),
+		startPosition: new FRAME.ModuleParameter.Vector3( 0, 0, 20 ),
+		endPosition:   new FRAME.ModuleParameter.Vector3( 0, 0, 40 )
 
 	};
 
@@ -29,6 +29,8 @@ var TextModule = function () {
 	var deltaPosition = new THREE.Vector3();
 
 	this.init = function ( parameters ) {
+
+		if ( texts[ parameters.text ] !== undefined ) return;
 
 		var string = parameters.text;
 		

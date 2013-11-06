@@ -2,7 +2,7 @@ var FRAME = ( function () {
 
 	return {
 
-		VERSION: 1,
+		VERSION: 2,
 
 		Module: function () {
 
@@ -14,6 +14,58 @@ var FRAME = ( function () {
 			this.start = function ( value ) {};
 			this.end = function ( value ) {};
 			this.update = function ( value ) {};
+
+		},
+
+		ModuleParameter: {
+
+			Boolean: function ( value ) {
+
+				this.value = value;
+
+			},
+
+			Color: function ( value ) {
+
+				this.value = value;
+
+			},
+
+			DOM: function ( value ) {
+
+				this.value = value;
+
+			},
+
+			Float: function ( value ) {
+
+				this.value = value;
+
+			},
+
+			Integer: function ( value ) {
+
+				this.value = value;
+
+			},
+
+			String: function ( value ) {
+
+				this.value = value;
+
+			},
+
+			Vector2: function ( x, y ) {
+
+				this.value = [ x, y ];
+
+			},
+
+			Vector3: function ( x, y, z ) {
+
+				this.value = [ x, y, z ];
+
+			}
 
 		},
 

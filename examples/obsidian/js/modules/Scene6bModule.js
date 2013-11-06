@@ -4,8 +4,8 @@ var Scene6bModule = function () {
 
 	this.parameters.input = {
 
-        startPosition: [0, 0, 0],
-        endPosition: [0, 0, 0]
+        startPosition: new FRAME.ModuleParameter.Vector3( 0, 0, 0 ),
+        endPosition:   new FRAME.ModuleParameter.Vector3( 0, 0, 0 )
 
 	};
 

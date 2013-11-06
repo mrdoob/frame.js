@@ -4,9 +4,9 @@ var WebGLRendererModule = function () {
 
 	this.parameters.input = {
 
-		width: 800,
-		height: 600,
-		dom: null
+		dom: 	new FRAME.ModuleParameter.DOM( null ),
+		width:  new FRAME.ModuleParameter.Integer( 800 ),
+		height: new FRAME.ModuleParameter.Integer( 600 )
 
 	};
 

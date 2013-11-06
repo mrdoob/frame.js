@@ -4,8 +4,8 @@ var FadeInModule = function () {
 
 	this.parameters.input = {
 
-		color: 0xffffff,
-        opacity: 1
+		color:   new FRAME.ModuleParameter.Color( 0xffffff ),
+		opacity: new FRAME.ModuleParameter.Float( 1 )
 
 	};
 

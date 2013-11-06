@@ -4,10 +4,10 @@ var Scene2Module = function () {
 
 	this.parameters.input = {
 
-        startPosition: [100, 100, 100],
-        endPosition: [-100, 100, 100],
-        startPositionTarget: [ 0, 0, 0 ],
-        endPositionTarget: [ 0, 0, 2000 ]
+        startPosition:       new FRAME.ModuleParameter.Vector3( 100, 100, 100 ),
+        endPosition:         new FRAME.ModuleParameter.Vector3( - 100, 100, 100 ),
+        startPositionTarget: new FRAME.ModuleParameter.Vector3( 0, 0, 0 ),
+        endPositionTarget:   new FRAME.ModuleParameter.Vector3( 0, 0, 2000 )
 
 	};
 
