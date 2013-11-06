@@ -33,14 +33,29 @@ button {
 	user-select: none;
 }
 
+input.Number {
+	color: #3A85C7;
+	font-size: 12px;							/** TODO: Use of !imporant is not ideal **/
+	background-color: transparent!important;	/* For now this is a quick fix a rendering issue due to inherited background */
+	border: 1px solid transparent;
+	padding: 2px;
+	cursor: col-resize;
+}
+
 #properties {
 	position: absolute;
 	top: 32px;
 	bottom: 30%;
 	left: 0px;
 	right: 300px;
+	padding: 8px;
+	color: #888;
 	background-color: #555;
 }
+
+	#properties .Panel {
+		margin-bottom: 10px;
+	}
 
 #viewport {
 	position: absolute;
