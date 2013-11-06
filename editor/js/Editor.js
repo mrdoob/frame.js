@@ -20,7 +20,6 @@ var Editor = function () {
 	};
 
 	this.timeline = new FRAME.Timeline();
-	this.dom = null;
 	
 	this.selected = null;
 

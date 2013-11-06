@@ -12,18 +12,39 @@ var WebGLRendererModule = function () {
 
 	this.init = function ( parameters ) {
 
+		var dom = document.createElement( 'div' );
+		dom.style.position = 'absolute';
+		dom.style.width = '100%';
+		dom.style.height = '100%';
+
 		renderer = new THREE.WebGLRenderer( { antialias: true, alpha: false } ); // TODO: Remove this nasty global
-		renderer.setSize( parameters.width, parameters.height );
 		renderer.autoClear = false;
+		renderer.domElement.style.position = 'absolute';
+		dom.appendChild( renderer.domElement );
 
-		renderer.domElement.style.maxWidth = '100%';
-		renderer.domElement.style.height = '100%';
+		var onWindowResize = function () {
 
+			var scale = dom.offsetWidth / parameters.width;
+
+			var width = parameters.width * scale;
+			var height = parameters.height * scale;
+
+			renderer.setSize( width, height );
+			renderer.domElement.style.top = ( dom.offsetHeight - height ) / 2 + 'px';
+
+		};
 
 		if ( parameters.dom !== null ) {
 
-			parameters.dom.appendChild( renderer.domElement );
-            parameters.dom = null; // TODO: Another hack
+			parameters.dom.appendChild( dom );
+			parameters.dom = null; // TODO: Another hack
+
+			//
+
+			window.addEventListener( 'resize', onWindowResize );
+
+			onWindowResize();
+
 		}
 
 	};

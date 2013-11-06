@@ -146,7 +146,7 @@
 				
 				if ( parameters.dom !== undefined ) {
 				
-					parameters.dom = editor.dom;
+					parameters.dom = viewport.dom;
 				
 				}
 		
@@ -224,24 +224,6 @@
 
 				switch ( event.keyCode ) {
 
-					case 27: // 9:
-						
-						if ( fullscreen === false ) {
-							// viewport.dom.webkitRequestFullScreen();
-							viewport.setLeft( '0px' );
-							viewport.setRight( '0px' );
-							viewport.setTop( '0px' );
-							viewport.setBottom( '0px' );
-							fullscreen = true;
-						} else {
-							// document.webkitCancelFullScreen();
-							viewport.setLeft( '300px' );
-							viewport.setRight( '0px' );
-							viewport.setTop( '32px' );
-							viewport.setBottom( '240px' );
-							fullscreen = false;
-						}
-						break;
 					case 32:
 						signals.play.dispatch();
 						break;

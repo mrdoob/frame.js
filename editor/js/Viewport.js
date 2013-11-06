@@ -3,8 +3,6 @@ var Viewport = function ( editor ) {
 	var signals = editor.signals;
 
 	var container = new UI.Panel();
-	
-	editor.dom = container.dom;
 
 	var time = 0;
 	var timeline = editor.timeline;
