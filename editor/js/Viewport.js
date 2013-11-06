@@ -1,30 +1,24 @@
 var Viewport = function ( editor ) {
 
-	var signals = editor.signals;
-
 	var container = new UI.Panel();
 
 	var time = 0;
 	var timeline = editor.timeline;
 
-	var render = function () {
-
-		timeline.update( time );
-
-	};
-
 	// signals
+
+	var signals = editor.signals;
 
 	signals.timeChanged.add( function ( value ) {
 
 		time = value;
-		render();
+		timeline.update( time );
 
 	} );
 
 	signals.elementAdded.add( function ( element ) {
 
-		render();
+		timeline.update( time );
 
 	} );
 
@@ -32,10 +26,9 @@ var Viewport = function ( editor ) {
 
 		timeline.reset();
 		timeline.sort();
-		render();
+		timeline.update( time );
 
 	} );
-
 
 	return container;
 
