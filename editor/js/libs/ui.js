@@ -691,8 +691,9 @@ UI.Number = function ( number ) {
 	dom.addEventListener( 'focus', onFocus, false );
 	dom.addEventListener( 'blur', onBlur, false );
 
-	return this;
+	onBlur();
 
+	return this;
 };
 
 UI.Number.prototype = Object.create( UI.Element.prototype );
@@ -847,7 +848,8 @@ UI.Integer = function ( number ) {
 	dom.addEventListener( 'change', onChange, false );
 	dom.addEventListener( 'focus', onFocus, false );
 	dom.addEventListener( 'blur', onBlur, false );
-
+	
+	onBlur();
 	return this;
 
 };
