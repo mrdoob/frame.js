@@ -4,10 +4,10 @@ var Scene7Module = function () {
 
 	this.parameters.input = {
 
-        startPosition:       new FRAME.ModuleParameter.Vector3( 0, 0, 0 ),
-        endPosition:         new FRAME.ModuleParameter.Vector3( 0, 0, 0 ),
-        startPositionTarget: new FRAME.ModuleParameter.Vector3( 0, 0, 0 ),
-        endPositionTarget:   new FRAME.ModuleParameter.Vector3( 0, 0, 2000 )
+        startPosition:       new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 0 ] ),
+        endPosition:         new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 0 ] ),
+        startPositionTarget: new FRAME.ModuleParameter.Vector3( 'Camera Target Start', [ 0, 0, 0 ] ),
+        endPositionTarget:   new FRAME.ModuleParameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] )
 
 	};
 

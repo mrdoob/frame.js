@@ -18,55 +18,48 @@ var FRAME = ( function () {
 		},
 
 		ModuleParameter: {
-			Boolean: function ( value, defaultValue ) {
+			Boolean: function ( name, value ) {
+				this.name = name;
+				this.value = value || true;
+			},
 
+			Color: function ( name, value ) {
+				this.name = name;
+				this.value = value || 0xffffff;
+			},
+
+			DOM: function ( name, value ) {
+				this.name = name;
 				this.value = value;
-				this.defaultValue = defaultValue || false;
 			},
 
-			Color: function ( value, defaultValue ) {
-
-				this.value = value;
-				this.defaultValue = defaultValue || 0xffffff;
+			Float: function ( name, value, min, max ) {
+				this.name = name;
+				this.value = value || 0.0;
+				this.min = min !== undefined ? min : - Infinity;
+				this.max = max !== undefined ? max : Infinity;
 			},
 
-			DOM: function ( value, defaultValue ) {
-
-				this.value = value;
-				this.defaultValue = defaultValue || null;
+			Integer: function ( name, value, min, max ) {
+				this.name = name;
+				this.value = value || 0;
+				this.min = min !== undefined ? min : - Infinity;
+				this.max = max !== undefined ? max : Infinity;
 			},
 
-			Float: function ( value, defaultValue, min, max ) {
-				this.value = value;
-				this.defaultValue = defaultValue || 0.0;
-				this.min = ( typeof min === 'number' ) ? min: -Infinity;
-				this.max = ( typeof max === 'number' ) ? max: Infinity;
+			String: function ( name, value ) {
+				this.name = name;
+				this.value = value || '';
 			},
 
-			Integer: function ( value, defaultValue, min, max ) {
-
-				this.value = value;
-				this.defaultValue = defaultValue || 0;
-				this.min = ( typeof min === 'number' ) ? min: -Infinity;
-				this.max = ( typeof max === 'number' ) ? max: Infinity;
+			Vector2: function ( name, value ) {
+				this.name = name
+				this.value = value !== undefined ? value : [ 0, 0 ];
 			},
 
-			String: function ( value, defaultValue ) {
-
-				this.value = value;
-				this.defaultValue = defaultValue || "";
-			},
-
-			Vector2: function ( x, y, defaultValue ) {
-
-				this.value = [ x, y ];
-				this.defaultValue = defaultValue || [0,0];
-			},
-
-			Vector3: function ( x, y, z, defaultValue ) {
-
-				this.value = [ x, y, z ];
-				this.defaultValue = defaultValue || [0,0,0];
+			Vector3: function ( name, value ) {
+				this.name = name;
+				this.value = value !== undefined ? value : [ 0, 0, 0 ];
 			}
 
 		},

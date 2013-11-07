@@ -17,7 +17,7 @@ var Properties = function ( editor ) {
 			var parameter = parameters[ key ];
 
 			var parameterRow = new UI.Panel();
-			parameterRow.add( new UI.Text( key ).setWidth( '90px' ) );
+			parameterRow.add( new UI.Text( parameter.name ).setWidth( '90px' ) );
 
 			( function ( key ) {
 

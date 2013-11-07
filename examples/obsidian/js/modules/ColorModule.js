@@ -4,8 +4,8 @@ var ColorModule = function () {
 
 	this.parameters.input = {
 
-		color:   new FRAME.ModuleParameter.Color( 0xffffff ),
-		opacity: new FRAME.ModuleParameter.Float( 1 )
+		color:   new FRAME.ModuleParameter.Color( 'Color', 0xffffff ),
+		opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1 )
 
 	};
 

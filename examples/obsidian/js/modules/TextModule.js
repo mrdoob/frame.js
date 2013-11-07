@@ -4,9 +4,9 @@ var TextModule = function () {
 
 	this.parameters.input = {
 
-		text:          new FRAME.ModuleParameter.String( 'text' ),
-		startPosition: new FRAME.ModuleParameter.Vector3( 0, 0, 20 ),
-		endPosition:   new FRAME.ModuleParameter.Vector3( 0, 0, 40 )
+		text:          new FRAME.ModuleParameter.String( 'Text', 'text' ),
+		startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 20 ] ),
+		endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 40 ] )
 
 	};
 
