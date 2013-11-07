@@ -178,13 +178,18 @@ var Timeline = function ( editor ) {
 
 		var onMouseDown = function ( event ) {
 
-			var MODES = { 'MOVE': 0, 'RESIZE': 1 };
+			var MODES = { 'MOVE': 0, 'RESIZE_RIGHT': 1, 'RESIZE_LEFT': 2 };
 			var mode = MODES.MOVE;
 			
 			if ( event.offsetX > this.offsetWidth - 5 ) {
 				
-				mode = MODES.RESIZE;
+				mode = MODES.RESIZE_RIGHT;
 				
+			}
+			else if ( event.offsetX < 5 ) {
+
+				mode = MODES.RESIZE_LEFT;
+
 			}
 
 			/*
@@ -211,12 +216,18 @@ var Timeline = function ( editor ) {
 				
 						break;
 						
-					case MODES.RESIZE:
-		
+					case MODES.RESIZE_RIGHT:
+						
 						element.duration += movementX / scale;
 						
 						break;
 					
+					case MODES.RESIZE_LEFT:
+						
+						element.start += movementX / scale;
+						element.duration -= movementX / scale;
+						
+						break;
 				}
 				
 				update();
