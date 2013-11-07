@@ -18,53 +18,55 @@ var FRAME = ( function () {
 		},
 
 		ModuleParameter: {
-
-			Boolean: function ( value ) {
-
-				this.value = value;
-
-			},
-
-			Color: function ( value ) {
+			Boolean: function ( value, defaultValue ) {
 
 				this.value = value;
-
+				this.defaultValue = defaultValue || false;
 			},
 
-			DOM: function ( value ) {
+			Color: function ( value, defaultValue ) {
 
 				this.value = value;
-
+				this.defaultValue = defaultValue || 0xffffff;
 			},
 
-			Float: function ( value ) {
+			DOM: function ( value, defaultValue ) {
 
 				this.value = value;
-
+				this.defaultValue = defaultValue || null;
 			},
 
-			Integer: function ( value ) {
+			Float: function ( value, defaultValue, min, max ) {
+				this.value = value;
+				this.defaultValue = defaultValue || 0.0;
+				this.min = ( typeof min === 'number' ) ? min: -Infinity;
+				this.max = ( typeof max === 'number' ) ? max: Infinity;
+			},
+
+			Integer: function ( value, defaultValue, min, max ) {
 
 				this.value = value;
-
+				this.defaultValue = defaultValue || 0;
+				this.min = ( typeof min === 'number' ) ? min: -Infinity;
+				this.max = ( typeof max === 'number' ) ? max: Infinity;
 			},
 
-			String: function ( value ) {
+			String: function ( value, defaultValue ) {
 
 				this.value = value;
-
+				this.defaultValue = defaultValue || "";
 			},
 
-			Vector2: function ( x, y ) {
+			Vector2: function ( x, y, defaultValue ) {
 
 				this.value = [ x, y ];
-
+				this.defaultValue = defaultValue || [0,0];
 			},
 
-			Vector3: function ( x, y, z ) {
+			Vector3: function ( x, y, z, defaultValue ) {
 
 				this.value = [ x, y, z ];
-
+				this.defaultValue = defaultValue || [0,0,0];
 			}
 
 		},

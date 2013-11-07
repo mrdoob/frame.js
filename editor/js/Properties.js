@@ -24,6 +24,7 @@ var Properties = function ( editor ) {
 				if ( parameter instanceof FRAME.ModuleParameter.Integer ) {
 
 					var parameterValue = new UI.Integer()
+						.setRange( parameter.min, parameter.max )
 						.setValue( element.parameters[ key ] )
 						.setWidth( '150px' )
 						.onChange( function () {
@@ -38,6 +39,7 @@ var Properties = function ( editor ) {
 				} else if ( parameter instanceof FRAME.ModuleParameter.Float ) {
 
 					var parameterValue = new UI.Number()
+						.setRange( parameter.min, parameter.max )
 						.setValue( element.parameters[ key ] )
 						.setWidth( '150px' )
 						.onChange( function () {
