@@ -44,14 +44,15 @@ var Timeline = function ( editor ) {
 	button.onClick( function () { signals.forwards.dispatch() } );
 	controls.add( button );
 
-	var currentTime = new UI.Text();
-	currentTime.setColor( '#bbb' );
-	currentTime.setMarginLeft( '10px' );
-	currentTime.setValue( '0:00.00' );
-	controls.add( currentTime );
+	var timeText = new UI.Text();
+	timeText.setColor( '#bbb' );
+	timeText.setMarginLeft( '10px' );
+	timeText.setValue( '0:00.00' );
+	controls.add( timeText );
 
 	// timeline
 
+	var time = 0;
 	var scale = 32;
 	var prevScale = scale;
 
@@ -74,6 +75,8 @@ var Timeline = function ( editor ) {
 		}
 
 		timeline.dom.scrollLeft = ( timeline.dom.scrollLeft * scale ) / prevScale;
+
+		updateTimeMark();
 
 		prevScale = scale;
 	
@@ -151,13 +154,13 @@ var Timeline = function ( editor ) {
 
 	//
 
-	var time = document.createElement( 'div' );
-	time.style.position = 'absolute';
-	time.style.top = '0px';
-	time.style.left = '-8px';
-	time.style.width = '16px';
-	time.style.height = '100%';
-	time.style.background = 'url(' + ( function () {
+	var timeMark = document.createElement( 'div' );
+	timeMark.style.position = 'absolute';
+	timeMark.style.top = '0px';
+	timeMark.style.left = '-8px';
+	timeMark.style.width = '16px';
+	timeMark.style.height = '100%';
+	timeMark.style.background = 'url(' + ( function () {
 
 		var canvas = document.createElement( 'canvas' );
 		canvas.width = 16;
@@ -170,8 +173,14 @@ var Timeline = function ( editor ) {
 		return canvas.toDataURL();
 
 	}() ) + ')';
-	time.style.pointerEvents = 'none';
-	timeline.dom.appendChild( time );
+	timeMark.style.pointerEvents = 'none';
+	timeline.dom.appendChild( timeMark );
+
+	var updateTimeMark = function () {
+
+		timeMark.style.left = ( time * scale ) - 8 + 'px';
+
+	};
 
 	var Block = ( function ( element ) {
 		
@@ -322,13 +331,15 @@ var Timeline = function ( editor ) {
 
 	signals.timeChanged.add( function ( value ) {
 
-		time.style.left = ( value * scale ) - 8 + 'px';
+		time = value;
 
 		var minutes = Math.floor( value / 60 );
 		var seconds = value % 60;
 		var padding = seconds < 10 ? '0' : '';
 
-		currentTime.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
+		timeText.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
+
+		updateTimeMark();
 
 	} );
 
