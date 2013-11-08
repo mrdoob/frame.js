@@ -21,7 +21,7 @@ var WebGLRendererModule = function () {
 		if ( this.parameters.input.dom !== null ) {
 
 			this.parameters.input.dom.appendChild( renderer.domElement );
-            this.parameters.input.dom = null; // TODO: Another hack
+			this.parameters.input.dom = null; // TODO: Another hack
 		}
 
 	};

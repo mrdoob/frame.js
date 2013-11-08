@@ -10,33 +10,33 @@ var FadeOutModule = function () {
 	};
 
 	var camera, scene, material;
-    var opacity = 1;
+	var opacity = 1;
 
 	this.init = function ( parameters ) {
 
 		camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
 
 		material = new THREE.MeshBasicMaterial( {
-            color: parameters.color,
-            // blending: THREE.AdditiveBlending,
-            transparent: true
-    	} );
+			color: parameters.color,
+			// blending: THREE.AdditiveBlending,
+			transparent: true
+		} );
 
 		scene = new THREE.Scene();
 
 		var object = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), material );
 		scene.add( object );
-        
-        opacity = this.parameters.input.opacity
+		
+		opacity = this.parameters.input.opacity
 
 	};
-    
-    this.start = function ( t, parameters ) {
-      
-      material.color.setHex( parameters.color );
-      opacity = parameters.opacity;
-        
-    };
+	
+	this.start = function ( t, parameters ) {
+	  
+	  material.color.setHex( parameters.color );
+	  opacity = parameters.opacity;
+		
+	};
 
 	this.update = function ( t ) {
 

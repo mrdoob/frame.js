@@ -49,5 +49,4 @@ var WebGLRendererModule = function () {
 
 	};
 
-
 };
