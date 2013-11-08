@@ -16,12 +16,6 @@ var Viewport = function ( editor ) {
 
 	} );
 
-	signals.elementAdded.add( function ( element ) {
-
-		timeline.update( time );
-
-	} );
-
 	signals.timelineElementChanged.add( function ( element ) {
 
 		element.module.init( element.parameters );

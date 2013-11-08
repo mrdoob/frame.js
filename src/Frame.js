@@ -18,6 +18,7 @@ var FRAME = ( function () {
 		},
 
 		ModuleParameter: {
+
 			Boolean: function ( name, value ) {
 				this.name = name;
 				this.value = value || true;
