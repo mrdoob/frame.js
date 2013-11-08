@@ -189,61 +189,17 @@ var Timeline = function ( editor ) {
 		var dom = document.createElement( 'div' );
 		dom.className = 'block';
 		dom.style.position = 'absolute';
-		dom.innerHTML = '<div class="name">' + element.name + '</div>';
+		dom.style.height = '30px';
+		dom.addEventListener( 'mousedown', function ( event ) {
 
-		var onMouseDown = function ( event ) {
-
-			var MODES = { 'MOVE': 0, 'RESIZE_RIGHT': 1, 'RESIZE_LEFT': 2 };
-			var mode = MODES.MOVE;
-			
-			if ( event.offsetX > this.offsetWidth - 5 ) {
-				
-				mode = MODES.RESIZE_RIGHT;
-				
-			}
-			else if ( event.offsetX < 5 ) {
-
-				mode = MODES.RESIZE_LEFT;
-
-			}
-
-			/*
-			var onMouseDownLeft = dom.offsetLeft;
-			var onMouseDownTop = dom.offsetTop;
-
-			var onMouseDownX = event.clientX;
-			var onMouseDownY = event.clientY;
-			*/
-			
 			var movementX = 0;
 			var movementY = 0;
 
 			var onMouseMove = function ( event ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-				// movementY = event.movementY | event.webkitMovementY | event.mozMovementY | 0;
 
-				switch ( mode ) {
-					
-					case MODES.MOVE:
-		
-						element.start += movementX / scale;
-				
-						break;
-						
-					case MODES.RESIZE_RIGHT:
-						
-						element.duration += movementX / scale;
-						
-						break;
-					
-					case MODES.RESIZE_LEFT:
-						
-						element.start += movementX / scale;
-						element.duration -= movementX / scale;
-						
-						break;
-				}
+				element.start += movementX / scale;
 				
 				update();
 
@@ -267,16 +223,104 @@ var Timeline = function ( editor ) {
 			document.addEventListener( 'mousemove', onMouseMove, false );
 			document.addEventListener( 'mouseup', onMouseUp, false );
 
-		};
-		
-		dom.addEventListener( 'mousedown', onMouseDown, false );
+		}, false );
+
+		var resizeLeft = document.createElement( 'div' );
+		resizeLeft.style.position = 'absolute';
+		resizeLeft.style.width = '6px';
+		resizeLeft.style.height = '30px';
+		resizeLeft.style.cursor = 'w-resize';
+		resizeLeft.addEventListener( 'mousedown', function ( event ) {
+
+			event.stopPropagation();
+			
+			var movementX = 0;
+
+			var onMouseMove = function ( event ) {
+
+				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
+
+				element.start += movementX / scale;
+				element.duration -= movementX / scale;
+				
+				update();
+
+				signals.timelineElementChanged.dispatch( element );
+
+			};
+
+			var onMouseUp = function ( event ) {
+				
+				if ( Math.abs( movementX ) < 2 ) {
+					
+					editor.select( element )
+					
+				}
+
+				document.removeEventListener( 'mousemove', onMouseMove );
+				document.removeEventListener( 'mouseup', onMouseUp );
+
+			};
+
+			document.addEventListener( 'mousemove', onMouseMove, false );
+			document.addEventListener( 'mouseup', onMouseUp, false );
+
+		}, false );
+		dom.appendChild( resizeLeft );
+
+		var name = document.createElement( 'div' );
+		name.className = 'name';
+		name.textContent = element.name;
+		dom.appendChild( name );
+
+		var resizeRight = document.createElement( 'div' );
+		resizeRight.style.position = 'absolute';
+		resizeRight.style.right = '0px';
+		resizeRight.style.top = '0px';
+		resizeRight.style.width = '6px';
+		resizeRight.style.height = '30px';
+		resizeRight.style.cursor = 'e-resize';
+		resizeRight.addEventListener( 'mousedown', function ( event ) {
+
+			event.stopPropagation();
+			
+			var movementX = 0;
+
+			var onMouseMove = function ( event ) {
+
+				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
+				element.duration += movementX / scale;
+				
+				update();
+
+				signals.timelineElementChanged.dispatch( element );
+
+			};
+
+			var onMouseUp = function ( event ) {
+				
+				if ( Math.abs( movementX ) < 2 ) {
+					
+					editor.select( element )
+					
+				}
+
+				document.removeEventListener( 'mousemove', onMouseMove );
+				document.removeEventListener( 'mouseup', onMouseUp );
+
+			};
+
+			document.addEventListener( 'mousemove', onMouseMove, false );
+			document.addEventListener( 'mouseup', onMouseUp, false );
+
+		}, false );
+		dom.appendChild( resizeRight );
 		
 		var update = function () {
 			
 			dom.style.left = ( element.start * scale ) + 'px';
 			dom.style.top = ( element.layer * 32 ) + 'px';
 			dom.style.width = ( element.duration * scale - 2 ) + 'px';
-			dom.style.height = '30px';
 
 		};
 
