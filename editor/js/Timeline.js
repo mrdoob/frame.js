@@ -53,6 +53,7 @@ var Timeline = function ( editor ) {
 	// timeline
 
 	var scale = 32;
+	var prevScale = scale;
 
 	var timeline = new UI.Panel();
 	timeline.setPosition( 'absolute' );
@@ -71,6 +72,10 @@ var Timeline = function ( editor ) {
 			blocks[ key ].update();
 			
 		}
+
+		timeline.dom.scrollLeft = ( timeline.dom.scrollLeft * scale ) / prevScale;
+
+		prevScale = scale;
 	
 	} );
 	container.add( timeline );
@@ -165,6 +170,7 @@ var Timeline = function ( editor ) {
 		return canvas.toDataURL();
 
 	}() ) + ')';
+	time.style.pointerEvents = 'none';
 	timeline.dom.appendChild( time );
 
 	var Block = ( function ( element ) {
