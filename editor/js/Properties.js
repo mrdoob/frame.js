@@ -10,6 +10,12 @@ var Properties = function ( editor ) {
 
 		container.clear();
 
+		var elementPanel = new UI.Panel();
+		container.add( elementPanel );
+
+		elementPanel.add( new UI.Text( element.name ).setWidth( '90px' ).setId( 'name' ) );
+		elementPanel.add( new UI.HorizontalRule() );
+
 		var parameters = element.module.parameters.input;
 
 		for ( var key in parameters ) {
@@ -144,7 +150,7 @@ var Properties = function ( editor ) {
 
 			} )( key );
 
-			container.add( parameterRow );
+			elementPanel.add( parameterRow );
 
 		};
 

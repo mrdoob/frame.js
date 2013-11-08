@@ -33,6 +33,14 @@ button {
 	user-select: none;
 }
 
+input.Input {
+	color: #3AC785;
+	font-size: 12px;
+	background-color: #444;
+	border: 0px;
+	padding: 2px 4px;
+}
+
 input.Number {
 	color: #3A85C7;
 	font-size: 12px;							/** TODO: Use of !imporant is not ideal **/
@@ -47,11 +55,18 @@ input.Number {
 	top: 32px;
 	bottom: 30%;
 	left: 0px;
-	right: 300px;
-	padding: 8px;
+	width: 300px;
 	color: #888;
 	background-color: #555;
 }
+
+	#properties hr {
+		border-color: #666;
+	}
+
+	#properties > .Panel {
+		padding: 8px;
+	}
 
 	#properties .Panel {
 		margin-bottom: 10px;

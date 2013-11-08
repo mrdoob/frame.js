@@ -181,8 +181,6 @@ UI.Input = function () {
 
 	var dom = document.createElement( 'input' );
 	dom.className = 'Input';
-	dom.style.padding = '2px';
-	dom.style.border = '1px solid #ccc';
 
 	dom.addEventListener( 'keydown', function ( event ) {
 
