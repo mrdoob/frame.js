@@ -200,6 +200,7 @@ var Timeline = function ( editor ) {
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
 				element.start += movementX / scale;
+				element.end += movementX / scale;
 				
 				update();
 
@@ -241,7 +242,6 @@ var Timeline = function ( editor ) {
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
 				element.start += movementX / scale;
-				element.duration -= movementX / scale;
 				
 				update();
 
@@ -289,7 +289,7 @@ var Timeline = function ( editor ) {
 			var onMouseMove = function ( event ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-				element.duration += movementX / scale;
+				element.end += movementX / scale;
 				
 				update();
 
@@ -317,7 +317,8 @@ var Timeline = function ( editor ) {
 		dom.appendChild( resizeRight );
 		
 		var update = function () {
-			
+
+			element.duration = element.end - element.start;
 			dom.style.left = ( element.start * scale ) + 'px';
 			dom.style.top = ( element.layer * 32 ) + 'px';
 			dom.style.width = ( element.duration * scale - 2 ) + 'px';
