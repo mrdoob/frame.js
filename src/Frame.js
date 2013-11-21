@@ -190,9 +190,10 @@ var FRAME = ( function () {
     			this.layer = layer;
     			this.start = start;
     			this.duration = duration;
+    			this.end = start + duration;
     			this.module = module;
                 this.parameters = parameters;
-                
+
             };
 
 		}()
