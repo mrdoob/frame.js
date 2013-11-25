@@ -136,15 +136,16 @@ var FRAME = ( function () {
             var id = 0;
             
             return function ( name, layer, start, duration, module, parameters ) {
-
+            		
                 this.id = id ++;
     			this.name = name;
     			this.layer = layer;
     			this.start = start;
     			this.duration = duration;
+    			this.end = start + duration;
     			this.module = module;
                 this.parameters = parameters;
-                
+
             };
 
 		}()
