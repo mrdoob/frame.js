@@ -5,13 +5,16 @@ var ColorModule = function () {
 	this.parameters.input = {
 
 		color:   new FRAME.ModuleParameter.Color( 'Color', 0xffffff ),
-		opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1 )
+		opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1, 0, 1 )
 
 	};
 
+	var parameters;
 	var camera, scene, material;
 
-	this.init = function ( parameters ) {
+	this.init = function ( value ) {
+
+		parameters = value;
 
 		camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
 
@@ -29,6 +32,8 @@ var ColorModule = function () {
 	};
 
 	this.update = function ( t ) {
+
+		material.opacity = parameters.opacity;
 
 		renderer.render( scene, camera );
 

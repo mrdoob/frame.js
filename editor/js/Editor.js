@@ -41,6 +41,12 @@ Editor.prototype = {
 	  
 	},
 
+	addCurve: function ( curve ) {
+
+		this.timeline.curves.push( curve );
+
+	},
+
 	select: function ( element ) {
 		
 		this.selected = element;

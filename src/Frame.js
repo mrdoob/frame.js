@@ -4,6 +4,72 @@ var FRAME = ( function () {
 
 		VERSION: 2,
 
+		Curves: {
+			Linear: function () {
+
+				var timeStart = 2;
+				var timeEnd = 3;
+				var timeDelta = timeEnd - timeStart;
+				
+				var valueStart = 0;
+				var valueEnd = 0.5;
+				var valueDelta = valueEnd - valueStart;
+
+				this.value = 0;
+
+				this.update = function ( time ) {
+
+					if ( time <= timeStart ) {
+
+						this.value = this.valueStart;
+
+					} else if ( time >= timeEnd ) {
+
+						this.value = valueEnd;
+
+					} else {
+
+						this.value = ( ( time - timeStart ) / timeDelta ) * valueDelta + valueStart;
+
+					}
+
+				};
+
+			},
+
+			Sin: function () {
+
+				var frequency = 10;
+
+				this.value = 0;
+
+				this.update = function ( time ) {
+
+					this.value = Math.sin( time * frequency );
+
+				};
+
+			},
+
+			Saw: function () {
+
+				var frequency = 1;
+				var min = 0;
+				var max = 1;
+				var delta = max - min;
+
+				this.value = 0;
+
+				this.update = function ( time ) {
+
+					this.value = ( ( time % frequency ) / frequency ) * delta + min;
+
+				};
+
+			}
+
+		},
+
 		Module: function () {
 
 			this.name = '';
@@ -67,6 +133,7 @@ var FRAME = ( function () {
 
 		Timeline: function () {
 
+			var curves = [];
 			var elements = [];
 			var active = [];
 
@@ -74,17 +141,14 @@ var FRAME = ( function () {
 
 			return {
 
+				curves: curves,
+				elements: elements,
+
 				add: function ( element ) {
 
 					element.module.init( element.parameters );
 					elements.push( element );
 					this.sort();
-
-				},
-
-				sort: function () {
-
-					elements.sort( function ( a, b ) { return a.start - b.start; } );
 
 				},
 
@@ -99,9 +163,13 @@ var FRAME = ( function () {
 					}
 
 				},
-                
-                elements: elements,
 
+				sort: function () {
+
+					elements.sort( function ( a, b ) { return a.start - b.start; } );
+
+				},
+				
 				update: function ( time ) {
 
 					if ( time < prevtime ) {
@@ -150,6 +218,14 @@ var FRAME = ( function () {
 						}
 
 						i ++;
+
+					}
+
+					// update curves
+
+					for ( var i = 0, l = curves.length; i < l; i ++ ) {
+
+						curves[ i ].update( time );
 
 					}
 
