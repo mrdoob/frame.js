@@ -6,10 +6,10 @@ var FRAME = ( function () {
 
 		Module: function () {
 
-            this.name = '';
-            this.parameters = { input: {}, output: {} };
+			this.name = '';
+			this.parameters = { input: {}, output: {} };
 
-            this.init = function ( callback ) {};
+			this.init = function ( callback ) {};
 			this.load = function ( callback ) {};
 			this.start = function ( value ) {};
 			this.end = function ( value ) {};
@@ -180,20 +180,20 @@ var FRAME = ( function () {
 		},
 
 		TimelineElement: function () {
-            
-            var id = 0;
-            
-            return function ( name, layer, start, duration, module, parameters ) {
+			
+			var id = 0;
+			
+			return function ( name, layer, start, duration, module, parameters ) {
 
-                this.id = id ++;
-    			this.name = name;
-    			this.layer = layer;
-    			this.start = start;
-    			this.duration = duration;
-    			this.module = module;
-                this.parameters = parameters;
-                
-            };
+				this.id = id ++;
+				this.name = name;
+				this.layer = layer;
+				this.start = start;
+				this.duration = duration;
+				this.module = module;
+				this.parameters = parameters;
+				
+			};
 
 		}()
 
