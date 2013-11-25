@@ -190,10 +190,10 @@ var FRAME = ( function () {
 
 						}
 
-						if ( ( element.start + element.duration ) > time ) {
+						if ( element.end > time ) {
 
 							active.push( element );
-							element.module.start( ( time - element.start ) / element.duration, element.parameters );
+							element.module.start( ( time - element.start ) / ( element.end - element.start ), element.parameters );
 
 						}
 
@@ -209,10 +209,10 @@ var FRAME = ( function () {
 
 						var element = active[ i ];
 
-						if ( ( element.start + element.duration ) < time ) {
+						if ( element.end < time ) {
 
 							active.splice( i, 1 );
-							element.module.end( ( time - element.start ) / element.duration );
+							element.module.end( ( time - element.start ) / ( element.end - element.start ) );
 							continue;
 
 						}
@@ -236,7 +236,7 @@ var FRAME = ( function () {
 					for ( var i = 0, l = active.length; i < l; i ++ ) {
 
 						var element = active[ i ];
-						element.module.update( ( time - element.start ) / element.duration );
+						element.module.update( ( time - element.start ) / ( element.end - element.start ) );
 
 					}
 
@@ -265,7 +265,7 @@ var FRAME = ( function () {
 				this.name = name;
 				this.layer = layer;
 				this.start = start;
-				this.duration = duration;
+				this.end = start + duration;
 				this.module = module;
 				this.parameters = parameters;
 				

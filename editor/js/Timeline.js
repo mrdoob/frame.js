@@ -318,10 +318,9 @@ var Timeline = function ( editor ) {
 		
 		var update = function () {
 
-			element.duration = element.end - element.start;
 			dom.style.left = ( element.start * scale ) + 'px';
 			dom.style.top = ( element.layer * 32 ) + 'px';
-			dom.style.width = ( element.duration * scale - 2 ) + 'px';
+			dom.style.width = ( ( element.end - element.start ) * scale - 2 ) + 'px';
 
 		};
 
