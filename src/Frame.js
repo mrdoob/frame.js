@@ -70,16 +70,18 @@ var FRAME = ( function () {
 
 		},
 
-		Module: function () {
+		Module: function ( data ) {
+
+			if ( data === undefined ) data = {};
 
 			this.name = '';
-			this.parameters = { input: {}, output: {} };
+			this.parameters = data.parameters !== undefined ? data.parameters : {};
 
-			this.init = function ( callback ) {};
-			this.load = function ( callback ) {};
-			this.start = function ( value ) {};
-			this.end = function ( value ) {};
-			this.update = function ( value ) {};
+			this.init = data.init !== undefined ? data.init : function ( callback ) {};
+			this.load = data.load !== undefined ? data.load : function ( callback ) {};
+			this.start = data.start !== undefined ? data.start : function ( value ) {};
+			this.end = data.end !== undefined ? data.end : function ( value ) {};
+			this.update = data.update !== undefined ? data.update : function ( value ) {};
 
 		},
 
