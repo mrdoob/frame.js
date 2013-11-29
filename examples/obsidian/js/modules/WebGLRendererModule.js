@@ -1,52 +1,57 @@
-var WebGLRendererModule = function () {
+( function ( config ) {
 
-	FRAME.Module.call( this );
+	var dom = document.createElement( 'div' );
+	dom.style.position = 'absolute';
+	dom.style.width = '100%';
+	dom.style.height = '100%';
 
-	this.parameters.input = {
+	var renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer.autoClear = false;
+	renderer.domElement.style.position = 'absolute';
+	dom.appendChild( renderer.domElement );
 
-		dom: 	new FRAME.ModuleParameter.DOM( 'DOM', null ),
-		width:  new FRAME.ModuleParameter.Integer( 'Width', 800 ),
-		height: new FRAME.ModuleParameter.Integer( 'Height', 600 )
+	var onWindowResize = function () {
+
+		var scale = Math.min( dom.offsetWidth / config.width, dom.offsetHeight / config.height );
+
+		var width = config.width * scale;
+		var height = config.height * scale;
+
+		renderer.setSize( width, height );
+		renderer.domElement.style.left = ( dom.offsetWidth - width ) / 2 + 'px';
+		renderer.domElement.style.top = ( dom.offsetHeight - height ) / 2 + 'px';
 
 	};
 
-	this.init = function ( parameters ) {
+	config.renderer = renderer;
 
-		var dom = document.createElement( 'div' );
-		dom.style.position = 'absolute';
-		dom.style.width = '100%';
-		dom.style.height = '100%';
+	//
 
-		renderer = new THREE.WebGLRenderer( { antialias: true, alpha: false } ); // TODO: Remove this nasty global
-		renderer.autoClear = false;
-		renderer.domElement.style.position = 'absolute';
-		dom.appendChild( renderer.domElement );
+	return new FRAME.Module( {
 
-		var onWindowResize = function () {
+		parameters: {
 
-			var scale = dom.offsetWidth / parameters.width;
+			dom: new FRAME.ModuleParameter.DOM( 'DOM', null )
 
-			var width = parameters.width * scale;
-			var height = parameters.height * scale;
+		},
 
-			renderer.setSize( width, height );
-			renderer.domElement.style.top = ( dom.offsetHeight - height ) / 2 + 'px';
+		init: function ( parameters ) {
 
-		};
+			if ( parameters.dom !== null ) {
 
-		if ( parameters.dom !== null ) {
+				parameters.dom.appendChild( dom );
+				parameters.dom = null; // TODO: Fix hack
 
-			parameters.dom.appendChild( dom );
-			parameters.dom = null; // TODO: Another hack
+				//
 
-			//
+				window.addEventListener( 'resize', onWindowResize );
 
-			window.addEventListener( 'resize', onWindowResize );
+				onWindowResize();
 
-			onWindowResize();
+			}
 
 		}
 
-	};
+	} );
 
-};
+} )

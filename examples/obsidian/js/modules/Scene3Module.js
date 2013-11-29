@@ -1,18 +1,6 @@
-var Scene3Module = function () {
+( function ( config ) {
 
-	FRAME.Module.call( this );
-
-	this.parameters.input = {
-
-		startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 600, 0, 0 ] ),
-		endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ 600, 0, 0 ] )
-
-	};
-
-	var width = renderer.domElement.width;
-	var height = renderer.domElement.height;
-
-	var camera = new THREE.PerspectiveCamera( 60, width / height, 1, 1000 );
+	var camera = new THREE.PerspectiveCamera( 60, config.width / config.height, 1, 1000 );
 
 	var scene = new THREE.Scene();
 
@@ -89,73 +77,88 @@ var Scene3Module = function () {
 	sphere2.add( new THREE.Mesh( new THREE.IcosahedronGeometry( 20, 1 ), material ) );
 	sphere2.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 0 ), material ) );
 	sphere2.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 2 ), material ) );
+
+	var renderer = config.renderer;
 	
 	//
 		
 	var startPosition = new THREE.Vector3();
 	var endPosition = new THREE.Vector3();
 	var deltaPosition = new THREE.Vector3();
-	
-	this.start = function ( t, parameters ) {
-	  
-		startPosition.fromArray( parameters.startPosition );
-		endPosition.fromArray( parameters.endPosition );
-		deltaPosition.subVectors( endPosition, startPosition );
-	  
-	};
-	
+
 	var prevShape = 0;
 
-	this.update = function ( t ) {
+	//
 
-		camera.position.copy( deltaPosition );
-		camera.position.multiplyScalar( t );
-		camera.position.add( startPosition );
-		camera.position.x += Math.max( 0, t - 0.495 ) * 500; 
-		camera.lookAt( scene.position );
+	return new FRAME.Module( {
+
+		parameters: {
+
+			startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 600, 0, 0 ] ),
+			endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ 600, 0, 0 ] )
+
+		},
+
+		start: function ( parameters ) {
 		
-		sphere1.position.z = t * 700 - 700;
-		sphere1.rotation.x = t * 12;
-		sphere1.rotation.z = t * 12;
-
-		light1.position.z = sphere1.position.z + 50;
-		light1b.position.z = sphere1.position.z - 50;
-
-		sphere2.position.z = t * - 700 + 700;
-		sphere2.rotation.x = - t * 12;
-		sphere2.rotation.z = - t * 12;
-
-		light2.position.z = sphere2.position.z - 50;
-		light2b.position.z = sphere2.position.z + 50;
-
-		var shape = Math.floor( t * 255 ) % sphere1.children.length;
+			startPosition.fromArray( parameters.startPosition );
+			endPosition.fromArray( parameters.endPosition );
+			deltaPosition.subVectors( endPosition, startPosition );
 		
-		if ( shape !== prevShape ) {
+		},
+
+		update: function ( parameters, t ) {
+
+			camera.position.copy( deltaPosition );
+			camera.position.multiplyScalar( t );
+			camera.position.add( startPosition );
+			camera.position.x += Math.max( 0, t - 0.495 ) * 500; 
+			camera.lookAt( scene.position );
 			
-			for ( var i = 0, l = sphere1.children.length; i < l; i ++ ) {
+			sphere1.position.z = t * 700 - 700;
+			sphere1.rotation.x = t * 12;
+			sphere1.rotation.z = t * 12;
+
+			light1.position.z = sphere1.position.z + 50;
+			light1b.position.z = sphere1.position.z - 50;
+
+			sphere2.position.z = t * - 700 + 700;
+			sphere2.rotation.x = - t * 12;
+			sphere2.rotation.z = - t * 12;
+
+			light2.position.z = sphere2.position.z - 50;
+			light2b.position.z = sphere2.position.z + 50;
+
+			var shape = Math.floor( t * 255 ) % sphere1.children.length;
+			
+			if ( shape !== prevShape ) {
 				
-				var object = sphere1.children[ i ];
-				object.visible = i === shape;
+				for ( var i = 0, l = sphere1.children.length; i < l; i ++ ) {
+					
+					var object = sphere1.children[ i ];
+					object.visible = i === shape;
 
-				var object = sphere2.children[ i ];
-				object.visible = i === shape;
+					var object = sphere2.children[ i ];
+					object.visible = i === shape;
 
+				}
+
+				prevShape = shape;
+				
 			}
 
-			prevShape = shape;
+			for ( var i = 0, l = group.children.length; i < l; i ++ ) {
+
+				var mesh = group.children[ i ];
+				mesh.rotation.x = i + t * 6;
+				mesh.rotation.y = i + t * 4;
+				
+			}
 			
+			renderer.render( scene, camera );
+
 		}
 
-		for ( var i = 0, l = group.children.length; i < l; i ++ ) {
+	} );
 
-			var mesh = group.children[ i ];
-			mesh.rotation.x = i + t * 6;
-			mesh.rotation.y = i + t * 4;
-			
-		}
-		
-		renderer.render( scene, camera );
-
-	};
-
-};
+} )

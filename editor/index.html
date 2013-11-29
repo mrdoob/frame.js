@@ -46,7 +46,8 @@
 			document.body.appendChild( menubar.dom );
 
 			//
-			
+
+			/*
 			var json = {
 				"config":{
 					"width": 800,
@@ -93,8 +94,8 @@
 					[ 4, 56, 60, "ColorModule", { "color": 0xffffff, "opacity": "$11" } ]
 				]
 			};
+			*/
 
-			/*
 			var json = {
 				"config":{
 					"width":1280,
@@ -118,30 +119,36 @@
 					"Scene7Module":"js/modules/Scene7Module.js"
 				},
 				"curves":[
-					["linear",0,1,0,1],
-					["linear",0,1,0.75,0],
-					["linear",0,1,0.9,0]
+					["linear",0,4.3125,0.9,0],
+					["linear",13.10237494155758,13.209243333664636,0.75,0],
+					["linear",13.222523546148029,13.320538463266152,0.75,0],
+					["linear",13.33381867574956,13.453967280340017,0.75,0],
+					["linear",13.524806843061466,13.644955447651922,0.75,0],
+					["linear",13.647662866830075,13.767811471420531,0.75,0],
+					["linear",13.820206681001373,13.94035528559183,0.75,0],
+					["linear",13.93287025565171,14.053018860242167,0.75,0],
+					["linear",82.27357633279475,83.49363893376405,0.9,0]
 				],
 				"timeline":[
-					[0,0,247.09375,"WebGLRendererModule",{"dom":null}],
+					[0,0,247,"WebGLRendererModule",{"dom":null}],
+					[1,0,247,"ClearModule",{}],
 					[4,0,4.3125,"ColorModule",{"color":12312063,"opacity":"$0"}],
 					[2,0,14.052395209580844,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],
-					[1,0,247.0625,"ClearModule",{}],
 					[3,4.3125,8.261979594939186,"TextModule",{"text":"xplsv","startPosition":[0,0,18],"endPosition":[0,0,15]}],
 					[3,10.304385479837494,14.056710007672898,"TextModule",{"text":"presents","startPosition":[0,0,18],"endPosition":[0,0,15]}],
 					[4,13.10237494155758,13.209243333664636,"ColorModule",{"color":12312063,"opacity":"$1"}],
-					[4,13.222523546148029,13.320538463266152,"ColorModule",{"color":12312063,"opacity":"$1"}],
-					[4,13.33381867574956,13.453967280340017,"ColorModule",{"color":12312063,"opacity":"$1"}],
-					[4,13.524806843061466,13.644955447651922,"ColorModule",{"color":12312063,"opacity":"$1"}],
-					[4,13.647662866830075,13.767811471420531,"ColorModule",{"color":12312063,"opacity":"$1"}],
-					[4,13.820206681001373,13.94035528559183,"ColorModule",{"color":12312063,"opacity":"$1"}],
-					[4,13.93287025565171,14.053018860242167,"ColorModule",{"color":12312063,"opacity":"$1"}],
+					[4,13.222523546148029,13.320538463266152,"ColorModule",{"color":12312063,"opacity":"$2"}],
+					[4,13.33381867574956,13.453967280340017,"ColorModule",{"color":12312063,"opacity":"$3"}],
+					[4,13.524806843061466,13.644955447651922,"ColorModule",{"color":12312063,"opacity":"$4"}],
+					[4,13.647662866830075,13.767811471420531,"ColorModule",{"color":12312063,"opacity":"$5"}],
+					[4,13.820206681001373,13.94035528559183,"ColorModule",{"color":12312063,"opacity":"$6"}],
+					[4,13.93287025565171,14.053018860242167,"ColorModule",{"color":12312063,"opacity":"$7"}],
 					[2,14.052395209580844,28.042290419161688,"Scene2Module",{"startPosition":[-20,-20,30],"endPosition":[0,0,2030],"startPositionTarget":[-50,0,0],"endPositionTarget":[25,0,2000]}],
 					[2,28.042290419161688,41.84468562874253,"Scene2bModule",{"startPosition":[400,0,-100],"endPosition":[50,0,2100],"startPositionTarget":[0,0,0],"endPositionTarget":[0,0,2000]}],
 					[2,41.84468562874253,55.647080838323376,"Scene2Module",{"startPosition":[50,-50,300],"endPosition":[-50,-25,1700],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],
 					[2,55.647080838323376,69.44947604790423,"Scene2bModule",{"startPosition":[50,0,100],"endPosition":[150,0,2100],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],
 					[2,69.44947604790423,83.4930260371714,"Scene2Module",{"startPosition":[-100,-100,1100],"endPosition":[-50,0,2100],"startPositionTarget":[0,0,500],"endPositionTarget":[0,0,2000]}],
-					[4,82.27357633279475,83.49363893376405,"ColorModule",{"color":12312063,"opacity":"$2"}],
+					[4,82.27357633279475,83.49363893376405,"ColorModule",{"color":12312063,"opacity":"$8"}],
 					[2,83.49302603717142,111.45731305212999,"Scene3Module",{"startPosition":[-600,0,0],"endPosition":[-600,0,0]}],[3,83.4942100076729,86.99777831660283,"TextModule",{"text":"coding / mr.doob x three.js","startPosition":[0,0,40],"endPosition":[0,0,35]}],
 					[3,87.04752956038395,90.4018441379706,"TextModule",{"text":"direction / trace","startPosition":[0,0,40],"endPosition":[0,0,35]}],
 					[3,90.45159538175169,93.88053682500997,"TextModule",{"text":"music / om unit x lorn","startPosition":[0,0,40],"endPosition":[0,0,35]}],
@@ -155,7 +162,6 @@
 					[2,180.81446111196422,236.55999812692278,"Scene7Module",{"startPosition":[0,0,50],"endPosition":[0,50,2000],"startPositionTarget":[0,0,0],"endPositionTarget":[0,500,0]}]
 				]
 			};
-			*/
 
 			// load modules
 
@@ -171,12 +177,12 @@
 					var request = new XMLHttpRequest();
 					request.addEventListener( 'load', function ( event ) {
 
-						modules[ name ] = eval( event.target.responseText )( json.config );
-						modules[ name ].name = name;
-
 						loaded ++;
 
 						console.log( 'Loaded (' + loaded + '/' + total + '):', name );
+
+						modules[ name ] = eval( event.target.responseText )( json.config );
+						modules[ name ].name = name;
 
 						if ( loaded === total ) {
 
@@ -366,7 +372,7 @@
 			signals.setPlaybackRate.add( function ( value ) {
 
 				playbackRate = value;
-				
+
 				audio.playbackRate = playbackRate;
 
 			} );

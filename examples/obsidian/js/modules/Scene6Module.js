@@ -1,18 +1,6 @@
-var Scene6Module = function () {
+( function ( config ) {
 
-	FRAME.Module.call( this );
-
-	this.parameters.input = {
-
-		startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 0 ] ),
-		endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 0 ] )
-
-	};
-
-	var width = renderer.domElement.width;
-	var height = renderer.domElement.height;
-
-	var camera = new THREE.PerspectiveCamera( 60, width / height, 1, 1500 );
+	var camera = new THREE.PerspectiveCamera( 60, config.width / config.height, 1, 1500 );
 	camera.up.y = 0.5;
 	camera.up.z = -0.5;
 	camera.up.normalize();
@@ -111,80 +99,95 @@ var Scene6Module = function () {
 	sphere.add( new THREE.Mesh( new THREE.IcosahedronGeometry( 20, 1 ), material ) );
 	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 0 ), material ) );
 	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 1 ), material ) );
+
+	var renderer = config.renderer;
 	
 	//
 		
 	var startPosition = new THREE.Vector3();
 	var endPosition = new THREE.Vector3();
 	var deltaPosition = new THREE.Vector3();
-	
-	this.start = function ( t, parameters ) {
-	  
-		startPosition.fromArray( parameters.startPosition );
-		endPosition.fromArray( parameters.endPosition );
-		deltaPosition.subVectors( endPosition, startPosition );
-	  
-	};
-	
+
 	var prevShape = 0;
 
-	this.update = function ( t ) {
+	//
+
+	return new FRAME.Module( {
+
+		parameters: {
+
+			startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 0 ] ),
+			endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 0 ] )
+
+		},
+
+		start: function ( parameters ) {
 		
-		var t2000 = t * 2000;
+			startPosition.fromArray( parameters.startPosition );
+			endPosition.fromArray( parameters.endPosition );
+			deltaPosition.subVectors( endPosition, startPosition );
 		
-		sphere.position.z = t2000;
-		light.position.z = sphere.position.z;
-		light1.position.z = sphere.position.z - 50;
+		},
+
+		update: function ( parameters, t ) {
 		
-		var shape = Math.floor( t * 125 ) % sphere.children.length;
-		
-		if ( shape !== prevShape ) {
+			var t2000 = t * 2000;
 			
-			for ( var i = 0, l = sphere.children.length; i < l; i ++ ) {
+			sphere.position.z = t2000;
+			light.position.z = sphere.position.z;
+			light1.position.z = sphere.position.z - 50;
+			
+			var shape = Math.floor( t * 125 ) % sphere.children.length;
+			
+			if ( shape !== prevShape ) {
 				
-				var object = sphere.children[ i ];
-				object.visible = i === shape;
+				for ( var i = 0, l = sphere.children.length; i < l; i ++ ) {
+					
+					var object = sphere.children[ i ];
+					object.visible = i === shape;
+					
+				}
+				
+				prevShape = shape;
+				
+			}
+
+			camera.position.copy( deltaPosition );
+			camera.position.multiplyScalar( t );
+			camera.position.add( startPosition );
+			camera.lookAt( sphere.position );
+			
+			group.position.z = sphere.position.z;
+			group.rotation.z = t * 4;
+			
+			for ( var i = 0, l = group.children.length; i < l; i ++ ) {
+
+				var mesh = group.children[ i ];
+				mesh.rotation.x = i + t * 24;
+				mesh.rotation.z = i + t * 12;
 				
 			}
 			
-			prevShape = shape;
+			for ( var i = 0, l = tunnel.children.length; i < l; i ++ ) {
+
+				var mesh = tunnel.children[ i ];
+				var scale = Math.abs( t2000 - mesh.position.z ) * 0.05;
+				mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
+				mesh.rotation.x = scale * 0.2;
+				mesh.rotation.z = scale * 0.1;
+				
+				var mesh = tunnel2.children[ i ];
+				var scale = Math.abs( t2000 - mesh.position.z ) * 0.05;
+				mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
+				mesh.rotation.x = scale * 0.2;
+				mesh.rotation.z = scale * 0.1;
+
+			}
 			
+			renderer.render( scene, camera );
+
 		}
 
-		camera.position.copy( deltaPosition );
-		camera.position.multiplyScalar( t );
-		camera.position.add( startPosition );
-		camera.lookAt( sphere.position );
-		
-		group.position.z = sphere.position.z;
-		group.rotation.z = t * 4;
-		
-		for ( var i = 0, l = group.children.length; i < l; i ++ ) {
+	} );
 
-			var mesh = group.children[ i ];
-			mesh.rotation.x = i + t * 24;
-			mesh.rotation.z = i + t * 12;
-			
-		}
-		
-		for ( var i = 0, l = tunnel.children.length; i < l; i ++ ) {
-
-			var mesh = tunnel.children[ i ];
-			var scale = Math.abs( t2000 - mesh.position.z ) * 0.05;
-			mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
-			mesh.rotation.x = scale * 0.2;
-			mesh.rotation.z = scale * 0.1;
-			
-			var mesh = tunnel2.children[ i ];
-			var scale = Math.abs( t2000 - mesh.position.z ) * 0.05;
-			mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
-			mesh.rotation.x = scale * 0.2;
-			mesh.rotation.z = scale * 0.1;
-
-		}
-		
-		renderer.render( scene, camera );
-
-	};
-
-};
+} )

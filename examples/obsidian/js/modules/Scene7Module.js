@@ -1,20 +1,6 @@
-var Scene7Module = function () {
+( function ( config ) {
 
-	FRAME.Module.call( this );
-
-	this.parameters.input = {
-
-		startPosition:       new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 0 ] ),
-		endPosition:         new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 0 ] ),
-		startPositionTarget: new FRAME.ModuleParameter.Vector3( 'Camera Target Start', [ 0, 0, 0 ] ),
-		endPositionTarget:   new FRAME.ModuleParameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] )
-
-	};
-
-	var width = renderer.domElement.width;
-	var height = renderer.domElement.height;
-
-	var camera = new THREE.PerspectiveCamera( 60, width / height, 1, 4000 );
+	var camera = new THREE.PerspectiveCamera( 60, config.width / config.height, 1, 4000 );
 	var cameraTarget = new THREE.Vector3();
 
 	var scene = new THREE.Scene();
@@ -108,6 +94,8 @@ var Scene7Module = function () {
 	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 0 ), material ) );
 	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 1 ), material ) );
 	
+	var renderer = config.renderer;
+
 	//
 		
 	var startPosition = new THREE.Vector3();
@@ -117,64 +105,79 @@ var Scene7Module = function () {
 	var startPositionTarget = new THREE.Vector3();
 	var endPositionTarget = new THREE.Vector3();
 	var deltaPositionTarget = new THREE.Vector3();
-	
-	this.start = function ( t, parameters ) {
-	  
-		startPosition.fromArray( parameters.startPosition );
-		endPosition.fromArray( parameters.endPosition );
-		deltaPosition.subVectors( endPosition, startPosition );
-		
-		startPositionTarget.fromArray( parameters.startPositionTarget );
-		endPositionTarget.fromArray( parameters.endPositionTarget );
-		deltaPositionTarget.subVectors( endPositionTarget, startPositionTarget );
-	  
-	};
-	
+
 	var prevShape = 0;
 
-	this.update = function ( t ) {
+	//
 
-		camera.position.copy( deltaPosition );
-		camera.position.multiplyScalar( t );
-		camera.position.add( startPosition );
+	return new FRAME.Module( {
 
-		cameraTarget.copy( deltaPositionTarget );
-		cameraTarget.multiplyScalar( t );
-		cameraTarget.add( startPositionTarget );
+		parameters: {
+
+			startPosition:       new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 0 ] ),
+			endPosition:         new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 0 ] ),
+			startPositionTarget: new FRAME.ModuleParameter.Vector3( 'Camera Target Start', [ 0, 0, 0 ] ),
+			endPositionTarget:   new FRAME.ModuleParameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] )
+
+		},
+
+		start: function ( parameters ) {
 		
-		camera.lookAt( cameraTarget );
-
-		sphere.position.y = 1900 - ( t  * 1700 );
-
-		group.position.y = sphere.position.y;
-		group.rotation.y = t * 10;
-		light.position.y = sphere.position.y;
-		
-		var shape = Math.floor( t * 525 ) % sphere.children.length;
-		
-		if ( shape !== prevShape ) {
+			startPosition.fromArray( parameters.startPosition );
+			endPosition.fromArray( parameters.endPosition );
+			deltaPosition.subVectors( endPosition, startPosition );
 			
-			for ( var i = 0, l = sphere.children.length; i < l; i ++ ) {
+			startPositionTarget.fromArray( parameters.startPositionTarget );
+			endPositionTarget.fromArray( parameters.endPositionTarget );
+			deltaPositionTarget.subVectors( endPositionTarget, startPositionTarget );
+		
+		},
+
+		update: function ( parameters, t ) {
+
+			camera.position.copy( deltaPosition );
+			camera.position.multiplyScalar( t );
+			camera.position.add( startPosition );
+
+			cameraTarget.copy( deltaPositionTarget );
+			cameraTarget.multiplyScalar( t );
+			cameraTarget.add( startPositionTarget );
+			
+			camera.lookAt( cameraTarget );
+
+			sphere.position.y = 1900 - ( t  * 1700 );
+
+			group.position.y = sphere.position.y;
+			group.rotation.y = t * 10;
+			light.position.y = sphere.position.y;
+			
+			var shape = Math.floor( t * 525 ) % sphere.children.length;
+			
+			if ( shape !== prevShape ) {
 				
-				var object = sphere.children[ i ];
-				object.visible = i === shape;
+				for ( var i = 0, l = sphere.children.length; i < l; i ++ ) {
+					
+					var object = sphere.children[ i ];
+					object.visible = i === shape;
+					
+				}
+				
+				prevShape = shape;
 				
 			}
 			
-			prevShape = shape;
+			for ( var i = 0, l = group.children.length; i < l; i ++ ) {
+
+				var mesh = group.children[ i ];
+				mesh.rotation.x = i + t * 240;
+				mesh.rotation.z = i + t * 120;
+				
+			}
 			
+			renderer.render( scene, camera );
+
 		}
-		
-		for ( var i = 0, l = group.children.length; i < l; i ++ ) {
 
-			var mesh = group.children[ i ];
-			mesh.rotation.x = i + t * 240;
-			mesh.rotation.z = i + t * 120;
-			
-		}
-		
-		renderer.render( scene, camera );
+	} );
 
-	};
-
-};
+} )

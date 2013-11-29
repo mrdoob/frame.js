@@ -1,18 +1,6 @@
-var Scene4Module = function () {
+( function ( config ) {
 
-	FRAME.Module.call( this );
-
-	this.parameters.input = {
-
-		startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 0 ] ),
-		endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 0 ] )
-
-	};
-
-	var width = renderer.domElement.width;
-	var height = renderer.domElement.height;
-
-	var camera = new THREE.PerspectiveCamera( 60, width / height, 1, 2000 );
+	var camera = new THREE.PerspectiveCamera( 60, config.width / config.height, 1, 2000 );
 	camera.up.y = 0.5;
 	camera.up.x = -1;
 	camera.up.normalize();
@@ -82,71 +70,86 @@ var Scene4Module = function () {
 	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 0 ), material ) );
 	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 1 ), material ) );
 	
+	var renderer = config.renderer;
+
 	//
 		
 	var startPosition = new THREE.Vector3();
 	var endPosition = new THREE.Vector3();
 	var deltaPosition = new THREE.Vector3();
-	
-	this.start = function ( t, parameters ) {
-	  
-		startPosition.fromArray( parameters.startPosition );
-		endPosition.fromArray( parameters.endPosition );
-		deltaPosition.subVectors( endPosition, startPosition );
-	  
-	};
-	
+
 	var prevShape = 0;
 
-	this.update = function ( t ) {
+	//
 
-		camera.position.copy( deltaPosition );
-		camera.position.multiplyScalar( t );
-		camera.position.add( startPosition );
-		camera.lookAt( scene.position );
+	return new FRAME.Module( {
+
+		parameters: {
+
+			startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 0 ] ),
+			endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 0 ] )
+
+		},
+
+		start: function ( parameters ) {
 		
-		if ( t > 0.44 ) camera.position.z += 600;
+			startPosition.fromArray( parameters.startPosition );
+			endPosition.fromArray( parameters.endPosition );
+			deltaPosition.subVectors( endPosition, startPosition );
 		
-		light.distance = t * 500 + 100;
-		
-		var shape = Math.floor( t * 125 ) % sphere.children.length;
-		
-		if ( shape !== prevShape ) {
+		},
+
+		update: function ( parameters, t ) {
+
+			camera.position.copy( deltaPosition );
+			camera.position.multiplyScalar( t );
+			camera.position.add( startPosition );
+			camera.lookAt( scene.position );
 			
-			for ( var i = 0, l = sphere.children.length; i < l; i ++ ) {
+			if ( t > 0.44 ) camera.position.z += 600;
+			
+			light.distance = t * 500 + 100;
+			
+			var shape = Math.floor( t * 125 ) % sphere.children.length;
+			
+			if ( shape !== prevShape ) {
 				
-				var object = sphere.children[ i ];
-				object.visible = i === shape;
+				for ( var i = 0, l = sphere.children.length; i < l; i ++ ) {
+					
+					var object = sphere.children[ i ];
+					object.visible = i === shape;
+					
+				}
+				
+				prevShape = shape;
 				
 			}
 			
-			prevShape = shape;
+			for ( var i = 0, l = group2.children.length; i < l; i ++ ) {
+
+				var mesh = group2.children[ i ];
+				mesh.rotation.x = i + t * 24;
+				mesh.rotation.z = i + t * 12;
+				
+			}
+
+
+			for ( var i = 0, l = group.children.length; i < l; i ++ ) {
+
+				var mesh = group.children[ i ];
+				mesh.rotation.x = i + t * 6;
+				mesh.rotation.z = i + t * 4;
+				
+			}
 			
-		}
-		
-		for ( var i = 0, l = group2.children.length; i < l; i ++ ) {
-
-			var mesh = group2.children[ i ];
-			mesh.rotation.x = i + t * 24;
-			mesh.rotation.z = i + t * 12;
+			group2.scale.x = group2.scale.y = group2.scale.z = t * 1 + 0.05;
 			
-		}
-
-
-		for ( var i = 0, l = group.children.length; i < l; i ++ ) {
-
-			var mesh = group.children[ i ];
-			mesh.rotation.x = i + t * 6;
-			mesh.rotation.z = i + t * 4;
+			sphere.scale.x = sphere.scale.y = sphere.scale.z = t * 18 + 0.2;
 			
+			renderer.render( scene, camera );
+
 		}
-		
-		group2.scale.x = group2.scale.y = group2.scale.z = t * 1 + 0.05;
-		
-		sphere.scale.x = sphere.scale.y = sphere.scale.z = t * 18 + 0.2;
-		
-		renderer.render( scene, camera );
 
-	};
+	} );
 
-};
+} )

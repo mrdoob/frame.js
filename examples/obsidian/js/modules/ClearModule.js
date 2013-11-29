@@ -1,11 +1,15 @@
-var ClearModule = function () {
+( function ( config ) {
 
-	FRAME.Module.call( this );
+	var renderer = config.renderer;
 
-	this.update = function ( t ) {
+	return new FRAME.Module( {
 
-		renderer.clear();
+		update: function ( parameters ) {
 
-	};
+			renderer.clear();
 
-};
+		}
+
+	} );
+
+} )

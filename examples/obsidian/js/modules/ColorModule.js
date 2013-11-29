@@ -1,42 +1,36 @@
-var ColorModule = function () {
+( function ( config ) {
 
-	FRAME.Module.call( this );
+	var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
 
-	this.parameters.input = {
+	var scene = new THREE.Scene();
 
-		color:   new FRAME.ModuleParameter.Color( 'Color', 0xffffff ),
-		opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1, 0, 1 )
+	var material = new THREE.MeshBasicMaterial( { transparent: true } );
+	var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), material );
 
-	};
+	scene.add( mesh );
 
-	var parameters;
-	var camera, scene, material;
+	var renderer = config.renderer;
 
-	this.init = function ( value ) {
+	//
 
-		parameters = value;
+	return new FRAME.Module( {
 
-		camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
+		parameters: {
 
-		material = new THREE.MeshBasicMaterial( {
-			color: parameters.color,
-			opacity: parameters.opacity,
-			transparent: true
-		} );
+			color:   new FRAME.ModuleParameter.Color( 'Color', 0xffffff ),
+			opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1, 0, 1 )
 
-		scene = new THREE.Scene();
+		},
 
-		var object = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), material );
-		scene.add( object );
+		update: function ( parameters ) {
 
-	};
+			material.color.setHex( parameters.color );
+			material.opacity = parameters.opacity;
 
-	this.update = function ( t ) {
+			renderer.render( scene, camera );
 
-		material.opacity = parameters.opacity;
+		}
 
-		renderer.render( scene, camera );
+	} );
 
-	};
-
-};
+} )

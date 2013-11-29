@@ -1,20 +1,6 @@
-var Scene2bModule = function () {
+( function ( config ) {
 
-	FRAME.Module.call( this );
-
-	this.parameters.input = {
-
-		startPosition:       new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 100, 100, 100 ] ),
-		endPosition:         new FRAME.ModuleParameter.Vector3( 'Camera End', [ - 100, 100, 100 ] ),
-		startPositionTarget: new FRAME.ModuleParameter.Vector3( 'Camera Target Start', [ 0, 0, 0 ] ),
-		endPositionTarget:   new FRAME.ModuleParameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] )
-
-	};
-
-	var width = renderer.domElement.width;
-	var height = renderer.domElement.height;
-
-	var camera = new THREE.PerspectiveCamera( 60, width / height, 1, 1500 );
+	var camera = new THREE.PerspectiveCamera( 60, config.width / config.height, 1, 1500 );
 	camera.up.y = 0.5;
 	camera.up.x = -1;
 	camera.up.normalize();
@@ -88,7 +74,6 @@ var Scene2bModule = function () {
 	var tunnel2 = new THREE.Mesh( geometry, material );
 	scene.add( tunnel2 );
 
-
 	/*
 	var tunnel = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( {
 		blending: THREE.AdditiveBlending,
@@ -115,6 +100,8 @@ var Scene2bModule = function () {
 	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 0 ), material ) );
 	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 2 ), material ) );
 
+	var renderer = config.renderer;
+
 	//
 
 	var startPosition = new THREE.Vector3();
@@ -125,61 +112,76 @@ var Scene2bModule = function () {
 	var endPositionTarget = new THREE.Vector3();
 	var deltaPositionTarget = new THREE.Vector3();
 
-	this.start = function ( t, parameters ) {
-	  
-		startPosition.fromArray( parameters.startPosition );
-		endPosition.fromArray( parameters.endPosition );
-		deltaPosition.subVectors( endPosition, startPosition );
-
-		startPositionTarget.fromArray( parameters.startPositionTarget );
-		endPositionTarget.fromArray( parameters.endPositionTarget );
-		deltaPositionTarget.subVectors( endPositionTarget, startPositionTarget );
-
-	};
-
 	var prevShape = 0;
 
-	this.update = function ( t ) {
-				
-		sphere.position.z = t * 2000;
-		sphere.rotation.x = t * 6;
-		sphere.rotation.z = t * 6;
+	//
 
-		light1.intensity = 5 - ( ( t * 82 ) % 5 );
+	return new FRAME.Module( {
 
-		light1.position.z = sphere.position.z + 50;
-		light2.position.z = sphere.position.z - 50;
+		parameters: {
 
-		var shape = Math.floor( t * 125 ) % sphere.children.length;
+			startPosition:       new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 100, 100, 100 ] ),
+			endPosition:         new FRAME.ModuleParameter.Vector3( 'Camera End', [ - 100, 100, 100 ] ),
+			startPositionTarget: new FRAME.ModuleParameter.Vector3( 'Camera Target Start', [ 0, 0, 0 ] ),
+			endPositionTarget:   new FRAME.ModuleParameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] )
+
+		},
+
+		start: function ( parameters ) {
 		
-		if ( shape !== prevShape ) {
+			startPosition.fromArray( parameters.startPosition );
+			endPosition.fromArray( parameters.endPosition );
+			deltaPosition.subVectors( endPosition, startPosition );
+
+			startPositionTarget.fromArray( parameters.startPositionTarget );
+			endPositionTarget.fromArray( parameters.endPositionTarget );
+			deltaPositionTarget.subVectors( endPositionTarget, startPositionTarget );
+
+		},
+
+		update: function ( parameters, t ) {
 			
-			for ( var i = 0, l = sphere.children.length; i < l; i ++ ) {
+			sphere.position.z = t * 2000;
+			sphere.rotation.x = t * 6;
+			sphere.rotation.z = t * 6;
+
+			light1.intensity = 5 - ( ( t * 82 ) % 5 );
+
+			light1.position.z = sphere.position.z + 50;
+			light2.position.z = sphere.position.z - 50;
+
+			var shape = Math.floor( t * 125 ) % sphere.children.length;
+			
+			if ( shape !== prevShape ) {
 				
-				var object = sphere.children[ i ];
-				object.visible = i === shape;
+				for ( var i = 0, l = sphere.children.length; i < l; i ++ ) {
+					
+					var object = sphere.children[ i ];
+					object.visible = i === shape;
+					
+				}
+				
+				prevShape = shape;
 				
 			}
 			
-			prevShape = shape;
-			
+			tunnel1.rotation.z = t * 2;
+			tunnel2.rotation.z = - t * 2;
+
+			camera.position.copy( deltaPosition );
+			camera.position.multiplyScalar( t );
+			camera.position.add( startPosition );
+
+			cameraTarget.copy( deltaPositionTarget );
+			cameraTarget.multiplyScalar( t );
+			cameraTarget.add( startPositionTarget );
+
+			camera.lookAt( cameraTarget );
+
+			renderer.render( scene, camera );
+
 		}
-		
-		tunnel1.rotation.z = t * 2;
-		tunnel2.rotation.z = - t * 2;
 
-		camera.position.copy( deltaPosition );
-		camera.position.multiplyScalar( t );
-		camera.position.add( startPosition );
+	} );
 
-		cameraTarget.copy( deltaPositionTarget );
-		cameraTarget.multiplyScalar( t );
-		cameraTarget.add( startPositionTarget );
-
-		camera.lookAt( cameraTarget );
-
-		renderer.render( scene, camera );
-
-	};
-
-};
+} )
