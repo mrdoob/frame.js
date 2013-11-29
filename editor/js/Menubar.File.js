@@ -25,13 +25,9 @@ Menubar.File = function ( editor ) {
 	option.onClick( function () {
 	
 		var data = {
-			"metadata": {
-				"version": 1
-			},
-
-			"timeline": [],
-
-			"curves": []
+			"config": {},
+			"curves": [],
+			"timeline": []
 		};
 		
 		var elements = editor.timeline.elements;
@@ -43,7 +39,7 @@ Menubar.File = function ( editor ) {
 			data.timeline.push( [
 				element.layer,
 				element.start,
-				element.duration,
+				element.end,
 				element.module.name,
 				element.parameters
 			] );
