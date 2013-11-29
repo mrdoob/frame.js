@@ -5,14 +5,9 @@ var FRAME = ( function () {
 		VERSION: 2,
 
 		Curves: {
-			Linear: function () {
+			Linear: function ( timeStart, timeEnd, valueStart, valueEnd ) {
 
-				var timeStart = 2;
-				var timeEnd = 3;
 				var timeDelta = timeEnd - timeStart;
-				
-				var valueStart = 0;
-				var valueEnd = 0.5;
 				var valueDelta = valueEnd - valueStart;
 
 				this.value = 0;
@@ -21,7 +16,7 @@ var FRAME = ( function () {
 
 					if ( time <= timeStart ) {
 
-						this.value = this.valueStart;
+						this.value = valueStart;
 
 					} else if ( time >= timeEnd ) {
 
@@ -77,10 +72,9 @@ var FRAME = ( function () {
 			this.name = '';
 			this.parameters = data.parameters !== undefined ? data.parameters : {};
 
-			this.init = data.init !== undefined ? data.init : function ( callback ) {};
+			this.init = data.init !== undefined ? data.init : function ( parameters ) {};
 			this.load = data.load !== undefined ? data.load : function ( callback ) {};
 			this.start = data.start !== undefined ? data.start : function ( value ) {};
-			this.end = data.end !== undefined ? data.end : function ( value ) {};
 			this.update = data.update !== undefined ? data.update : function ( value ) {};
 
 		},
@@ -148,7 +142,6 @@ var FRAME = ( function () {
 
 				add: function ( element ) {
 
-					element.module.init( element.parameters );
 					elements.push( element );
 					this.sort();
 
@@ -195,7 +188,7 @@ var FRAME = ( function () {
 						if ( element.end > time ) {
 
 							active.push( element );
-							element.module.start( ( time - element.start ) / ( element.end - element.start ), element.parameters );
+							element.module.start( element.parameters );
 
 						}
 
@@ -214,7 +207,6 @@ var FRAME = ( function () {
 						if ( element.end < time ) {
 
 							active.splice( i, 1 );
-							element.module.end( ( time - element.start ) / ( element.end - element.start ) );
 							continue;
 
 						}
@@ -238,7 +230,7 @@ var FRAME = ( function () {
 					for ( var i = 0, l = active.length; i < l; i ++ ) {
 
 						var element = active[ i ];
-						element.module.update( ( time - element.start ) / ( element.end - element.start ) );
+						element.module.update( element.parameters, ( time - element.start ) / ( element.end - element.start ) );
 
 					}
 
@@ -261,15 +253,17 @@ var FRAME = ( function () {
 			
 			var id = 0;
 			
-			return function ( name, layer, start, duration, module, parameters ) {
+			return function ( name, layer, start, end, module, parameters ) {
 
 				this.id = id ++;
 				this.name = name;
 				this.layer = layer;
 				this.start = start;
-				this.end = start + duration;
+				this.end = end;
 				this.module = module;
 				this.parameters = parameters;
+
+				this.module.init( this.parameters );
 				
 			};
 

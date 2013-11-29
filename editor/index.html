@@ -26,21 +26,6 @@
 		<script src="../examples/obsidian/js/libs/raf.min.js"></script>
 		<script src="../examples/obsidian/js/libs/three.min.js"></script>
 
-		<script src="../examples/obsidian/js/modules/WebGLRendererModule.js"></script>
-		<script src="../examples/obsidian/js/modules/ClearModule.js"></script>
-		<script src="../examples/obsidian/js/modules/ColorModule.js"></script>
-		
-		<script src="../examples/obsidian/js/modules/TextModule.js"></script>
-		<script src="../examples/obsidian/js/modules/SceneModule.js"></script>
-		<script src="../examples/obsidian/js/modules/Scene2Module.js"></script>
-		<script src="../examples/obsidian/js/modules/Scene2bModule.js"></script>
-		<script src="../examples/obsidian/js/modules/Scene3Module.js"></script>
-		<script src="../examples/obsidian/js/modules/Scene4Module.js"></script>
-		<script src="../examples/obsidian/js/modules/Scene5Module.js"></script>
-		<script src="../examples/obsidian/js/modules/Scene6Module.js"></script>
-		<script src="../examples/obsidian/js/modules/Scene6bModule.js"></script>
-		<script src="../examples/obsidian/js/modules/Scene7Module.js"></script>
-
 		<script src="../examples/obsidian/files/fonts/helvetiker_regular.typeface.js"></script>
 
 		<script>
@@ -62,66 +47,115 @@
 
 			//
 			
+			var json = {
+				"config":{
+					"width": 800,
+					"height": 600,
+					"path": "../examples/template/",
+					"audio": "files/lug00ber-bastion_amstel.ogg"
+				},
+				"modules":{
+					"WebGLRendererModule": "js/modules/WebGLRendererModule.js",
+					"ClearModule": "js/modules/ClearModule.js",
+					"ColorModule": "js/modules/ColorModule.js",
+					"ShaderModule": "js/modules/ShaderModule.js",
+					"ImageModule": "js/modules/ImageModule.js"
+				},
+				"curves":[
+					[ "linear", 0, 14, 0, 10 ], // blobs effect time
+					[ "linear", 0, 14, 1, 0 ], // black fade in
+					[ "linear", 14, 21, 0, 6 ], // spherecubes 1
+					[ "linear", 21, 28, 0, 6 ], // spherecubes 2
+					[ "linear", 28, 35, 0, 20 ], // planedistort 1
+					[ "linear", 35, 42, 450, 470 ], // planedistort 2
+					[ "linear", 35, 37, 1, 0 ], // white fade in
+					[ "linear", 42, 49, 0, 20 ], // field 1
+					[ "linear", 42, 44, 1, 0 ], // white fade in
+					[ "linear", 49, 56, 450, 470 ], // field 2
+					[ "linear", 56, 70, 0, 10 ], // blobs
+					[ "linear", 56, 60, 1, 0 ] // white fade in
+				],
+				"timeline": [
+					[ 0, 0, 70, "WebGLRendererModule", { "dom": null } ],
+					[ 1, 0, 70, "ClearModule" ],
+					[ 2, 0, 14, "ShaderModule", { "url": "files/shaders/lights.fs", "time": "$0" } ],
+					[ 3, 0, 14, "ColorModule", { "color": 0x000000, "opacity": "$1" } ],
+					[ 2, 14, 21, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$2", "mouse": [ 0.75, 0.75 ] } ],
+					[ 2, 21, 28, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$3", "mouse": [ -0.75, 0.25 ] } ],
+					[ 2, 28, 35, "ShaderModule", { "url": "files/shaders/planedistort.fs", "time": "$4" } ],
+					[ 2, 35, 42, "ShaderModule", { "url": "files/shaders/planedistort.fs", "time": "$5" } ],
+					[ 3, 35, 37, "ColorModule", { "color": 0xffffff, "opacity": "$6" } ],
+					[ 2, 42, 49, "ShaderModule", { "url": "files/shaders/field.fs", "time": "$7" } ],
+					[ 3, 42, 44, "ColorModule", { "color": 0xffffff, "opacity": "$8" } ],
+					[ 2, 49, 56, "ShaderModule", { "url": "files/shaders/field.fs", "time": "$9" } ],
+					[ 2, 56, 70, "ShaderModule", { "url": "files/shaders/blobs.fs", "time": "$10" } ],
+					[ 3, 56, 70, "ImageModule", { "url": "files/credits.png" } ],
+					[ 4, 56, 60, "ColorModule", { "color": 0xffffff, "opacity": "$11" } ]
+				]
+			};
+
 			/*
 			var json = {
-				"metadata": {
-					"version": 1
+				"config":{
+					"width":1280,
+					"height":720,
+					"path":"../examples/obsidian/",
+					"audio":"files/obsidian.ogg"
 				},
-
-				"timeline": [
-					[ 0, 0, 70, "WebGLRendererModule" ],
-					[ 1, 0, 70, "ClearModule" ],
-					[ 2, 0, 14, "ShaderModule", { "url": "../examples/template/files/shaders/lights.fs", "speed": 10 } ],
-					[ 3, 0, 14, "FadeInModule", { "color": "black" } ],
-					[ 2, 14, 21, "ShaderModule", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": 0.75, "mouseY": 0.75 } ],
-					[ 2, 21, 28, "ShaderModule", { "url": "../examples/template/files/shaders/cubeballs.fs", "speed": 6, "mouseX": -0.75, "mouseY": 0.25 } ],
-					[ 2, 28, 35, "ShaderModule", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20 } ],
-					[ 2, 35, 42, "ShaderModule", { "url": "../examples/template/files/shaders/planedistort.fs", "speed": 20, "offset": 450 } ],
-					[ 3, 35, 37, "FadeInModule", { "color": "white" } ],
-					[ 2, 42, 49, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20 } ],
-					[ 3, 42, 44, "FadeInModule", { "color": "white" } ],
-					[ 2, 49, 56, "ShaderModule", { "url": "../examples/template/files/shaders/field.fs", "speed": 20, "offset": 450 } ],
-					[ 2, 56, 70, "ShaderModule", { "url": "../examples/template/files/shaders/blobs.fs", "speed": 10 } ],
-					[ 3, 56, 70, "ImageModule", { "url": "../examples/template/files/credits.png" } ],
-					[ 4, 56, 60, "FadeInModule", { "color": "white" } ]
+				"modules":{
+					"WebGLRendererModule":"js/modules/WebGLRendererModule.js",
+					"ClearModule":"js/modules/ClearModule.js",
+					"ColorModule":"js/modules/ColorModule.js",
+					"TextModule":"js/modules/TextModule.js",
+					"SceneModule":"js/modules/SceneModule.js",
+					"Scene2Module":"js/modules/Scene2Module.js",
+					"Scene2bModule":"js/modules/Scene2bModule.js",
+					"Scene3Module":"js/modules/Scene3Module.js",
+					"Scene4Module":"js/modules/Scene4Module.js",
+					"Scene5Module":"js/modules/Scene5Module.js",
+					"Scene6Module":"js/modules/Scene6Module.js",
+					"Scene6bModule":"js/modules/Scene6bModule.js",
+					"Scene7Module":"js/modules/Scene7Module.js"
+				},
+				"curves":[
+					["linear",0,1,0,1],
+					["linear",0,1,0.75,0],
+					["linear",0,1,0.9,0]
 				],
-
-				"curves": [
+				"timeline":[
+					[0,0,247.09375,"WebGLRendererModule",{"dom":null}],
+					[4,0,4.3125,"ColorModule",{"color":12312063,"opacity":"$0"}],
+					[2,0,14.052395209580844,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],
+					[1,0,247.0625,"ClearModule",{}],
+					[3,4.3125,8.261979594939186,"TextModule",{"text":"xplsv","startPosition":[0,0,18],"endPosition":[0,0,15]}],
+					[3,10.304385479837494,14.056710007672898,"TextModule",{"text":"presents","startPosition":[0,0,18],"endPosition":[0,0,15]}],
+					[4,13.10237494155758,13.209243333664636,"ColorModule",{"color":12312063,"opacity":"$1"}],
+					[4,13.222523546148029,13.320538463266152,"ColorModule",{"color":12312063,"opacity":"$1"}],
+					[4,13.33381867574956,13.453967280340017,"ColorModule",{"color":12312063,"opacity":"$1"}],
+					[4,13.524806843061466,13.644955447651922,"ColorModule",{"color":12312063,"opacity":"$1"}],
+					[4,13.647662866830075,13.767811471420531,"ColorModule",{"color":12312063,"opacity":"$1"}],
+					[4,13.820206681001373,13.94035528559183,"ColorModule",{"color":12312063,"opacity":"$1"}],
+					[4,13.93287025565171,14.053018860242167,"ColorModule",{"color":12312063,"opacity":"$1"}],
+					[2,14.052395209580844,28.042290419161688,"Scene2Module",{"startPosition":[-20,-20,30],"endPosition":[0,0,2030],"startPositionTarget":[-50,0,0],"endPositionTarget":[25,0,2000]}],
+					[2,28.042290419161688,41.84468562874253,"Scene2bModule",{"startPosition":[400,0,-100],"endPosition":[50,0,2100],"startPositionTarget":[0,0,0],"endPositionTarget":[0,0,2000]}],
+					[2,41.84468562874253,55.647080838323376,"Scene2Module",{"startPosition":[50,-50,300],"endPosition":[-50,-25,1700],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],
+					[2,55.647080838323376,69.44947604790423,"Scene2bModule",{"startPosition":[50,0,100],"endPosition":[150,0,2100],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],
+					[2,69.44947604790423,83.4930260371714,"Scene2Module",{"startPosition":[-100,-100,1100],"endPosition":[-50,0,2100],"startPositionTarget":[0,0,500],"endPositionTarget":[0,0,2000]}],
+					[4,82.27357633279475,83.49363893376405,"ColorModule",{"color":12312063,"opacity":"$2"}],
+					[2,83.49302603717142,111.45731305212999,"Scene3Module",{"startPosition":[-600,0,0],"endPosition":[-600,0,0]}],[3,83.4942100076729,86.99777831660283,"TextModule",{"text":"coding / mr.doob x three.js","startPosition":[0,0,40],"endPosition":[0,0,35]}],
+					[3,87.04752956038395,90.4018441379706,"TextModule",{"text":"direction / trace","startPosition":[0,0,40],"endPosition":[0,0,35]}],
+					[3,90.45159538175169,93.88053682500997,"TextModule",{"text":"music / om unit x lorn","startPosition":[0,0,40],"endPosition":[0,0,35]}],
+					[3,93.93028806879107,97.40898075583046,"TextModule",{"text":"for euskal 2013","startPosition":[0,0,40],"endPosition":[0,0,35]}],
+					[3,97.40898075583046,111.45371117871889,"TextModule",{"text":"OBSIDIAN","startPosition":[0,0,20],"endPosition":[0,0,7]}],
+					[2,111.45731305212999,125.32785006708855,"Scene4Module",{"startPosition":[0,0,200],"endPosition":[0,0,700]}],
+					[2,125.32785006708855,139.1983870820471,"Scene4Module",{"startPosition":[0,50,50],"endPosition":[300,-100,600]}],
+					[2,139.1983870820471,153.06892409700566,"Scene5Module",{"startPosition":[50,-500,500],"endPosition":[0,50,1500]}],
+					[2,153.06892409700566,166.93946111196422,"Scene6bModule",{"startPosition":[700,30,-500],"endPosition":[200,-100,1800]}],
+					[2,166.93946111196422,180.80999812692278,"Scene6Module",{"startPosition":[100,0,300],"endPosition":[-1000,0,2200]}],
+					[2,180.81446111196422,236.55999812692278,"Scene7Module",{"startPosition":[0,0,50],"endPosition":[0,50,2000],"startPositionTarget":[0,0,0],"endPositionTarget":[0,500,0]}]
 				]
 			};
 			*/
-			
-			/*
-			var json = {"metadata":{"version":1},"timeline":[[0,0,70,"WebGLRendererModule",{"width":1280,"height":720,"dom":null}],[1,0,70,"ClearModule",{}],[4,0,4.3125,"FadeInModule",{"color":16777215}],[2,0,14,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],[3,4.3125,9.6875,"TextModule",{"text":"xplsv","startPosition":[0,0,20],"endPosition":[0,0,18]}],[4,14,14,"FadeInModule",{"color":16777215}]],"curves":[]};
-			*/
-			
-			var json = {"metadata":{"version":1},
-			/*
-			"modules":{
-				"WebGLRendererModule": "../examples/obsidian/js/modules/WebGLRendererModule.js",
-				"ClearModule": "../examples/obsidian/js/modules/ClearModule.js",
-				"TextModule": "../examples/obsidian/js/modules/TextModule.js",
-				"SceneModule": "../examples/obsidian/js/modules/SceneModule.js",
-				"Scene2Module": "../examples/obsidian/js/modules/Scene2Module.js",
-				"Scene2bModule": "../examples/obsidian/js/modules/Scene2bModule.js",
-				"Scene3Module": "../examples/obsidian/js/modules/Scene3Module.js",
-				"Scene4Module": "../examples/obsidian/js/modules/Scene4Module.js",
-				"Scene5Module": "../examples/obsidian/js/modules/Scene5Module.js",
-				"Scene6Module": "../examples/obsidian/js/modules/Scene6Module.js",
-				"Scene6bModule": "../examples/obsidian/js/modules/Scene6bModule.js",
-				"Scene7Module": "../examples/obsidian/js/modules/Scene7Module.js"
-			},
-			*/
-			"curves":[
-				[ "linear", 0, 1, 0, 1 ],
-				[ "linear", 0, 1, 0.75, 0 ],
-				[ "linear", 0, 1, 0.9, 0 ]
-			],
-			"timeline":[[0,0,247.09375,"WebGLRendererModule",{"width":1280,"height":720,"dom":null}],[4,0,4.3125,"ColorModule",{"color":12312063,"opacity":"$0"}],[2,0,14.052395209580844,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],[1,0,247.0625,"ClearModule",{}],[3,4.3125,3.949479594939186,"TextModule",{"text":"xplsv","startPosition":[0,0,18],"endPosition":[0,0,15]}],[3,10.304385479837494,3.7523245278354027,"TextModule",{"text":"presents","startPosition":[0,0,18],"endPosition":[0,0,15]}],[4,13.10237494155758,0.10686839210705572,"ColorModule",{"color":12312063,"opacity":"$1"}],[4,13.222523546148029,0.09801491711812256,"ColorModule",{"color":12312063,"opacity":"$1"}],[4,13.33381867574956,0.12014860459045545,"ColorModule",{"color":12312063,"opacity":"$1"}],[4,13.524806843061466,0.12014860459045545,"ColorModule",{"color":12312063,"opacity":"$1"}],[4,13.647662866830075,0.12014860459045545,"ColorModule",{"color":12312063,"opacity":"$1"}],[4,13.820206681001373,0.12014860459045545,"ColorModule",{"color":12312063,"opacity":"$1"}],[4,13.93287025565171,0.12014860459045545,"ColorModule",{"color":12312063,"opacity":"$1"}],[2,14.052395209580844,13.989895209580844,"Scene2Module",{"startPosition":[-20,-20,30],"endPosition":[0,0,2030],"startPositionTarget":[-50,0,0],"endPositionTarget":[25,0,2000]}],[2,28.042290419161688,13.802395209580844,"Scene2bModule",{"startPosition":[400,0,-100],"endPosition":[50,0,2100],"startPositionTarget":[0,0,0],"endPositionTarget":[0,0,2000]}],[2,41.84468562874253,13.802395209580844,"Scene2Module",{"startPosition":[50,-50,300],"endPosition":[-50,-25,1700],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],[2,55.647080838323376,13.802395209580844,"Scene2bModule",{"startPosition":[50,0,100],"endPosition":[150,0,2100],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050]}],[2,69.44947604790423,14.043549989267179,"Scene2Module",{"startPosition":[-100,-100,1100],"endPosition":[-50,0,2100],"startPositionTarget":[0,0,500],"endPositionTarget":[0,0,2000]}],[4,82.27357633279475,1.220062600969306,"ColorModule",{"color":12312063,"opacity":"$2"}],[2,83.49302603717142,27.964287014958565,"Scene3Module",{"startPosition":[-600,0,0],"endPosition":[-600,0,0]}],[3,83.4942100076729,3.50356830892993,"TextModule",{"text":"coding / mr.doob x three.js","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,87.04752956038395,3.3543145775866465,"TextModule",{"text":"direction / trace","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,90.45159538175169,3.4289414432582883,"TextModule",{"text":"music / om unit x lorn","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,93.93028806879107,3.478692687039383,"TextModule",{"text":"for euskal 2013","startPosition":[0,0,40],"endPosition":[0,0,35]}],[3,97.40898075583046,14.044730422888431,"TextModule",{"text":"OBSIDIAN","startPosition":[0,0,20],"endPosition":[0,0,7]}],[2,111.45731305212999,13.870537014958565,"Scene4Module",{"startPosition":[0,0,200],"endPosition":[0,0,700]}],[2,125.32785006708855,13.870537014958565,"Scene4Module",{"startPosition":[0,50,50],"endPosition":[300,-100,600]}],[2,139.1983870820471,13.870537014958565,"Scene5Module",{"startPosition":[50,-500,500],"endPosition":[0,50,1500]}],[2,153.06892409700566,13.870537014958565,"Scene6bModule",{"startPosition":[700,30,-500],"endPosition":[200,-100,1800]}],[2,166.93946111196422,13.870537014958565,"Scene6Module",{"startPosition":[100,0,300],"endPosition":[-1000,0,2200]}],[2,180.81446111196422,55.745537014958565,"Scene7Module",{"startPosition":[0,0,50],"endPosition":[0,50,2000],"startPositionTarget":[0,0,0],"endPositionTarget":[0,500,0]}]]
-			};
-
-
-			/*
 
 			// load modules
 
@@ -132,20 +166,17 @@
 
 				( function ( name, file ) {
 
-					console.log( 'Loading:', name );
+					// console.log( 'Loading:', name );
 
 					var request = new XMLHttpRequest();
 					request.addEventListener( 'load', function ( event ) {
 
-						console.log( 'Loaded:', name );
-
-						// modules[ name ] = eval( event.target.responseText );
-
-						modules[ name ] = eval( event.target.responseText )();
+						modules[ name ] = eval( event.target.responseText )( json.config );
+						modules[ name ].name = name;
 
 						loaded ++;
 
-						console.log( loaded, total )
+						console.log( 'Loaded (' + loaded + '/' + total + '):', name );
 
 						if ( loaded === total ) {
 
@@ -159,11 +190,9 @@
 
 					total ++;	
 
-				} )( key, json.modules[ key ] )
+				} )( key, json.config.path + json.modules[ key ] )
 
 			}
-
-			*/
 
 			// curves
 
@@ -171,96 +200,124 @@
 
 			for ( var i = 0, l = json.curves.length; i < l; i ++ ) {
 
-				// var curve = new FRAME.Curves.Linear();
-				var curve = new FRAME.Curves.Sin();
-				editor.addCurve( curve );
+				var data = json.curves[ i ];
 
+				var curve;
+
+				switch ( data[ 0 ] ) {
+					case 'linear':
+						curve = new FRAME.Curves.Linear( data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ] );
+						break;
+					/*
+					case 'sin':
+						curve = new FRAME.Curves.Sin();
+						break;
+					*/
+				}
+
+				editor.addCurve( curve );
 				curves.push( curve );
 
 			}
 
 			// init timeline
 
-			var modules = {};
+			var init = function () {
 
-			for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
+				for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
 
-				var data = json.timeline[ i ];
+					var data = json.timeline[ i ];
 
-				var layer = data[ 0 ];
-				var start = data[ 1 ];
-				var duration = data[ 2 ];
-				var moduleName = data[ 3 ];
-				var parameters = data[ 4 ];
+					var layer = data[ 0 ];
+					var start = data[ 1 ];
+					var end = data[ 2 ];
+					var moduleName = data[ 3 ];
+					var parameters = data[ 4 ];
 
-				if ( window[ moduleName ] === undefined ) {
+					var module;
 
-					console.log( 'FRAME: Missing module: ' + moduleName );
-					continue;
+					if ( modules[ moduleName ] === undefined ) {
 
-				}
-
-				var module;
-
-				if ( modules[ moduleName ] === undefined ) {
-
-					module = new window[ moduleName ];
-					module.name = moduleName;
-					
-					modules[ moduleName ] = module;
-					
-				} else {
-					
-					module = modules[ moduleName ];
-					
-				}
-
-				for ( var key in parameters ) {
-
-					if ( module.parameters.input[ key ] === undefined ) {
-
-						console.log( 'FRAME: [' + moduleName + '] doesn\'t support "' + key + '" as input parameter' );
-						delete parameters[ key ];
+						console.log( 'FRAME: Missing module: ' + moduleName );
 						continue;
+						
+					} else {
+						
+						module = modules[ moduleName ];
+						
+					}
+
+					// parameters
+
+					if ( parameters === undefined ) parameters = {};
+
+					for ( var key in module.parameters ) {
+
+						// set defaults
+
+						if ( parameters[ key ] === undefined ) {
+
+							parameters[ key ] = module.parameters[ key ].value;
+
+						}
 
 					}
 
-					var parameter = parameters[ key ];
+					for ( var key in parameters ) {
 
-					if ( typeof( parameter ) === 'string' && parameter.charAt( 0 ) === '$' ) {
+						if ( module.parameters[ key ] === undefined ) {
 
-						var id = parseInt( parameter.substr( 1 ) );
-						var curve = curves[ id ];
+							console.log( 'FRAME: [' + moduleName + '] doesn\'t have parameter "' + key + '"' );
+							delete parameters[ key ];
+							continue;
 
-						Object.defineProperty( parameters, key, {
-							get: function() {
-								return curve.value;
-							}
-						});
+						}
+
+						var parameter = parameters[ key ];
+
+						if ( typeof( parameter ) === 'string' && parameter.charAt( 0 ) === '$' ) {
+
+							var id = parseInt( parameter.substr( 1 ) );
+
+							( function ( curve ) {
+
+								Object.defineProperty( parameters, key, {
+									get: function() {
+										return curve.value;
+									}
+								});
+
+							} )( curves[ id ] )
+
+						}
 
 					}
 
-				}
-				
-				if ( parameters.dom !== undefined ) {
-				
-					parameters.dom = viewport.dom;
-				
-				}
-		
-				var element = new FRAME.TimelineElement( moduleName, layer, start, duration, module, parameters );
+					if ( parameters.dom !== undefined ) {
+					
+						parameters.dom = viewport.dom;
+					
+					}
+			
+					var element = new FRAME.TimelineElement( moduleName, layer, start, end, module, parameters );
 
-				editor.add( element );
+					editor.add( element );
 
-			}
+				}
+
+				var hash = location.hash.substr( 1 );
+				
+				signals.setTime.dispatch( hash !== '' ? hash : 0 );
+
+
+			};
 
 			//
 
-			var fullscreen = false;
 			var time = 0, playing = false;
 
 			var audio = document.createElement( 'audio' );
-			audio.src = '../examples/obsidian/files/obsidian.ogg';
+			audio.src = json.config.path + json.config.audio;
 			document.body.appendChild( audio );
 
 			signals.play.add( function () {
@@ -303,6 +360,7 @@
 			signals.setTime.add( function ( value ) {
 
 				time = Math.max( 0, value );
+
 				signals.timeChanged.dispatch( time );
 
 				if ( audio.duration > 0 ) {
@@ -315,14 +373,6 @@
 
 			} );
 			
-			var hash = location.hash .substr( 1 );
-			
-			if ( hash !== '' ) {
-				
-				signals.setTime.dispatch( hash );
-				
-			}
-
 			document.addEventListener( 'keydown', function ( event ) {
 
 				switch ( event.keyCode ) {

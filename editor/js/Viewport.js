@@ -18,8 +18,6 @@ var Viewport = function ( editor ) {
 
 	signals.timelineElementChanged.add( function ( element ) {
 
-		element.module.init( element.parameters );
-
 		timeline.reset();
 		timeline.sort();
 		timeline.update( time );
