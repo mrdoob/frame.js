@@ -52,6 +52,10 @@ var Timeline = function ( editor ) {
 
 	// timeline
 
+	var keysDown = {};
+	document.addEventListener( 'keydown', function ( event ) { keysDown[ event.keyCode ] = true; } );
+	document.addEventListener( 'keyup',   function ( event ) { keysDown[ event.keyCode ] = false; } );
+
 	var time = 0;
 	var scale = 32;
 	var prevScale = scale;
@@ -66,19 +70,27 @@ var Timeline = function ( editor ) {
 	timeline.dom.style.overflow = 'auto'; // TODO: UIify.
 	timeline.dom.addEventListener( 'mousewheel', function ( event ) {
 	
-		scale = Math.max( 1, scale + ( event.wheelDeltaY / 10 ) );
-				
-		for ( var key in blocks ) {
-		
-			blocks[ key ].update();
+		// check if [shift] is pressed
+
+		if ( keysDown[ 16 ] === true ) {
+
+			event.preventDefault();
+ 
+			scale = Math.max( 1, scale + ( event.wheelDeltaY / 10 ) );
+					
+			for ( var key in blocks ) {
 			
+				blocks[ key ].update();
+				
+			}
+
+			timeline.dom.scrollLeft = ( timeline.dom.scrollLeft * scale ) / prevScale;
+
+			updateTimeMark();
+
+			prevScale = scale;
+
 		}
-
-		timeline.dom.scrollLeft = ( timeline.dom.scrollLeft * scale ) / prevScale;
-
-		updateTimeMark();
-
-		prevScale = scale;
 	
 	} );
 	container.add( timeline );
