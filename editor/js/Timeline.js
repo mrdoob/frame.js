@@ -213,7 +213,16 @@ var Timeline = function ( editor ) {
 
 				element.start += movementX / scale;
 				element.end += movementX / scale;
-				
+
+				if ( element.start < 0 ) {
+
+					var offset = - element.start;
+
+					element.start += offset;
+					element.end += offset;
+
+				}
+
 				update();
 
 				signals.timelineElementChanged.dispatch( element );
