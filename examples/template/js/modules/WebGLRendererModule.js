@@ -1,18 +1,37 @@
 ( function ( config ) {
 
-	var renderer = new THREE.WebGLRenderer();
-	renderer.setSize( config.width, config.height );
+	var dom = document.createElement( 'div' );
+	dom.style.position = 'absolute';
+	dom.style.width = '100%';
+	dom.style.height = '100%';
+
+	var renderer = new THREE.WebGLRenderer( { antialias: true } );
 	renderer.autoClear = false;
-	renderer.domElement.style.maxWidth = '100%';
-	renderer.domElement.style.height = '100%';
+	renderer.domElement.style.position = 'absolute';
+	dom.appendChild( renderer.domElement );
+
+	var onWindowResize = function () {
+
+		var scale = Math.min( dom.offsetWidth / config.width, dom.offsetHeight / config.height );
+
+		var width = config.width * scale;
+		var height = config.height * scale;
+
+		renderer.setSize( width, height );
+		renderer.domElement.style.left = ( dom.offsetWidth - width ) / 2 + 'px';
+		renderer.domElement.style.top = ( dom.offsetHeight - height ) / 2 + 'px';
+
+	};
 
 	config.renderer = renderer;
+
+	//
 
 	return new FRAME.Module( {
 
 		parameters: {
 
-			dom: null
+			dom: new FRAME.ModuleParameter.DOM( 'DOM', null )
 
 		},
 
@@ -20,8 +39,14 @@
 
 			if ( parameters.dom !== null ) {
 
-				parameters.dom.appendChild( renderer.domElement );
-				parameters.dom = null; // TODO: Another hack
+				parameters.dom.appendChild( dom );
+				parameters.dom = null; // TODO: Fix hack
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize );
+
+				onWindowResize();
 
 			}
 
