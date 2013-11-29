@@ -6,9 +6,15 @@ var Properties = function ( editor ) {
 
 	var signals = editor.signals;
 
+	var selected = null;
+	var values;
+
 	editor.signals.elementSelected.add( function ( element ) {
 
 		container.clear();
+
+		selected = element;
+		values = {};
 
 		var elementPanel = new UI.Panel();
 		container.add( elementPanel );
@@ -16,11 +22,13 @@ var Properties = function ( editor ) {
 		elementPanel.add( new UI.Text( element.name ).setWidth( '90px' ).setId( 'name' ) );
 		elementPanel.add( new UI.HorizontalRule() );
 
-		var parameters = element.module.parameters.input;
+		var parameters = element.module.parameters;
 
 		for ( var key in parameters ) {
 
 			var parameter = parameters[ key ];
+
+			if ( parameter === null ) continue;
 
 			var parameterRow = new UI.Panel();
 			parameterRow.add( new UI.Text( parameter.name ).setWidth( '90px' ) );
@@ -42,6 +50,8 @@ var Properties = function ( editor ) {
 
 					parameterRow.add( parameterValue );
 
+					values[ key ] = parameterValue;
+
 				} else if ( parameter instanceof FRAME.ModuleParameter.Float ) {
 
 					var parameterValue = new UI.Number()
@@ -56,6 +66,8 @@ var Properties = function ( editor ) {
 						} );
 
 					parameterRow.add( parameterValue );
+
+					values[ key ] = parameterValue;
 
 				} else if ( parameter instanceof FRAME.ModuleParameter.Vector2 ) {
 
@@ -153,6 +165,22 @@ var Properties = function ( editor ) {
 			elementPanel.add( parameterRow );
 
 		};
+
+	} );
+
+	editor.signals.timeChanged.add( function () {
+
+		if ( selected !== null ) {
+
+			var element = selected;
+
+			for ( var key in values ) {
+
+				values[ key ].setValue( element.parameters[ key] );
+
+			}
+
+		}
 
 	} );
 
