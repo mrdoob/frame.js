@@ -50,6 +50,12 @@ var Timeline = function ( editor ) {
 	timeText.setValue( '0:00.00' );
 	controls.add( timeText );
 
+	var playbackRateText = new UI.Text();
+	playbackRateText.setColor( '#bbb' );
+	playbackRateText.setMarginLeft( '10px' );
+	playbackRateText.setValue( '(1x)' );
+	controls.add( playbackRateText );
+
 	// timeline
 
 	var keysDown = {};
@@ -391,6 +397,12 @@ var Timeline = function ( editor ) {
 		
 		selected = element.id;
 		blocks[ selected ].select();
+
+	} );
+
+	signals.setPlaybackRate.add( function ( value ) {
+
+		playbackRateText.setValue( '(' + value.toFixed( 1 ) + 'x)' );
 
 	} );
 

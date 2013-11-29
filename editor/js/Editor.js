@@ -5,11 +5,10 @@ var Editor = function () {
 	this.signals = {
 		// actions
 		play: new SIGNALS.Signal(),
-		setTime: new SIGNALS.Signal(),
 		backwards: new SIGNALS.Signal(),
 		forwards: new SIGNALS.Signal(),
-		decelerate: new SIGNALS.Signal(),
-		accelerate: new SIGNALS.Signal(),
+		setTime: new SIGNALS.Signal(),
+		setPlaybackRate: new SIGNALS.Signal(),
 		// elements
 		elementAdded: new SIGNALS.Signal(),
 		elementRemoved: new SIGNALS.Signal(),

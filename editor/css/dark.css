@@ -17,9 +17,9 @@ hr {
 
 button {
 	position: relative;
-	color: #bbb;
-	background-color: transparent;
-	border: 1px solid #999;
+	color: #555;
+	background-color: #888;
+	border: 0px;
 	cursor: pointer;
 }
 

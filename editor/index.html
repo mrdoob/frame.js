@@ -314,7 +314,9 @@
 
 			//
 
-			var time = 0, playing = false;
+			var time = 0;
+			var playbackRate = 1;
+			var playing = false;
 
 			var audio = document.createElement( 'audio' );
 			audio.src = json.config.path + json.config.audio;
@@ -344,18 +346,6 @@
 				signals.setTime.dispatch( time + 1 );
 
 			} );
-			
-			signals.decelerate.add( function () {
-
-				audio.playbackRate -= 0.1;
-
-			} );
-			
-			signals.accelerate.add( function () {
-
-				audio.playbackRate += 0.1;
-
-			} );
 
 			signals.setTime.add( function ( value ) {
 
@@ -370,6 +360,14 @@
 				}
 				
 				location.hash = audio.currentTime;
+
+			} );
+
+			signals.setPlaybackRate.add( function ( value ) {
+
+				playbackRate = value;
+				
+				audio.playbackRate = playbackRate;
 
 			} );
 			
@@ -390,11 +388,11 @@
 						break;
 					case 38:
 						event.preventDefault();
-						signals.accelerate.dispatch();
+						signals.setPlaybackRate.dispatch( playbackRate + 0.1 );
 						break;
 					case 40:
 						event.preventDefault();
-						signals.decelerate.dispatch();
+						signals.setPlaybackRate.dispatch( playbackRate - 0.1 );
 						break;
 
 				}
