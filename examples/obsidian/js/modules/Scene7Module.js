@@ -20,10 +20,11 @@
 		color: 0x808080,
 		shading: THREE.FlatShading
 	} );
+
+	var object = new THREE.Mesh( plane, material );
 	
 	for ( var i = 0; i < 800; i ++ ) {
 
-		var object = new THREE.Mesh( plane, material );
 		object.position.x = Math.random() * 2000 - 1000;
 		object.position.z = Math.random() * 2000 - 1000;
 		object.scale.x = Math.random() * 20;
@@ -33,8 +34,8 @@
 
 	}
 
-	var tunnel = new THREE.Mesh( geometry, material );
-	scene.add( tunnel );
+	var city = new THREE.Mesh( geometry, material );
+	scene.add( city );
 	
 	var geometry = new THREE.Geometry();
 	var material = new THREE.MeshLambertMaterial( {
@@ -43,10 +44,11 @@
 		side: THREE.DoubleSide,
 		wireframe: true
 	} );
+
+	var object = new THREE.Mesh( plane, material );
 	
 	for ( var i = 0; i < 800; i ++ ) {
 
-		var object = new THREE.Mesh( plane, material );
 		object.position.x = Math.random() * 2000 - 1000;
 		object.position.z = Math.random() * 2000 - 1000;
 		object.scale.x = Math.random() * 20;
@@ -56,8 +58,8 @@
 
 	}
 
-	var tunnel2 = new THREE.Mesh( geometry, material );
-	scene.add( tunnel2 );
+	var city2 = new THREE.Mesh( geometry, material );
+	scene.add( city2 );
 	
 	//
 	
