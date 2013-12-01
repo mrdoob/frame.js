@@ -24,13 +24,15 @@
 		side: THREE.DoubleSide
 	} );
 	
+	var object = new THREE.Mesh( plane, material );
+	
 	for ( var i = 0; i < 800; i ++ ) {
 
 		var radius = 50 + ( Math.random() * 150 );
 
-		var object = new THREE.Mesh( plane, material );
 		object.position.x = Math.random() - 0.5;
 		object.position.y = Math.random() - 0.5;
+		object.position.z = 0;
 		object.position.normalize();
 		object.position.multiplyScalar( radius );
 		object.lookAt( scene.position );
@@ -52,14 +54,16 @@
 		side: THREE.DoubleSide,
 		wireframe: true
 	} );
+
+	var object = new THREE.Mesh( plane, material );
 	
 	for ( var i = 0; i < 800; i ++ ) {
 
 		var radius = 50 + ( Math.random() * 150 );
 
-		var object = new THREE.Mesh( plane, material );
 		object.position.x = Math.random() - 0.5;
 		object.position.y = Math.random() - 0.5;
+		object.position.z = 0;
 		object.position.normalize();
 		object.position.multiplyScalar( radius );
 		object.lookAt( scene.position );

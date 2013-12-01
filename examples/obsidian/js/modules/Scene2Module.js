@@ -27,14 +27,16 @@
 		shading: THREE.FlatShading,
 		side: THREE.DoubleSide
 	} );
+
+	var object = new THREE.Mesh( plane, material );
 	
 	for ( var i = 0; i < 800; i ++ ) {
 
 		var radius = 50 + ( Math.random() * 150 );
 
-		var object = new THREE.Mesh( plane, material );
 		object.position.x = Math.random() - 0.5;
 		object.position.y = Math.random() - 0.5;
+		object.position.z = 0;
 		object.position.normalize();
 		object.position.multiplyScalar( radius );
 		object.lookAt( scene.position );
@@ -42,6 +44,7 @@
 		object.scale.x = Math.random() * 10;
 		object.scale.y = Math.random() * 10;
 		object.scale.z = Math.random() * 20;
+		
 		THREE.GeometryUtils.merge( geometry, object );
 
 	}
@@ -57,13 +60,15 @@
 		wireframe: true
 	} );
 	
+	var object = new THREE.Mesh( plane, material );
+	
 	for ( var i = 0; i < 800; i ++ ) {
 
 		var radius = 50 + ( Math.random() * 150 );
 
-		var object = new THREE.Mesh( plane, material );
 		object.position.x = Math.random() - 0.5;
 		object.position.y = Math.random() - 0.5;
+		object.position.z = 0;
 		object.position.normalize();
 		object.position.multiplyScalar( radius );
 		object.lookAt( scene.position );
@@ -71,6 +76,7 @@
 		object.scale.x = Math.random() * 10;
 		object.scale.y = Math.random() * 10;
 		object.scale.z = Math.random() * 20;
+
 		THREE.GeometryUtils.merge( geometry, object );
 
 	}
