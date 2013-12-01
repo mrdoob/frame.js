@@ -46,18 +46,15 @@ var FRAME = ( function () {
 
 			},
 
-			Saw: function () {
+			Saw: function ( frequency, offset, min, max ) {
 
-				var frequency = 1;
-				var min = 0;
-				var max = 1;
 				var delta = max - min;
 
 				this.value = 0;
 
 				this.update = function ( time ) {
 
-					this.value = ( ( time % frequency ) / frequency ) * delta + min;
+					this.value = ( ( ( time - offset ) % frequency ) / frequency ) * delta + min;
 
 				};
 

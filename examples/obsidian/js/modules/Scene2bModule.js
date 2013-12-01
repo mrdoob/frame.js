@@ -123,7 +123,8 @@
 			startPosition:       new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 100, 100, 100 ] ),
 			endPosition:         new FRAME.ModuleParameter.Vector3( 'Camera End', [ - 100, 100, 100 ] ),
 			startPositionTarget: new FRAME.ModuleParameter.Vector3( 'Camera Target Start', [ 0, 0, 0 ] ),
-			endPositionTarget:   new FRAME.ModuleParameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] )
+			endPositionTarget:   new FRAME.ModuleParameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] ),
+			lightIntensity:      new FRAME.ModuleParameter.Float( 'Light intensity', 1 )
 
 		},
 
@@ -145,7 +146,7 @@
 			sphere.rotation.x = t * 6;
 			sphere.rotation.z = t * 6;
 
-			light1.intensity = 5 - ( ( t * 82 ) % 5 );
+			light1.intensity = parameters.lightIntensity * 6;
 
 			light1.position.z = sphere.position.z + 50;
 			light2.position.z = sphere.position.z - 50;
