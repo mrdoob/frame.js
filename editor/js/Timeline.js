@@ -229,6 +229,22 @@ var Timeline = function ( editor ) {
 
 				}
 
+				movementY += event.movementY | event.webkitMovementY | event.mozMovementY | 0;
+
+				if ( movementY >= 30 ) {
+
+					element.layer ++;
+					movementY = 0;
+
+				}
+
+				if ( movementY <= -30 ) {
+
+					element.layer --;
+					movementY = 0;
+
+				}
+
 				update();
 
 				signals.timelineElementChanged.dispatch( element );
@@ -316,6 +332,7 @@ var Timeline = function ( editor ) {
 			var onMouseMove = function ( event ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
+
 				element.end += movementX / scale;
 				
 				update();
