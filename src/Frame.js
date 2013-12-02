@@ -5,26 +5,38 @@ var FRAME = ( function () {
 		VERSION: 2,
 
 		Curves: {
-			Linear: function ( timeStart, timeEnd, valueStart, valueEnd ) {
+			Linear: function ( points ) {
 
-				var timeDelta = timeEnd - timeStart;
-				var valueDelta = valueEnd - valueStart;
+				var linear = function ( p0, p1, t0, t1, t ) {
+
+                        return ( p1 - p0 ) * ( ( t - t0 ) / ( t1 - t0 ) ) + p0;
+
+                };
 
 				this.value = 0;
 
 				this.update = function ( time ) {
 
-					if ( time <= timeStart ) {
+					if ( time <= points[ 0 ] ) {
 
-						this.value = valueStart;
+						this.value = points[ 1 ];
 
-					} else if ( time >= timeEnd ) {
+					} else if ( time >= points[ points.length - 2 ] ) {
 
-						this.value = valueEnd;
+						this.value = points[ points.length - 1 ];
 
 					} else {
 
-						this.value = ( ( time - timeStart ) / timeDelta ) * valueDelta + valueStart;
+						for ( var i = 0, l = points.length; i < l; i += 2 ) {
+
+							if ( time < points[ i + 2 ] ) {
+
+								this.value = linear( points[ i + 1 ], points[ i + 3 ], points[ i ], points[ i + 2 ], time );
+								break;
+
+							}
+
+						}
 
 					}
 

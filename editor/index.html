@@ -63,18 +63,18 @@
 					"ImageModule": "js/modules/ImageModule.js"
 				},
 				"curves":[
-					[ "linear", 0, 14, 0, 10 ], // blobs effect time
-					[ "linear", 0, 14, 1, 0 ], // black fade in
-					[ "linear", 14, 21, 0, 6 ], // spherecubes 1
-					[ "linear", 21, 28, 0, 6 ], // spherecubes 2
-					[ "linear", 28, 35, 0, 20 ], // planedistort 1
-					[ "linear", 35, 42, 450, 470 ], // planedistort 2
-					[ "linear", 35, 37, 1, 0 ], // white fade in
-					[ "linear", 42, 49, 0, 20 ], // field 1
-					[ "linear", 42, 44, 1, 0 ], // white fade in
-					[ "linear", 49, 56, 450, 470 ], // field 2
-					[ "linear", 56, 70, 0, 10 ], // blobs
-					[ "linear", 56, 60, 1, 0 ] // white fade in
+					[ "linear", [ 0, 0, 14, 10 ] ], // blobs effect time
+					[ "linear", [ 0, 1, 14, 0 ] ], // black fade in
+					[ "linear", [ 14, 0, 21, 6 ] ], // spherecubes 1
+					[ "linear", [ 21, 0, 28, 6 ] ], // spherecubes 2
+					[ "linear", [ 28, 0, 35, 20 ] ], // planedistort 1
+					[ "linear", [ 35, 450, 42, 470 ] ], // planedistort 2
+					[ "linear", [ 35, 1, 37, 0 ] ], // white fade in
+					[ "linear", [ 42, 0, 49, 20 ] ], // field 1
+					[ "linear", [ 42, 1, 44, 0 ] ], // white fade in
+					[ "linear", [ 49, 450, 56, 470 ] ], // field 2
+					[ "linear", [ 56, 0, 70, 10 ] ], // blobs
+					[ "linear", [ 56, 1, 60, 0 ] ] // white fade in
 				],
 				"timeline": [
 					[ 0, 0, 70, "WebGLRendererModule", { "dom": null } ],
@@ -119,15 +119,15 @@
 					"Scene7Module":"js/modules/Scene7Module.js"
 				},
 				"curves":[
-					["linear",0,4.3125,0.9,0],
-					["linear",13.10237494155758,13.209243333664636,0.75,0],
-					["linear",13.222523546148029,13.320538463266152,0.75,0],
-					["linear",13.33381867574956,13.453967280340017,0.75,0],
-					["linear",13.524806843061466,13.644955447651922,0.75,0],
-					["linear",13.647662866830075,13.767811471420531,0.75,0],
-					["linear",13.820206681001373,13.94035528559183,0.75,0],
-					["linear",13.93287025565171,14.053018860242167,0.75,0],
-					["linear",82.27357633279475,83.49363893376405,0.9,0],
+					["linear",[0,0.9,4.3125,0]],
+					["linear",[13.10237494155758,0.75,13.209243333664636,0]],
+					["linear",[13.222523546148029,0.75,13.320538463266152,0]],
+					["linear",[13.33381867574956,0.75,13.453967280340017,0]],
+					["linear",[13.524806843061466,0.75,13.644955447651922,0]],
+					["linear",[13.647662866830075,0.75,13.767811471420531,0]],
+					["linear",[13.820206681001373,0.75,13.94035528559183,0]],
+					["linear",[13.93287025565171,0.75,14.053018860242167,0]],
+					["linear",[82.27357633279475,0.9,83.49363893376405,0]],
 					["saw",0.869,0.6,1,0]
 				],
 				"timeline":[
@@ -213,7 +213,7 @@
 
 				switch ( data[ 0 ] ) {
 					case 'linear':
-						curve = new FRAME.Curves.Linear( data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ] );
+						curve = new FRAME.Curves.Linear( data[ 1 ] );
 						break;
 					case 'sin':
 						curve = new FRAME.Curves.Sin();
