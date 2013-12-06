@@ -5,7 +5,7 @@
 	dom.style.width = '100%';
 	dom.style.height = '100%';
 
-	var renderer = new THREE.WebGLRenderer( { antialias: true } );
+	var renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
 	renderer.setSize( config.width, config.height );
 	renderer.autoClear = false;
 	renderer.domElement.style.position = 'absolute';
@@ -33,7 +33,8 @@
 
 		parameters: {
 
-			dom: new FRAME.ModuleParameter.DOM( 'DOM', null )
+			dom: new FRAME.ModuleParameter.DOM( 'DOM', null ),
+			clear: new FRAME.ModuleParameter.Boolean( 'Clear', true )
 
 		},
 
@@ -51,6 +52,12 @@
 				onWindowResize();
 
 			}
+
+		},
+
+		update: function ( parameters ) {
+
+			if ( parameters.clear === true ) renderer.clear();
 
 		}
 

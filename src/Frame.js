@@ -5,6 +5,7 @@ var FRAME = ( function () {
 		VERSION: 2,
 
 		Curves: {
+			
 			Linear: function ( points ) {
 
 				var linear = function ( p0, p1, t0, t1, t ) {

@@ -35,7 +35,22 @@ var Properties = function ( editor ) {
 
 			( function ( key ) {
 
-				if ( parameter instanceof FRAME.ModuleParameter.Integer ) {
+				if ( parameter instanceof FRAME.ModuleParameter.Boolean ) {
+
+					var parameterValue = new UI.Checkbox()
+						.setValue( element.parameters[ key ] )
+						.onChange( function () {
+
+							element.parameters[ key ] = this.getValue();
+							signals.timelineElementChanged.dispatch( element );
+
+						} );
+
+					parameterRow.add( parameterValue );
+
+					values[ key ] = parameterValue;
+
+				} else if ( parameter instanceof FRAME.ModuleParameter.Integer ) {
 
 					var parameterValue = new UI.Integer()
 						.setRange( parameter.min, parameter.max )
