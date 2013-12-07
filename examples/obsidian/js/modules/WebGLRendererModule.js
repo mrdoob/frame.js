@@ -32,7 +32,9 @@
 		parameters: {
 
 			dom: new FRAME.ModuleParameter.DOM( 'DOM', null ),
-			clear: new FRAME.ModuleParameter.Boolean( 'Clear', true )
+			clearColor: new FRAME.ModuleParameter.Boolean( 'Clear color', true ),
+			clearDepth: new FRAME.ModuleParameter.Boolean( 'Clear depth', true ),
+			clearStencil: new FRAME.ModuleParameter.Boolean( 'Clear stencil', true )
 
 		},
 
@@ -55,7 +57,7 @@
 
 		update: function ( parameters ) {
 
-			if ( parameters.clear === true ) renderer.clear();
+			renderer.clear( parameters.clearColor === true, parameters.clearDepth === true, parameters.clearStencil === true );
 
 		}
 
