@@ -178,11 +178,7 @@ var Timeline = function ( editor ) {
 
 	}() ) + ')';
 	grid.style.overflow = 'auto';
-	grid.addEventListener( 'scroll', function ( event ) {
-
-		updateMarks();
-
-	}, false );
+	grid.addEventListener( 'scroll', updateMarks, false );
 	timeline.dom.appendChild( grid );
 
 	//
