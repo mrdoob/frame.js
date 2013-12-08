@@ -73,7 +73,6 @@ var Timeline = function ( editor ) {
 	timeline.setWidth( '-moz-calc( 100% - 300px )' );
 	timeline.setWidth( 'calc( 100% - 300px )' );
 	timeline.setHeight( '100%' );
-	timeline.dom.style.overflow = 'auto'; // TODO: UIify.
 	timeline.dom.addEventListener( 'mousewheel', function ( event ) {
 	
 		// check if [shift] is pressed
@@ -90,8 +89,9 @@ var Timeline = function ( editor ) {
 				
 			}
 
-			timeline.dom.scrollLeft = ( timeline.dom.scrollLeft * scale ) / prevScale;
+			grid.scrollLeft = ( grid.scrollLeft * scale ) / prevScale;
 
+			updateMarks();
 			updateTimeMark();
 
 			prevScale = scale;
@@ -105,39 +105,18 @@ var Timeline = function ( editor ) {
 	marks.style.position = 'absolute';
 	marks.style.width = '8192px';
 	marks.style.height = '32px';
-	marks.style.background = 'url(' + ( function () {
-
-		var canvas = document.createElement( 'canvas' );
-		canvas.width = scale;
-		canvas.height = 8;
-
-		var context = canvas.getContext( '2d' );
-		context.fillStyle = '#aaa';
-		context.fillRect( 0, 0, 1, 8 );
-		context.fillStyle = '#888';
-		context.fillRect( Math.floor( scale / 4 ), 4, 1, 4 );
-		context.fillRect( Math.floor( scale / 4 ) * 2, 4, 1, 4 );
-		context.fillRect( Math.floor( scale / 4 ) * 3, 4, 1, 4 );
-		
-		return canvas.toDataURL();
-
-	}() ) + ') repeat-x';
-	marks.style.backgroundPosition = 'bottom';
-	marks.addEventListener( 'click', function ( event ) {
-
-		signals.setTime.dispatch( event.offsetX / scale );
-	
-	}, false );
 	marks.addEventListener( 'mousedown', function ( event ) {
 
 		var onMouseMove = function ( event ) {
 			
-			signals.setTime.dispatch( event.offsetX / scale );
+			signals.setTime.dispatch( ( event.offsetX + grid.scrollLeft ) / scale );
 
 		};
 
 		var onMouseUp = function ( event ) {
-			
+
+			onMouseMove( event );
+
 			marks.removeEventListener( 'mousemove', onMouseMove );
 			document.removeEventListener( 'mouseup', onMouseUp );
 
@@ -149,13 +128,43 @@ var Timeline = function ( editor ) {
 	}, false );
 	timeline.dom.appendChild( marks );
 
+	var updateMarks = function ( force ) {
+
+		// TODO: SVG?
+
+		if ( force === true || scale !== prevScale ) {
+
+			marks.style.background = 'url(' + ( function () {
+
+				var canvas = document.createElement( 'canvas' );
+				canvas.width = Math.floor( scale );
+				canvas.height = 8;
+
+				var context = canvas.getContext( '2d' );
+				context.fillStyle = '#aaa';
+				context.fillRect( 0, 0, 1, 8 );
+				context.fillStyle = '#888';
+				context.fillRect( Math.floor( scale / 4 ), 2, 1, 6 );
+				context.fillRect( Math.floor( scale / 4 ) * 2, 2, 1, 6 );
+				context.fillRect( Math.floor( scale / 4 ) * 3, 2, 1, 6 );
+				
+				return canvas.toDataURL();
+
+			}() ) + ') repeat-x';
+
+		}
+
+		marks.style.backgroundPositionX = - grid.scrollLeft + 'px';
+		marks.style.backgroundPositionY = 'bottom';
+		marks.style.backgroundSize = scale + 'px 8px';
+
+	};
+
 	var grid = document.createElement( 'div' );
 	grid.style.position = 'absolute';
 	grid.style.top = '32px';
-	grid.style.width = '2512px';
-	grid.style.height = '-webkit-calc(100% - 32px)';
-	grid.style.height = '-moz-calc(100% - 32px)';
-	grid.style.height = '-calc(100% - 32px)';
+	grid.style.bottom = '0px'
+	grid.style.width = '100%';
 	grid.style.background = 'url(' + ( function () {
 
 		var canvas = document.createElement( 'canvas' );
@@ -168,6 +177,12 @@ var Timeline = function ( editor ) {
 		return canvas.toDataURL();
 
 	}() ) + ')';
+	grid.style.overflow = 'auto';
+	grid.addEventListener( 'scroll', function ( event ) {
+
+		updateMarks();
+
+	}, false );
 	timeline.dom.appendChild( grid );
 
 	//
@@ -192,13 +207,18 @@ var Timeline = function ( editor ) {
 
 	}() ) + ')';
 	timeMark.style.pointerEvents = 'none';
-	timeline.dom.appendChild( timeMark );
+	timeMark.style.zIndex = 1;
+	grid.appendChild( timeMark );
 
 	var updateTimeMark = function () {
 
 		timeMark.style.left = ( time * scale ) - 8 + 'px';
 
 	};
+
+	updateMarks( true );
+
+	//
 
 	var Block = ( function ( element ) {
 		
