@@ -87,7 +87,7 @@ var Properties = function ( editor ) {
 				} else if ( parameter instanceof FRAME.ModuleParameter.Vector2 ) {
 
 					var vectorX = new UI.Number()
-						.setValue( element.parameters[ key ][1] )
+						.setValue( element.parameters[ key ][0] )
 						.setWidth( '50px' )
 						.onChange( function () {
 
@@ -112,7 +112,7 @@ var Properties = function ( editor ) {
 				} else if ( parameter instanceof FRAME.ModuleParameter.Vector3 ) {
 
 					var vectorX = new UI.Number()
-						.setValue( element.parameters[ key ][1] )
+						.setValue( element.parameters[ key ][0] )
 						.setWidth( '50px' )
 						.onChange( function () {
 
