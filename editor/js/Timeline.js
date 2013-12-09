@@ -42,12 +42,22 @@ var Timeline = function ( editor ) {
 	var button = new UI.Button();
 	button.setLabel( 'MODULES' );
 	button.setMarginLeft( '60px' );
-	button.onClick( function () { showEffects() } );
+	button.onClick( function () { 
+
+		modules.setDisplay( '' );
+		curves.setDisplay( 'none' );
+
+	 } );
 	controls.add( button );
 
 	var button = new UI.Button();
 	button.setLabel( 'CURVES' );
-	button.onClick( function () { showCurves() } );
+	button.onClick( function () {
+
+		modules.setDisplay( 'none' );
+		curves.setDisplay( '' );
+
+	} );
 	controls.add( button );
 
 	// timeline
@@ -161,6 +171,7 @@ var Timeline = function ( editor ) {
 	scroller.appendChild( modules.dom );
 
 	var curves = new Timeline.Curves( editor );
+	curves.setDisplay( 'none' );
 	scroller.appendChild( curves.dom );
 
 	//

@@ -13,6 +13,8 @@ var Editor = function () {
 		elementAdded: new SIGNALS.Signal(),
 		elementRemoved: new SIGNALS.Signal(),
 		elementSelected: new SIGNALS.Signal(),
+		// curves
+		curveAdded: new SIGNALS.Signal(),
 		// events
 		timeChanged: new SIGNALS.Signal(),
 		timelineScaled: new SIGNALS.Signal(),
@@ -44,6 +46,7 @@ Editor.prototype = {
 	addCurve: function ( curve ) {
 
 		this.timeline.curves.push( curve );
+		this.signals.curveAdded.dispatch( curve );
 
 	},
 
