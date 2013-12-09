@@ -111,7 +111,7 @@ var Timeline = function ( editor ) {
 
 	var marks = document.createElement( 'div' );
 	marks.style.position = 'absolute';
-	marks.style.width = '8192px';
+	marks.style.width = '100%';
 	marks.style.height = '32px';
 	marks.addEventListener( 'mousedown', function ( event ) {
 
