@@ -289,9 +289,13 @@
 							( function ( curve ) {
 
 								Object.defineProperty( parameters, key, {
+
 									get: function() {
+
 										return curve.value;
+
 									}
+									
 								});
 
 							} )( curves[ id ] )
