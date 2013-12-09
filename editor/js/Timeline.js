@@ -8,52 +8,35 @@ var Timeline = function ( editor ) {
 	panel.setPosition( 'absolute' );
 	panel.setWidth( '300px' );
 	panel.setHeight( '100%' );
-	panel.dom.style.background = '#666 url(' + ( function () {
-
-		var canvas = document.createElement( 'canvas' );
-		canvas.width = 1;
-		canvas.height = 32;
-
-		var context = canvas.getContext( '2d' );
-		context.fillStyle = '#555';
-		context.fillRect( 0, 0, 1, 1 );
-		return canvas.toDataURL();
-
-	}() ) + ')';
+	panel.dom.style.background = '#555';
 	container.add( panel );
 
 	// controls
 
 	var controls = new UI.Panel();
 	controls.setPosition( 'absolute' );
-	controls.setPadding( '5px 4px' );
+	controls.setWidth( '100%' );
+	controls.setPadding( '5px 0px' );
+	controls.setBackground( '#666' );
 	panel.add( controls );
 
 	var button = new UI.Button();
-	button.setLabel( '<<' );
-	button.onClick( function () { signals.backwards.dispatch() } );
-	controls.add( button );
-
-	var button = new UI.Button();
-	button.setLabel( '>' );
+	button.setLabel( '►' );
+	button.setMarginLeft( '5px' );
+	button.setPaddingRight( '4px' );
 	button.onClick( function () { signals.play.dispatch() } );
-	controls.add( button );
-
-	var button = new UI.Button();
-	button.setLabel( '>>' );
-	button.onClick( function () { signals.forwards.dispatch() } );
 	controls.add( button );
 
 	var timeText = new UI.Text();
 	timeText.setColor( '#bbb' );
-	timeText.setMarginLeft( '10px' );
+	timeText.setMarginLeft( '5px' );
 	timeText.setValue( '0:00.00' );
 	controls.add( timeText );
 
 	var playbackRateText = new UI.Text();
-	playbackRateText.setColor( '#bbb' );
-	playbackRateText.setMarginLeft( '10px' );
-	playbackRateText.setValue( '(1x)' );
+	playbackRateText.setColor( '#999' );
+	playbackRateText.setMarginLeft( '5px' );
+	playbackRateText.setValue( '1.0x' );
 	controls.add( playbackRateText );
 
 	// timeline
@@ -435,7 +418,7 @@ var Timeline = function ( editor ) {
 
 	signals.setPlaybackRate.add( function ( value ) {
 
-		playbackRateText.setValue( '(' + value.toFixed( 1 ) + 'x)' );
+		playbackRateText.setValue( value.toFixed( 1 ) + 'x' );
 
 	} );
 

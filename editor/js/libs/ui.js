@@ -50,9 +50,9 @@ UI.Element.prototype = {
 
 // properties
 
-var properties = [ 'position', 'left', 'top', 'right', 'bottom', 'width', 'height', 'border', 'borderLeft',
+var properties = [ 'position', 'left', 'top', 'right', 'bottom', 'width', 'height', 'background', 'border', 'borderLeft',
 'borderTop', 'borderRight', 'borderBottom', 'borderColor', 'display', 'overflow', 'margin', 'marginLeft', 'marginTop', 'marginRight', 'marginBottom', 'padding', 'paddingLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'color',
-'backgroundColor', 'opacity', 'fontSize', 'fontWeight', 'textTransform', 'cursor' ];
+'backgroundColor', 'opacity', 'fontSize', 'fontWeight', 'textAlign', 'textTransform', 'cursor' ];
 
 properties.forEach( function ( property ) {
 

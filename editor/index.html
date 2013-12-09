@@ -311,18 +311,13 @@
 				}
 
 				var hash = location.hash.substr( 1 );
-				
 				signals.setTime.dispatch( hash !== '' ? hash : 0 );
-
 
 			};
 
 			//
 
 			var time = 0;
-			var playbackRate = 1;
-			var playing = false;
-
 			var audio = document.createElement( 'audio' );
 			audio.src = json.config.path + json.config.audio;
 			document.body.appendChild( audio );
@@ -330,49 +325,32 @@
 			signals.play.add( function () {
 
 				if ( audio.paused === true ) {
-					playing = true;
+
+					audio.currentTime = time;
 					audio.play();
 					animate();
+
 				} else {
-					playing = false;
+
 					audio.pause();
+
 				}
-
-			} );
-
-			signals.backwards.add( function () {
-
-				signals.setTime.dispatch( time - 1 );
-
-			} );
-
-			signals.forwards.add( function () {
-
-				signals.setTime.dispatch( time + 1 );
 
 			} );
 
 			signals.setTime.add( function ( value ) {
 
 				time = Math.max( 0, value );
+								
+				location.hash = time;
 
 				signals.timeChanged.dispatch( time );
-
-				if ( audio.duration > 0 ) {
-
-					audio.currentTime = value;
-
-				}
-				
-				location.hash = audio.currentTime;
 
 			} );
 
 			signals.setPlaybackRate.add( function ( value ) {
 
-				playbackRate = value;
-
-				audio.playbackRate = playbackRate;
+				audio.playbackRate = value;
 
 			} );
 			
@@ -393,11 +371,11 @@
 						break;
 					case 38:
 						event.preventDefault();
-						signals.setPlaybackRate.dispatch( playbackRate + 0.1 );
+						signals.setPlaybackRate.dispatch( audio.playbackRate + 0.1 );
 						break;
 					case 40:
 						event.preventDefault();
-						signals.setPlaybackRate.dispatch( playbackRate - 0.1 );
+						signals.setPlaybackRate.dispatch( audio.playbackRate - 0.1 );
 						break;
 
 				}
@@ -406,7 +384,7 @@
 
 			var animate = function () {
 
-				if ( playing === true ) {
+				if ( audio.paused === false ) {
 
 					requestAnimationFrame( animate );
 
