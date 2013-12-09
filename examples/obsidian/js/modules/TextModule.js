@@ -87,6 +87,12 @@
 
 			}
 
+			if ( texts[ parameters.text ] === undefined ) {
+
+				init( parameters );
+
+			}
+
 			currentText = texts[ parameters.text ];
 			scene.add( currentText );
 		 
