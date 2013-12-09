@@ -87,21 +87,21 @@ var Properties = function ( editor ) {
 				} else if ( parameter instanceof FRAME.ModuleParameter.Vector2 ) {
 
 					var vectorX = new UI.Number()
-						.setValue( element.parameters[ key ][0] )
+						.setValue( element.parameters[ key ][ 0 ] )
 						.setWidth( '50px' )
 						.onChange( function () {
 
-							element.parameters[ key ][0] = this.getValue();
+							element.parameters[ key ][ 0 ] = this.getValue();
 							signals.timelineElementChanged.dispatch( element );
 
 						} );
 				
 					var vectorY = new UI.Number()
-						.setValue( element.parameters[ key ][1] )
+						.setValue( element.parameters[ key ][ 1 ] )
 						.setWidth( '50px' )
 						.onChange( function () {
 
-							element.parameters[ key ][1] = this.getValue();
+							element.parameters[ key ][ 1 ] = this.getValue();
 							signals.timelineElementChanged.dispatch( element );
 
 						} );
@@ -112,31 +112,31 @@ var Properties = function ( editor ) {
 				} else if ( parameter instanceof FRAME.ModuleParameter.Vector3 ) {
 
 					var vectorX = new UI.Number()
-						.setValue( element.parameters[ key ][0] )
+						.setValue( element.parameters[ key ][ 0 ] )
 						.setWidth( '50px' )
 						.onChange( function () {
 
-							element.parameters[ key ][0] = this.getValue();
+							element.parameters[ key ][ 0 ] = this.getValue();
 							signals.timelineElementChanged.dispatch( element );
 
 						} );
 				
 					var vectorY = new UI.Number()
-						.setValue( element.parameters[ key ][1] )
+						.setValue( element.parameters[ key ][ 1 ] )
 						.setWidth( '50px' )
 						.onChange( function () {
 
-							element.parameters[ key ][1] = this.getValue();
+							element.parameters[ key ][ 1 ] = this.getValue();
 							signals.timelineElementChanged.dispatch( element );
 
 						} );
 
 					var vectorZ = new UI.Number()
-						.setValue( element.parameters[ key ][2] )
+						.setValue( element.parameters[ key ][ 2 ] )
 						.setWidth( '50px' )
 						.onChange( function () {
 
-							element.parameters[ key ][2] = this.getValue();
+							element.parameters[ key ][ 2 ] = this.getValue();
 							signals.timelineElementChanged.dispatch( element );
 
 						} );
