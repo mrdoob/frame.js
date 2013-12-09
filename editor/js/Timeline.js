@@ -44,6 +44,19 @@ var Timeline = function ( editor ) {
 	button.setMarginLeft( '60px' );
 	button.onClick( function () { 
 
+		scroller.style.background = 'url(' + ( function () {
+
+			var canvas = document.createElement( 'canvas' );
+			canvas.width = 1;
+			canvas.height = 32;
+
+			var context = canvas.getContext( '2d' );
+			context.fillStyle = '#444';
+			context.fillRect( 0, 0, 1, 1 );
+			return canvas.toDataURL();
+
+		}() ) + ')';
+
 		modules.setDisplay( '' );
 		curves.setDisplay( 'none' );
 
@@ -53,6 +66,8 @@ var Timeline = function ( editor ) {
 	var button = new UI.Button();
 	button.setLabel( 'CURVES' );
 	button.onClick( function () {
+
+		scroller.style.background = '';
 
 		modules.setDisplay( 'none' );
 		curves.setDisplay( '' );

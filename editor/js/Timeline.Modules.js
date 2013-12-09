@@ -4,18 +4,6 @@ Timeline.Modules = function ( editor ) {
 
 	var container = new UI.Panel();
 	container.setHeight( '100%' );
-	container.setBackground( 'url(' + ( function () {
-
-		var canvas = document.createElement( 'canvas' );
-		canvas.width = 1;
-		canvas.height = 32;
-
-		var context = canvas.getContext( '2d' );
-		context.fillStyle = '#444';
-		context.fillRect( 0, 0, 1, 1 );
-		return canvas.toDataURL();
-
-	}() ) + ')' );
 
 	var scale = 32;
 
