@@ -56,6 +56,7 @@ var Timeline = function ( editor ) {
 	timeline.setWidth( '-moz-calc( 100% - 300px )' );
 	timeline.setWidth( 'calc( 100% - 300px )' );
 	timeline.setHeight( '100%' );
+	timeline.setOverflow( 'hidden' );
 	timeline.dom.addEventListener( 'mousewheel', function ( event ) {
 	
 		// check if [shift] is pressed
@@ -161,7 +162,12 @@ var Timeline = function ( editor ) {
 
 	}() ) + ')';
 	grid.style.overflow = 'auto';
-	grid.addEventListener( 'scroll', updateMarks, false );
+	grid.addEventListener( 'scroll', function ( event ) {
+
+		updateMarks();
+		updateTimeMark();
+
+	}, false );
 	timeline.dom.appendChild( grid );
 
 	//
@@ -187,11 +193,11 @@ var Timeline = function ( editor ) {
 	}() ) + ')';
 	timeMark.style.pointerEvents = 'none';
 	timeMark.style.zIndex = 1;
-	grid.appendChild( timeMark );
+	timeline.dom.appendChild( timeMark );
 
 	var updateTimeMark = function () {
 
-		timeMark.style.left = ( time * scale ) - 8 + 'px';
+		timeMark.style.left = ( time * scale ) - grid.scrollLeft - 8 + 'px';
 
 	};
 
