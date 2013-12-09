@@ -19,6 +19,8 @@
 		<script src="js/Properties.js"></script>
 		<script src="js/Viewport.js"></script>
 		<script src="js/Timeline.js"></script>
+		<script src="js/Timeline.Modules.js"></script>
+		<script src="js/Timeline.Curves.js"></script>
 
 		<!-- <script src="../build/frame.min.js"></script> -->
 		<script src="../src/Frame.js"></script>
@@ -341,7 +343,9 @@
 			signals.setTime.add( function ( value ) {
 
 				time = Math.max( 0, value );
-								
+
+				if ( audio.duration > 0 ) audio.currentTime = time;
+
 				location.hash = time;
 
 				signals.timeChanged.dispatch( time );

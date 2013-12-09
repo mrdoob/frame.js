@@ -15,6 +15,7 @@ var Editor = function () {
 		elementSelected: new SIGNALS.Signal(),
 		// events
 		timeChanged: new SIGNALS.Signal(),
+		timelineScaled: new SIGNALS.Signal(),
 		timelineElementChanged: new SIGNALS.Signal()
 	};
 

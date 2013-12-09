@@ -39,6 +39,17 @@ var Timeline = function ( editor ) {
 	playbackRateText.setValue( '1.0x' );
 	controls.add( playbackRateText );
 
+	var button = new UI.Button();
+	button.setLabel( 'MODULES' );
+	button.setMarginLeft( '60px' );
+	button.onClick( function () { showEffects() } );
+	controls.add( button );
+
+	var button = new UI.Button();
+	button.setLabel( 'CURVES' );
+	button.onClick( function () { showCurves() } );
+	controls.add( button );
+
 	// timeline
 
 	var keysDown = {};
@@ -47,7 +58,6 @@ var Timeline = function ( editor ) {
 
 	var time = 0;
 	var scale = 32;
-	var prevScale = scale;
 
 	var timeline = new UI.Panel();
 	timeline.setPosition( 'absolute' );
@@ -66,19 +76,8 @@ var Timeline = function ( editor ) {
 			event.preventDefault();
  
 			scale = Math.max( 1, scale + ( event.wheelDeltaY / 10 ) );
-					
-			for ( var key in blocks ) {
-			
-				blocks[ key ].update();
-				
-			}
 
-			grid.scrollLeft = ( grid.scrollLeft * scale ) / prevScale;
-
-			updateMarks();
-			updateTimeMark();
-
-			prevScale = scale;
+			signals.timelineScaled.dispatch( scale );
 
 		}
 	
@@ -93,7 +92,7 @@ var Timeline = function ( editor ) {
 
 		var onMouseMove = function ( event ) {
 			
-			signals.setTime.dispatch( ( event.offsetX + grid.scrollLeft ) / scale );
+			signals.setTime.dispatch( ( event.offsetX + scroller.scrollLeft ) / scale );
 
 		};
 
@@ -138,37 +137,31 @@ var Timeline = function ( editor ) {
 
 		}
 
-		marks.style.backgroundPositionX = - grid.scrollLeft + 'px';
+		marks.style.backgroundPositionX = - scroller.scrollLeft + 'px';
 		marks.style.backgroundPositionY = 'bottom';
 		marks.style.backgroundSize = scale + 'px 8px';
 
 	};
 
-	var grid = document.createElement( 'div' );
-	grid.style.position = 'absolute';
-	grid.style.top = '32px';
-	grid.style.bottom = '0px'
-	grid.style.width = '100%';
-	grid.style.background = 'url(' + ( function () {
-
-		var canvas = document.createElement( 'canvas' );
-		canvas.width = 1;
-		canvas.height = 32;
-
-		var context = canvas.getContext( '2d' );
-		context.fillStyle = '#444';
-		context.fillRect( 0, 0, 1, 1 );
-		return canvas.toDataURL();
-
-	}() ) + ')';
-	grid.style.overflow = 'auto';
-	grid.addEventListener( 'scroll', function ( event ) {
+	var scroller = document.createElement( 'div' );
+	scroller.style.position = 'absolute';
+	scroller.style.top = '32px';
+	scroller.style.bottom = '0px'
+	scroller.style.width = '100%';
+	scroller.style.overflow = 'auto';
+	scroller.addEventListener( 'scroll', function ( event ) {
 
 		updateMarks();
 		updateTimeMark();
 
 	}, false );
-	timeline.dom.appendChild( grid );
+	timeline.dom.appendChild( scroller );
+
+	var modules = new Timeline.Modules( editor );
+	scroller.appendChild( modules.dom );
+
+	var curves = new Timeline.Curves( editor );
+	scroller.appendChild( curves.dom );
 
 	//
 
@@ -192,235 +185,17 @@ var Timeline = function ( editor ) {
 
 	}() ) + ')';
 	timeMark.style.pointerEvents = 'none';
-	timeMark.style.zIndex = 1;
 	timeline.dom.appendChild( timeMark );
 
 	var updateTimeMark = function () {
 
-		timeMark.style.left = ( time * scale ) - grid.scrollLeft - 8 + 'px';
+		timeMark.style.left = ( time * scale ) - scroller.scrollLeft - 8 + 'px';
 
 	};
 
 	updateMarks( true );
 
-	//
-
-	var Block = ( function ( element ) {
-		
-		var scope = this;
-
-		var dom = document.createElement( 'div' );
-		dom.className = 'block';
-		dom.style.position = 'absolute';
-		dom.style.height = '30px';
-		dom.addEventListener( 'mousedown', function ( event ) {
-
-			var movementX = 0;
-			var movementY = 0;
-
-			var onMouseMove = function ( event ) {
-
-				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-
-				element.start += movementX / scale;
-				element.end += movementX / scale;
-
-				if ( element.start < 0 ) {
-
-					var offset = - element.start;
-
-					element.start += offset;
-					element.end += offset;
-
-				}
-
-				movementY += event.movementY | event.webkitMovementY | event.mozMovementY | 0;
-
-				if ( movementY >= 30 ) {
-
-					element.layer ++;
-					movementY = 0;
-
-				}
-
-				if ( movementY <= -30 ) {
-
-					element.layer --;
-					movementY = 0;
-
-				}
-
-				update();
-
-				signals.timelineElementChanged.dispatch( element );
-
-			};
-
-			var onMouseUp = function ( event ) {
-				
-				if ( Math.abs( movementX ) < 2 ) {
-					
-					editor.select( element )
-					
-				}
-
-				document.removeEventListener( 'mousemove', onMouseMove );
-				document.removeEventListener( 'mouseup', onMouseUp );
-
-			};
-
-			document.addEventListener( 'mousemove', onMouseMove, false );
-			document.addEventListener( 'mouseup', onMouseUp, false );
-
-		}, false );
-
-		var resizeLeft = document.createElement( 'div' );
-		resizeLeft.style.position = 'absolute';
-		resizeLeft.style.width = '6px';
-		resizeLeft.style.height = '30px';
-		resizeLeft.style.cursor = 'w-resize';
-		resizeLeft.addEventListener( 'mousedown', function ( event ) {
-
-			event.stopPropagation();
-			
-			var movementX = 0;
-
-			var onMouseMove = function ( event ) {
-
-				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-
-				element.start += movementX / scale;
-				
-				update();
-
-				signals.timelineElementChanged.dispatch( element );
-
-			};
-
-			var onMouseUp = function ( event ) {
-				
-				if ( Math.abs( movementX ) < 2 ) {
-					
-					editor.select( element )
-					
-				}
-
-				document.removeEventListener( 'mousemove', onMouseMove );
-				document.removeEventListener( 'mouseup', onMouseUp );
-
-			};
-
-			document.addEventListener( 'mousemove', onMouseMove, false );
-			document.addEventListener( 'mouseup', onMouseUp, false );
-
-		}, false );
-		dom.appendChild( resizeLeft );
-
-		var name = document.createElement( 'div' );
-		name.className = 'name';
-		name.textContent = element.name;
-		dom.appendChild( name );
-
-		var resizeRight = document.createElement( 'div' );
-		resizeRight.style.position = 'absolute';
-		resizeRight.style.right = '0px';
-		resizeRight.style.top = '0px';
-		resizeRight.style.width = '6px';
-		resizeRight.style.height = '30px';
-		resizeRight.style.cursor = 'e-resize';
-		resizeRight.addEventListener( 'mousedown', function ( event ) {
-
-			event.stopPropagation();
-			
-			var movementX = 0;
-
-			var onMouseMove = function ( event ) {
-
-				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-
-				element.end += movementX / scale;
-				
-				update();
-
-				signals.timelineElementChanged.dispatch( element );
-
-			};
-
-			var onMouseUp = function ( event ) {
-				
-				if ( Math.abs( movementX ) < 2 ) {
-					
-					editor.select( element )
-					
-				}
-
-				document.removeEventListener( 'mousemove', onMouseMove );
-				document.removeEventListener( 'mouseup', onMouseUp );
-
-			};
-
-			document.addEventListener( 'mousemove', onMouseMove, false );
-			document.addEventListener( 'mouseup', onMouseUp, false );
-
-		}, false );
-		dom.appendChild( resizeRight );
-		
-		var update = function () {
-
-			dom.style.left = ( element.start * scale ) + 'px';
-			dom.style.top = ( element.layer * 32 ) + 'px';
-			dom.style.width = ( ( element.end - element.start ) * scale - 2 ) + 'px';
-
-		};
-
-		update();
-
-		this.dom = dom;
-		
-		this.select = function () {
-		  
-			dom.className = 'block selected';
-			
-		};
-		
-		this.deselect = function () {
-
-			dom.className = 'block';
-			
-		};
-		
-		this.update = update;
-
-		return this;
-
-	} );
-
 	// signals
-
-	var blocks = {};
-	var selected = null;
-
-	signals.elementAdded.add( function ( element ) {
-
-		var block = new Block( element );
-		grid.appendChild( block.dom );
-		
-		blocks[ element.id ] = block;
-
-	} );
-	
-	signals.elementSelected.add( function ( element ) {
-
-		if ( blocks[ selected ] !== undefined ) {
-			
-			blocks[ selected ].deselect();
-			
-		}
-		
-		selected = element.id;
-		blocks[ selected ].select();
-
-	} );
 
 	signals.setPlaybackRate.add( function ( value ) {
 
@@ -442,13 +217,17 @@ var Timeline = function ( editor ) {
 
 	} );
 
-	signals.elementRemoved.add( function ( element ) {
-	
-			var block = blocks[ element.id ];
-			grid.removeChild( block.dom )
+	var prevScale = scale;
+
+	signals.timelineScaled.add( function ( value ) {
 			
-			delete blocks[ element.id ];
-	
+		scroller.scrollLeft = ( scroller.scrollLeft * value ) / prevScale;
+
+		updateMarks();
+		updateTimeMark();
+
+		prevScale = value;
+
 	} );
 
 	return container;
