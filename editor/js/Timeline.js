@@ -141,7 +141,7 @@ var Timeline = function ( editor ) {
 	}, false );
 	timeline.dom.appendChild( marks );
 
-	var updateMarks = function ( force ) {
+	var updateMarks = function () {
 
 		var drawing = '';
 		var scale4 = scale / 4;
@@ -212,7 +212,7 @@ var Timeline = function ( editor ) {
 
 	};
 
-	updateMarks( true );
+	updateMarks();
 
 	// signals
 
