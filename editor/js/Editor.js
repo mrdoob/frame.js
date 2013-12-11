@@ -8,7 +8,6 @@ var Editor = function () {
 		backwards: new SIGNALS.Signal(),
 		forwards: new SIGNALS.Signal(),
 		setTime: new SIGNALS.Signal(),
-		setPlaybackRate: new SIGNALS.Signal(),
 		// elements
 		elementAdded: new SIGNALS.Signal(),
 		elementRemoved: new SIGNALS.Signal(),
@@ -16,6 +15,8 @@ var Editor = function () {
 		// curves
 		curveAdded: new SIGNALS.Signal(),
 		// events
+		durationChanged: new SIGNALS.Signal(),
+		playbackRateChanged: new SIGNALS.Signal(),
 		timeChanged: new SIGNALS.Signal(),
 		timelineScaled: new SIGNALS.Signal(),
 		timelineElementChanged: new SIGNALS.Signal()

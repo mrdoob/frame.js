@@ -325,6 +325,11 @@
 
 			var time = 0;
 			var audio = document.createElement( 'audio' );
+			audio.addEventListener( 'durationchange', function ( event ) {
+
+				editor.signals.durationChanged.dispatch( audio.duration );
+
+			} );
 			audio.src = json.config.path + json.config.audio;
 			document.body.appendChild( audio );
 
@@ -355,12 +360,6 @@
 				signals.timeChanged.dispatch( time );
 
 			} );
-
-			signals.setPlaybackRate.add( function ( value ) {
-
-				audio.playbackRate = value;
-
-			} );
 			
 			document.addEventListener( 'keydown', function ( event ) {
 
@@ -379,11 +378,13 @@
 						break;
 					case 38:
 						event.preventDefault();
-						signals.setPlaybackRate.dispatch( audio.playbackRate + 0.1 );
+						audio.playbackRate = audio.playbackRate + 0.1;
+						signals.playbackRateChanged.dispatch( audio.playbackRate );
 						break;
 					case 40:
 						event.preventDefault();
-						signals.setPlaybackRate.dispatch( audio.playbackRate - 0.1 );
+						audio.playbackRate = audio.playbackRate - 0.1;
+						signals.playbackRateChanged.dispatch( audio.playbackRate );
 						break;
 
 				}

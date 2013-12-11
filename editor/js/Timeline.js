@@ -33,29 +33,32 @@ var Timeline = function ( editor ) {
 	timeText.setValue( '0:00.00' );
 	controls.add( timeText );
 
+	var updateTimeText = function ( value ) {
+
+		var minutes = Math.floor( value / 60 );
+		var seconds = value % 60;
+		var padding = seconds < 10 ? '0' : '';
+
+		timeText.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
+
+	};
+
 	var playbackRateText = new UI.Text();
 	playbackRateText.setColor( '#999' );
 	playbackRateText.setMarginLeft( '5px' );
 	playbackRateText.setValue( '1.0x' );
 	controls.add( playbackRateText );
 
+	var updatePlaybackRateText = function ( value ) {
+
+		playbackRateText.setValue( value.toFixed( 1 ) + 'x' );
+
+	};
+
 	var button = new UI.Button();
 	button.setLabel( 'MODULES' );
 	button.setMarginLeft( '60px' );
 	button.onClick( function () { 
-
-		scroller.style.background = 'url(' + ( function () {
-
-			var canvas = document.createElement( 'canvas' );
-			canvas.width = 1;
-			canvas.height = 32;
-
-			var context = canvas.getContext( '2d' );
-			context.fillStyle = '#444';
-			context.fillRect( 0, 0, 1, 1 );
-			return canvas.toDataURL();
-
-		}() ) + ')';
 
 		modules.setDisplay( '' );
 		curves.setDisplay( 'none' );
@@ -83,6 +86,8 @@ var Timeline = function ( editor ) {
 
 	var time = 0;
 	var scale = 32;
+	var prevScale = scale;
+	var duration = 0;
 
 	var timeline = new UI.Panel();
 	timeline.setPosition( 'absolute' );
@@ -182,6 +187,15 @@ var Timeline = function ( editor ) {
 	curves.setDisplay( 'none' );
 	scroller.appendChild( curves.dom );
 
+	var updateContainers = function () {
+
+		var width = duration * scale;
+		
+		modules.setWidth( width + 'px' );
+		curves.setWidth( width + 'px' );
+
+	};
+
 	//
 
 	var timeMark = document.createElement( 'div' );
@@ -216,9 +230,11 @@ var Timeline = function ( editor ) {
 
 	// signals
 
-	signals.setPlaybackRate.add( function ( value ) {
+	signals.durationChanged.add( function ( value ) {
 
-		playbackRateText.setValue( value.toFixed( 1 ) + 'x' );
+		duration = value;
+
+		updateContainers();
 
 	} );
 
@@ -226,24 +242,26 @@ var Timeline = function ( editor ) {
 
 		time = value;
 
-		var minutes = Math.floor( value / 60 );
-		var seconds = value % 60;
-		var padding = seconds < 10 ? '0' : '';
-
-		timeText.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
-
+		updateTimeText( value );
 		updateTimeMark();
 
 	} );
 
-	var prevScale = scale;
+	signals.playbackRateChanged.add( function ( value ) {
+
+		updatePlaybackRateText( value );
+
+	} );
 
 	signals.timelineScaled.add( function ( value ) {
+
+		scale = value;
 			
 		scroller.scrollLeft = ( scroller.scrollLeft * value ) / prevScale;
 
 		updateMarks();
 		updateTimeMark();
+		updateContainers();
 
 		prevScale = value;
 
