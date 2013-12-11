@@ -108,10 +108,16 @@ var Timeline = function ( editor ) {
 	} );
 	container.add( timeline );
 
-	var marks = document.createElement( 'div' );
+	var marks = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' );
 	marks.style.position = 'absolute';
-	marks.style.width = '100%';
-	marks.style.height = '32px';
+	marks.setAttribute( 'width', '100%' );
+	marks.setAttribute( 'height', '32px' );
+	timeline.dom.appendChild( marks );
+
+	var marksPath = document.createElementNS( 'http://www.w3.org/2000/svg', 'path' );
+	marksPath.setAttribute( 'style', 'stroke: #888; stroke-width: 1px; fill: none;' );
+	marks.appendChild( marksPath );
+
 	marks.addEventListener( 'mousedown', function ( event ) {
 
 		var onMouseMove = function ( event ) {
@@ -137,33 +143,21 @@ var Timeline = function ( editor ) {
 
 	var updateMarks = function ( force ) {
 
-		// TODO: SVG?
+		var drawing = '';
+		var scale4 = scale / 4;
+		var offset = - scroller.scrollLeft % scale;
+		var width = marks.getBoundingClientRect().width || 1024;
 
-		if ( force === true || scale !== prevScale ) {
+		for ( var i = offset, l = width; i <= l; i += scale ) {
 
-			marks.style.background = 'url(' + ( function () {
-
-				var canvas = document.createElement( 'canvas' );
-				canvas.width = Math.floor( scale );
-				canvas.height = 8;
-
-				var context = canvas.getContext( '2d' );
-				context.fillStyle = '#aaa';
-				context.fillRect( 0, 0, 1, 8 );
-				context.fillStyle = '#888';
-				context.fillRect( Math.floor( scale / 4 ), 2, 1, 6 );
-				context.fillRect( Math.floor( scale / 4 ) * 2, 2, 1, 6 );
-				context.fillRect( Math.floor( scale / 4 ) * 3, 2, 1, 6 );
-				
-				return canvas.toDataURL();
-
-			}() ) + ') repeat-x';
+			drawing += 'M ' + i + ' 8 L' + i + ' 24';
+			drawing += 'M ' + ( i + ( scale4 * 1 ) ) + ' 12 L' + ( i + ( scale4 * 1 ) ) + ' 20';
+			drawing += 'M ' + ( i + ( scale4 * 2 ) ) + ' 12 L' + ( i + ( scale4 * 2 ) ) + ' 20';
+			drawing += 'M ' + ( i + ( scale4 * 3 ) ) + ' 12 L' + ( i + ( scale4 * 3 ) ) + ' 20';
 
 		}
 
-		marks.style.backgroundPositionX = - scroller.scrollLeft + 'px';
-		marks.style.backgroundPositionY = 'bottom';
-		marks.style.backgroundSize = scale + 'px 8px';
+		marksPath.setAttribute( 'd', drawing );
 
 	};
 
