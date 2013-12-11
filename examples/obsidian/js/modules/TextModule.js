@@ -87,13 +87,15 @@
 
 			}
 
-			if ( texts[ parameters.text ] === undefined ) {
+			var string = parameters.text;
+
+			if ( texts[ string ] === undefined ) {
 
 				init( parameters );
 
 			}
 
-			currentText = texts[ parameters.text ];
+			currentText = texts[ string ];
 			scene.add( currentText );
 		 
 			startPosition.fromArray( parameters.startPosition );
