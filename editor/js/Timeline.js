@@ -87,10 +87,9 @@ var Timeline = function ( editor ) {
 	var timeline = new UI.Panel();
 	timeline.setPosition( 'absolute' );
 	timeline.setLeft( '300px' );
-	timeline.setWidth( '-webkit-calc( 100% - 300px )' );
-	timeline.setWidth( '-moz-calc( 100% - 300px )' );
-	timeline.setWidth( 'calc( 100% - 300px )' );
-	timeline.setHeight( '100%' );
+	timeline.setRight( '0px');
+	timeline.setTop( '0px' );
+	timeline.setBottom( '0px' );
 	timeline.setOverflow( 'hidden' );
 	timeline.dom.addEventListener( 'mousewheel', function ( event ) {
 	
