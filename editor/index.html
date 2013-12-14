@@ -365,6 +365,9 @@
 
 				switch ( event.keyCode ) {
 
+					case 8: // prevent browser back 
+						event.preventDefault();
+						break;
 					case 32:
 						signals.play.dispatch();
 						break;
