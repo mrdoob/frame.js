@@ -163,6 +163,10 @@
 			};
 			*/
 
+			// passing dom to config
+
+			json.config.dom = viewport.dom;
+
 			// load modules
 
 			var modules = {};
@@ -304,12 +308,6 @@
 
 						}
 
-					}
-
-					if ( parameters.dom !== undefined ) {
-					
-						parameters.dom = viewport.dom;
-					
 					}
 			
 					var element = new FRAME.TimelineElement( moduleName, layer, start, end, module, parameters );

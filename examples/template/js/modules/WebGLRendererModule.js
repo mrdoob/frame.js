@@ -4,6 +4,7 @@
 	dom.style.position = 'absolute';
 	dom.style.width = '100%';
 	dom.style.height = '100%';
+	config.dom.appendChild( dom );
 
 	var renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
 	renderer.setSize( config.width, config.height );
@@ -25,6 +26,10 @@
 
 	};
 
+	window.addEventListener( 'resize', onWindowResize );
+
+	onWindowResize();
+
 	config.renderer = renderer;
 
 	//
@@ -33,25 +38,7 @@
 
 		parameters: {
 
-			dom: new FRAME.ModuleParameter.DOM( 'DOM', null ),
 			clear: new FRAME.ModuleParameter.Boolean( 'Clear', true )
-
-		},
-
-		init: function ( parameters ) {
-
-			if ( parameters.dom !== null ) {
-
-				parameters.dom.appendChild( dom );
-				parameters.dom = null; // TODO: Fix hack
-
-				//
-
-				window.addEventListener( 'resize', onWindowResize );
-
-				onWindowResize();
-
-			}
 
 		},
 

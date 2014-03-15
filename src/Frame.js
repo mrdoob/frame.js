@@ -101,11 +101,6 @@ var FRAME = ( function () {
 				this.value = value || 0xffffff;
 			},
 
-			DOM: function ( name, value ) {
-				this.name = name;
-				this.value = value;
-			},
-
 			Float: function ( name, value, min, max ) {
 				this.name = name;
 				this.value = value || 0.0;
