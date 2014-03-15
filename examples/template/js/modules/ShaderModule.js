@@ -23,7 +23,7 @@
 
 			url: new FRAME.ModuleParameter.String( 'URL', '' ),
 			time: new FRAME.ModuleParameter.Float( 'Time', 0 ),
-			mouse: new FRAME.ModuleParameter.Vector2( 'Mouse', 0.5, 0.5 )
+			mouse: new FRAME.ModuleParameter.Vector2( 'Mouse', [ 0.5, 0.5 ] )
 
 		},
 
