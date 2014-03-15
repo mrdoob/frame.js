@@ -49,7 +49,6 @@
 
 			//
 
-			/*
 			var json = {
 				"config":{
 					"width": 800,
@@ -94,8 +93,8 @@
 					[ 3, 56, 60, "ColorModule", { "color": 0xffffff, "opacity": "$11" } ]
 				]
 			};
-			*/
-
+			
+			/*
 			var json = {
 				"config":{
 					"width":1280,
@@ -162,41 +161,44 @@
 					[1,180.81446111196422,236.55999812692278,"Scene7Module",{"startPosition":[0,0,50],"endPosition":[0,50,2000],"startPositionTarget":[0,0,0],"endPositionTarget":[0,500,0]}]
 				]
 			};
+			*/
 
 			// load modules
 
 			var modules = {};
 			var loaded = 0, total = 0;
 
+			var loadModule = function ( name, file ) {
+
+				// console.log( 'Loading:', name );
+
+				var request = new XMLHttpRequest();
+				request.addEventListener( 'load', function ( event ) {
+
+					loaded ++;
+
+					console.log( 'Loaded (' + loaded + '/' + total + '):', name );
+
+					modules[ name ] = eval( event.target.responseText )( json.config );
+					modules[ name ].name = name;
+
+					if ( loaded === total ) {
+
+						init();
+
+					}
+
+				}, false );
+				request.open( 'GET', file, true );
+				request.send( null );
+
+				total ++;	
+
+			};
+
 			for ( var key in json.modules ) {
 
-				( function ( name, file ) {
-
-					// console.log( 'Loading:', name );
-
-					var request = new XMLHttpRequest();
-					request.addEventListener( 'load', function ( event ) {
-
-						loaded ++;
-
-						console.log( 'Loaded (' + loaded + '/' + total + '):', name );
-
-						modules[ name ] = eval( event.target.responseText )( json.config );
-						modules[ name ].name = name;
-
-						if ( loaded === total ) {
-
-							init();
-
-						}
-
-					}, false );
-					request.open( 'GET', file, true );
-					request.send( null );
-
-					total ++;	
-
-				} )( key, json.config.path + json.modules[ key ] )
+				loadModule( key, json.config.path + json.modules[ key ] );
 
 			}
 
