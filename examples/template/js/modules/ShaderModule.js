@@ -44,8 +44,6 @@ define( [ 'Config', 'WebGLRendererModule' ], function ( config, renderer ) {
 
 			update: function () {
 
-				console.log( this.parameters.url.value )
-
 				uniforms.time.value = this.parameters.time.value;
 				uniforms.mouse.value.fromArray( this.parameters.mouse.value );
 

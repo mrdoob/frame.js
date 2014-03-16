@@ -213,9 +213,9 @@
 				var moduleName = data[ 3 ];
 				var parameters = data[ 4 ];
 
-				require( [ moduleName ], function ( constructor ) {
+				require( [ moduleName ], function ( moduleInstance ) {
 
-					var module = constructor();
+					var module = moduleInstance();
 					module.name = moduleName;
 
 					if ( parameters === undefined ) parameters = {};

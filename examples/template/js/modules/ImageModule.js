@@ -34,6 +34,6 @@ define( [ 'Config', 'WebGLRendererModule' ], function ( config, renderer ) {
 
 		} );
 
-	}
+	};
 
 } );

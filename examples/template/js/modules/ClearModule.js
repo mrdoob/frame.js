@@ -18,6 +18,6 @@ define( [ 'WebGLRendererModule' ], function ( renderer ) {
 
 		} );
 
-	}
+	};
 
 } );
