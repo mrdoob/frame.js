@@ -24,160 +24,162 @@ var Properties = function ( editor ) {
 
 		var parameters = element.module.parameters;
 
-		for ( var key in parameters ) {
+		var createParameterRow = function ( key ) {
 
 			var parameter = parameters[ key ];
 
-			if ( parameter === null ) continue;
+			if ( parameter === null ) return;
 
 			var parameterRow = new UI.Panel();
 			parameterRow.add( new UI.Text( parameter.name ).setWidth( '90px' ) );
 
-			( function ( key ) {
+			if ( parameter instanceof FRAME.ModuleParameter.Boolean ) {
 
-				if ( parameter instanceof FRAME.ModuleParameter.Boolean ) {
+				var parameterValue = new UI.Checkbox()
+					.setValue( parameter.value )
+					.onChange( function () {
 
-					var parameterValue = new UI.Checkbox()
-						.setValue( parameter.value )
-						.onChange( function () {
+						parameter.value = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
 
-						} );
+				parameterRow.add( parameterValue );
 
-					parameterRow.add( parameterValue );
+				values[ key ] = parameterValue;
 
-					values[ key ] = parameterValue;
+			} else if ( parameter instanceof FRAME.ModuleParameter.Integer ) {
 
-				} else if ( parameter instanceof FRAME.ModuleParameter.Integer ) {
+				var parameterValue = new UI.Integer()
+					.setRange( parameter.min, parameter.max )
+					.setValue( parameter.value )
+					.setWidth( '150px' )
+					.onChange( function () {
 
-					var parameterValue = new UI.Integer()
-						.setRange( parameter.min, parameter.max )
-						.setValue( parameter.value )
-						.setWidth( '150px' )
-						.onChange( function () {
+						parameter.value = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
 
-						} );
+				parameterRow.add( parameterValue );
 
-					parameterRow.add( parameterValue );
+				values[ key ] = parameterValue;
 
-					values[ key ] = parameterValue;
+			} else if ( parameter instanceof FRAME.ModuleParameter.Float ) {
 
-				} else if ( parameter instanceof FRAME.ModuleParameter.Float ) {
+				var parameterValue = new UI.Number()
+					.setRange( parameter.min, parameter.max )
+					.setValue( parameter.value )
+					.setWidth( '150px' )
+					.onChange( function () {
 
-					var parameterValue = new UI.Number()
-						.setRange( parameter.min, parameter.max )
-						.setValue( parameter.value )
-						.setWidth( '150px' )
-						.onChange( function () {
+						parameter.value = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
 
-						} );
+				parameterRow.add( parameterValue );
 
-					parameterRow.add( parameterValue );
+				values[ key ] = parameterValue;
 
-					values[ key ] = parameterValue;
+			} else if ( parameter instanceof FRAME.ModuleParameter.Vector2 ) {
 
-				} else if ( parameter instanceof FRAME.ModuleParameter.Vector2 ) {
+				var vectorX = new UI.Number()
+					.setValue( parameter.value[ 0 ] )
+					.setWidth( '50px' )
+					.onChange( function () {
 
-					var vectorX = new UI.Number()
-						.setValue( parameter.value[ 0 ] )
-						.setWidth( '50px' )
-						.onChange( function () {
+						parameter.value[ 0 ] = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value[ 0 ] = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
+			
+				var vectorY = new UI.Number()
+					.setValue( parameter.value[ 1 ] )
+					.setWidth( '50px' )
+					.onChange( function () {
 
-						} );
-				
-					var vectorY = new UI.Number()
-						.setValue( parameter.value[ 1 ] )
-						.setWidth( '50px' )
-						.onChange( function () {
+						parameter.value[ 1 ] = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter[ 1 ].value = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
+			
+				parameterRow.add( vectorX );
+				parameterRow.add( vectorY );
 
-						} );
-				
-					parameterRow.add( vectorX );
-					parameterRow.add( vectorY );
+			} else if ( parameter instanceof FRAME.ModuleParameter.Vector3 ) {
 
-				} else if ( parameter instanceof FRAME.ModuleParameter.Vector3 ) {
+				var vectorX = new UI.Number()
+					.setValue( parameter.value[ 0 ] )
+					.setWidth( '50px' )
+					.onChange( function () {
 
-					var vectorX = new UI.Number()
-						.setValue( parameter.value[ 0 ] )
-						.setWidth( '50px' )
-						.onChange( function () {
+						parameter.value[ 0 ] = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value[ 0 ] = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
+			
+				var vectorY = new UI.Number()
+					.setValue( parameter.value[ 1 ] )
+					.setWidth( '50px' )
+					.onChange( function () {
 
-						} );
-				
-					var vectorY = new UI.Number()
-						.setValue( parameter.value[ 1 ] )
-						.setWidth( '50px' )
-						.onChange( function () {
+						parameter.value[ 1 ] = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value[ 1 ] = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
 
-						} );
+				var vectorZ = new UI.Number()
+					.setValue( parameter.value[ 2 ] )
+					.setWidth( '50px' )
+					.onChange( function () {
 
-					var vectorZ = new UI.Number()
-						.setValue( parameter.value[ 2 ] )
-						.setWidth( '50px' )
-						.onChange( function () {
+						parameter.value[ 2 ] = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value[ 2 ] = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
+			
+				parameterRow.add( vectorX );
+				parameterRow.add( vectorY );
+				parameterRow.add( vectorZ );
 
-						} );
-				
-					parameterRow.add( vectorX );
-					parameterRow.add( vectorY );
-					parameterRow.add( vectorZ );
+			} else if ( parameter instanceof FRAME.ModuleParameter.String ) {
 
-				} else if ( parameter instanceof FRAME.ModuleParameter.String ) {
+				var parameterValue = new UI.Input()
+					.setValue( parameter.value )
+					.setWidth( '150px' )
+					.onKeyUp( function () {
 
-					var parameterValue = new UI.Input()
-						.setValue( parameter.value )
-						.setWidth( '150px' )
-						.onKeyUp( function () {
+						parameter.value = this.getValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value = this.getValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
 
-						} );
+				parameterRow.add( parameterValue );
 
-					parameterRow.add( parameterValue );
+			} else if ( parameter instanceof FRAME.ModuleParameter.Color ) {
 
-				} else if ( parameter instanceof FRAME.ModuleParameter.Color ) {
+				var parameterValue = new UI.Color()
+					.setHexValue( parameter.value )
+					.setWidth( '150px' )
+					.onChange( function () {
 
-					var parameterValue = new UI.Color()
-						.setHexValue( parameter.value )
-						.setWidth( '150px' )
-						.onChange( function () {
+						parameter.value = this.getHexValue();
+						signals.timelineElementChanged.dispatch( element );
 
-							parameter.value = this.getHexValue();
-							signals.timelineElementChanged.dispatch( element );
+					} );
 
-						} );
+				parameterRow.add( parameterValue );
 
-					parameterRow.add( parameterValue );
+			}
 
-				}
+			return parameterRow;
 
-			} )( key );
+		};
 
-			elementPanel.add( parameterRow );
+		for ( var key in parameters ) {
+
+			elementPanel.add( createParameterRow( key ) );
 
 		};
 
