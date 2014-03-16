@@ -46,7 +46,7 @@ Menubar.File = function ( editor ) {
 
 		}
 
-		// timeline
+		// elements
 
 		var elements = editor.timeline.elements;
 		

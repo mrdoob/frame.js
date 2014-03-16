@@ -1,4 +1,4 @@
-( function ( config ) {
+define( [ 'Config' ], function ( config ) {
 
 	var dom = document.createElement( 'div' );
 	dom.style.position = 'absolute';
@@ -29,30 +29,6 @@
 
 	onWindowResize();
 
-	config.renderer = renderer;
-
-	//
-
-	return new FRAME.Module( {
-
-		parameters: {
-
-			clearColor: new FRAME.Parameter.Boolean( 'Clear color', true ),
-			clearDepth: new FRAME.Parameter.Boolean( 'Clear depth', true ),
-			clearStencil: new FRAME.Parameter.Boolean( 'Clear stencil', true )
-
-		},
-
-		update: function ( parameters ) {
-
-			renderer.clear(
-				parameters.clearColor === true,
-				parameters.clearDepth === true,
-				parameters.clearStencil === true
-			);
-
-		}
-
-	} );
+	return renderer;
 
 } )
