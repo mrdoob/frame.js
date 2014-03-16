@@ -35,13 +35,22 @@ Menubar.File = function ( editor ) {
 		for ( var i = 0, l = elements.length; i < l; i ++ ) {
 			
 			var element = elements[ i ];
+			var module = element.module;
+
+			var parameters = {};
+
+			for ( var key in module.parameters ) {
+
+				parameters[ key ] = module.parameters[ key ].value;
+
+			}
 			
 			data.timeline.push( [
 				element.layer,
 				element.start,
 				element.end,
 				element.module.name,
-				element.parameters
+				parameters
 			] );
 			
 		}
