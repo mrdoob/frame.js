@@ -76,20 +76,19 @@
 					[ "linear", [ 56, 1, 60, 0 ] ] // white fade in
 				],
 				"timeline": [
-					[ 0, 0, 70, "ClearModule" ],
-					[ 1, 0, 14, "ShaderModule", { "url": "files/shaders/lights.fs", "time": "$0" } ],
-					[ 2, 0, 14, "ColorModule", { "color": 0x000000, "opacity": "$1" } ],
-					[ 1, 14, 21, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$2", "mouse": [ 0.75, 0.75 ] } ],
-					[ 1, 21, 28, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$3", "mouse": [ -0.75, 0.25 ] } ],
-					[ 1, 28, 35, "ShaderModule", { "url": "files/shaders/planedistort.fs", "time": "$4" } ],
-					[ 1, 35, 42, "ShaderModule", { "url": "files/shaders/planedistort.fs", "time": "$5" } ],
-					[ 2, 35, 37, "ColorModule", { "color": 0xffffff, "opacity": "$6" } ],
-					[ 1, 42, 49, "ShaderModule", { "url": "files/shaders/field.fs", "time": "$7" } ],
-					[ 2, 42, 44, "ColorModule", { "color": 0xffffff, "opacity": "$8" } ],
-					[ 1, 49, 56, "ShaderModule", { "url": "files/shaders/field.fs", "time": "$9" } ],
-					[ 1, 56, 70, "ShaderModule", { "url": "files/shaders/blobs.fs", "time": "$10" } ],
-					[ 2, 56, 70, "ImageModule", { "url": "files/credits.png" } ],
-					[ 3, 56, 60, "ColorModule", { "color": 0xffffff, "opacity": "$11" } ]
+					[ 0, 0, 14, "ShaderModule", { "url": "files/shaders/lights.fs", "time": "$0" } ],
+					[ 1, 0, 14, "ColorModule", { "color": 0x000000, "opacity": "$1" } ],
+					[ 0, 14, 21, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$2", "mouse": [ 0.75, 0.75 ] } ],
+					[ 0, 21, 28, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$3", "mouse": [ -0.75, 0.25 ] } ],
+					[ 0, 28, 35, "ShaderModule", { "url": "files/shaders/planedistort.fs", "time": "$4" } ],
+					[ 0, 35, 42, "ShaderModule", { "url": "files/shaders/planedistort.fs", "time": "$5" } ],
+					[ 1, 35, 37, "ColorModule", { "color": 0xffffff, "opacity": "$6" } ],
+					[ 0, 42, 49, "ShaderModule", { "url": "files/shaders/field.fs", "time": "$7" } ],
+					[ 1, 42, 44, "ColorModule", { "color": 0xffffff, "opacity": "$8" } ],
+					[ 0, 49, 56, "ShaderModule", { "url": "files/shaders/field.fs", "time": "$9" } ],
+					[ 0, 56, 70, "ShaderModule", { "url": "files/shaders/blobs.fs", "time": "$10" } ],
+					[ 0, 56, 70, "ImageModule", { "url": "files/credits.png" } ],
+					[ 2, 56, 60, "ColorModule", { "color": 0xffffff, "opacity": "$11" } ]
 				]
 			};
 
