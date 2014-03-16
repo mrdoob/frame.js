@@ -1,120 +1,116 @@
 define( [ 'Config', 'WebGLRendererModule' ], function ( config, renderer ) {
 
+	var camera = new THREE.PerspectiveCamera( 60, config.width / config.height, 1, 1500 );
+	camera.up.y = 0.5;
+	camera.up.x = -1;
+	camera.up.normalize();
+
+	var cameraTarget = new THREE.Vector3();
+
+	var scene = new THREE.Scene();
+
+	var light1 = new THREE.PointLight( 0xff8844, 5, 300 );
+	scene.add( light1 );
+
+	var light2 = new THREE.PointLight( 0x8844ff, 3, 300 );
+	scene.add( light2 );
+
+	// tunnel
+	
+	var plane = new THREE.PlaneGeometry( 5, 5 );
+	var geometry = new THREE.Geometry() ;
+	var material = new THREE.MeshLambertMaterial( {
+		color: 0x606060,
+		shading: THREE.FlatShading,
+		side: THREE.DoubleSide
+	} );
+
+	var object = new THREE.Mesh( plane, material );
+	
+	for ( var i = 0; i < 800; i ++ ) {
+
+		var radius = 50 + ( Math.random() * 150 );
+
+		object.position.x = Math.random() - 0.5;
+		object.position.y = Math.random() - 0.5;
+		object.position.z = 0;
+		object.position.normalize();
+		object.position.multiplyScalar( radius );
+		object.lookAt( scene.position );
+		object.position.z = ( i * 4 ) - 500;
+		object.scale.x = Math.random() * 10;
+		object.scale.y = Math.random() * 10;
+		object.scale.z = Math.random() * 20;
+		
+		THREE.GeometryUtils.merge( geometry, object );
+
+	}
+
+	var tunnel1 = new THREE.Mesh( geometry, material );
+	scene.add( tunnel1 );
+	
+	var geometry = new THREE.Geometry();
+	var material = new THREE.MeshLambertMaterial( {
+		color: 0x606060,
+		shading: THREE.FlatShading,
+		side: THREE.DoubleSide,
+		wireframe: true
+	} );
+	
+	var object = new THREE.Mesh( plane, material );
+	
+	for ( var i = 0; i < 800; i ++ ) {
+
+		var radius = 50 + ( Math.random() * 150 );
+
+		object.position.x = Math.random() - 0.5;
+		object.position.y = Math.random() - 0.5;
+		object.position.z = 0;
+		object.position.normalize();
+		object.position.multiplyScalar( radius );
+		object.lookAt( scene.position );
+		object.position.z = ( i * 4 ) - 500;
+		object.scale.x = Math.random() * 10;
+		object.scale.y = Math.random() * 10;
+		object.scale.z = Math.random() * 20;
+
+		THREE.GeometryUtils.merge( geometry, object );
+
+	}
+
+	var tunnel2 = new THREE.Mesh( geometry, material );
+	scene.add( tunnel2 );
+
+	// sphere
+	
+	var sphere = new THREE.Object3D();
+	scene.add( sphere );
+
+	var material = new THREE.MeshLambertMaterial( {
+		shading: THREE.FlatShading
+	} );
+	
+	sphere.add( new THREE.Mesh( new THREE.SphereGeometry( 20, 2, 2 ), material ) );
+	sphere.add( new THREE.Mesh( new THREE.IcosahedronGeometry( 20, 0 ), material ) );
+	sphere.add( new THREE.Mesh( new THREE.CubeGeometry( 20, 20, 20 ), material ) );
+	sphere.add( new THREE.Mesh( new THREE.OctahedronGeometry( 20, 0 ), material ) );
+	sphere.add( new THREE.Mesh( new THREE.IcosahedronGeometry( 20, 1 ), material ) );
+	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 0 ), material ) );
+	sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 1 ), material ) );
+
+	//
+
+	var startPosition = new THREE.Vector3();
+	var endPosition = new THREE.Vector3();
+	var deltaPosition = new THREE.Vector3();
+	
+	var startPositionTarget = new THREE.Vector3();
+	var endPositionTarget = new THREE.Vector3();
+	var deltaPositionTarget = new THREE.Vector3();
+
+	var prevShape = 0;
+
 	return function () {
-
-		var camera, cameraTarget, light1, light2, scene;
-		var sphere, tunnel1, tunnel2;
-
-		var camera = new THREE.PerspectiveCamera( 60, config.width / config.height, 1, 1500 );
-		camera.up.y = 0.5;
-		camera.up.x = -1;
-		camera.up.normalize();
-		cameraTarget = new THREE.Vector3();
-
-		var scene = new THREE.Scene();
-
-		var light1 = new THREE.PointLight( 0xff8844, 5, 300 );
-		scene.add( light1 );
-
-		var light2 = new THREE.PointLight( 0x8844ff, 3, 300 );
-		scene.add( light2 );
-
-		// tunnel
-		
-		var plane = new THREE.PlaneGeometry( 5, 5 );
-		var geometry = new THREE.Geometry() ;
-		var material = new THREE.MeshLambertMaterial( {
-			color: 0x606060,
-			shading: THREE.FlatShading,
-			side: THREE.DoubleSide
-		} );
-
-		var object = new THREE.Mesh( plane, material );
-		
-		for ( var i = 0; i < 800; i ++ ) {
-
-			var radius = 50 + ( Math.random() * 150 );
-
-			object.position.x = Math.random() - 0.5;
-			object.position.y = Math.random() - 0.5;
-			object.position.z = 0;
-			object.position.normalize();
-			object.position.multiplyScalar( radius );
-			object.lookAt( scene.position );
-			object.position.z = ( i * 4 ) - 500;
-			object.scale.x = Math.random() * 10;
-			object.scale.y = Math.random() * 10;
-			object.scale.z = Math.random() * 20;
-			
-			THREE.GeometryUtils.merge( geometry, object );
-
-		}
-
-		var tunnel1 = new THREE.Mesh( geometry, material );
-		scene.add( tunnel1 );
-		
-		var geometry = new THREE.Geometry();
-		var material = new THREE.MeshLambertMaterial( {
-			color: 0x606060,
-			shading: THREE.FlatShading,
-			side: THREE.DoubleSide,
-			wireframe: true
-		} );
-		
-		var object = new THREE.Mesh( plane, material );
-		
-		for ( var i = 0; i < 800; i ++ ) {
-
-			var radius = 50 + ( Math.random() * 150 );
-
-			object.position.x = Math.random() - 0.5;
-			object.position.y = Math.random() - 0.5;
-			object.position.z = 0;
-			object.position.normalize();
-			object.position.multiplyScalar( radius );
-			object.lookAt( scene.position );
-			object.position.z = ( i * 4 ) - 500;
-			object.scale.x = Math.random() * 10;
-			object.scale.y = Math.random() * 10;
-			object.scale.z = Math.random() * 20;
-
-			THREE.GeometryUtils.merge( geometry, object );
-
-		}
-
-		var tunnel2 = new THREE.Mesh( geometry, material );
-		scene.add( tunnel2 );
-
-		// sphere
-		
-		var sphere = new THREE.Object3D();
-		scene.add( sphere );
-
-		var material = new THREE.MeshLambertMaterial( {
-			shading: THREE.FlatShading
-		} );
-		
-		sphere.add( new THREE.Mesh( new THREE.SphereGeometry( 20, 2, 2 ), material ) );
-		sphere.add( new THREE.Mesh( new THREE.IcosahedronGeometry( 20, 0 ), material ) );
-		sphere.add( new THREE.Mesh( new THREE.CubeGeometry( 20, 20, 20 ), material ) );
-		sphere.add( new THREE.Mesh( new THREE.OctahedronGeometry( 20, 0 ), material ) );
-		sphere.add( new THREE.Mesh( new THREE.IcosahedronGeometry( 20, 1 ), material ) );
-		sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 0 ), material ) );
-		sphere.add( new THREE.Mesh( new THREE.TetrahedronGeometry( 20, 1 ), material ) );
-
-		//
-
-		var startPosition = new THREE.Vector3();
-		var endPosition = new THREE.Vector3();
-		var deltaPosition = new THREE.Vector3();
-		
-		var startPositionTarget = new THREE.Vector3();
-		var endPositionTarget = new THREE.Vector3();
-		var deltaPositionTarget = new THREE.Vector3();
-
-		var prevShape = 0;
-
-		//
 
 		return new FRAME.Module( {
 
