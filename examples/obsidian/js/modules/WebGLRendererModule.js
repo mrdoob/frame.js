@@ -37,15 +37,19 @@
 
 		parameters: {
 
-			clearColor: new FRAME.ModuleParameter.Boolean( 'Clear color', true ),
-			clearDepth: new FRAME.ModuleParameter.Boolean( 'Clear depth', true ),
-			clearStencil: new FRAME.ModuleParameter.Boolean( 'Clear stencil', true )
+			clearColor: new FRAME.Parameter.Boolean( 'Clear color', true ),
+			clearDepth: new FRAME.Parameter.Boolean( 'Clear depth', true ),
+			clearStencil: new FRAME.Parameter.Boolean( 'Clear stencil', true )
 
 		},
 
 		update: function ( parameters ) {
 
-			renderer.clear( parameters.clearColor === true, parameters.clearDepth === true, parameters.clearStencil === true );
+			renderer.clear(
+				parameters.clearColor === true,
+				parameters.clearDepth === true,
+				parameters.clearStencil === true
+			);
 
 		}
 

@@ -88,7 +88,7 @@ var FRAME = ( function () {
 
 		},
 
-		ModuleParameter: {
+		Parameter: {
 
 			Boolean: function ( name, value ) {
 				this.name = name;

@@ -33,7 +33,7 @@ var Properties = function ( editor ) {
 			var parameterRow = new UI.Panel();
 			parameterRow.add( new UI.Text( parameter.name ).setWidth( '90px' ) );
 
-			if ( parameter instanceof FRAME.ModuleParameter.Boolean ) {
+			if ( parameter instanceof FRAME.Parameter.Boolean ) {
 
 				var parameterValue = new UI.Checkbox()
 					.setValue( parameter.value )
@@ -48,7 +48,7 @@ var Properties = function ( editor ) {
 
 				values[ key ] = parameterValue;
 
-			} else if ( parameter instanceof FRAME.ModuleParameter.Integer ) {
+			} else if ( parameter instanceof FRAME.Parameter.Integer ) {
 
 				var parameterValue = new UI.Integer()
 					.setRange( parameter.min, parameter.max )
@@ -65,7 +65,7 @@ var Properties = function ( editor ) {
 
 				values[ key ] = parameterValue;
 
-			} else if ( parameter instanceof FRAME.ModuleParameter.Float ) {
+			} else if ( parameter instanceof FRAME.Parameter.Float ) {
 
 				var parameterValue = new UI.Number()
 					.setRange( parameter.min, parameter.max )
@@ -82,7 +82,7 @@ var Properties = function ( editor ) {
 
 				values[ key ] = parameterValue;
 
-			} else if ( parameter instanceof FRAME.ModuleParameter.Vector2 ) {
+			} else if ( parameter instanceof FRAME.Parameter.Vector2 ) {
 
 				var vectorX = new UI.Number()
 					.setValue( parameter.value[ 0 ] )
@@ -107,7 +107,7 @@ var Properties = function ( editor ) {
 				parameterRow.add( vectorX );
 				parameterRow.add( vectorY );
 
-			} else if ( parameter instanceof FRAME.ModuleParameter.Vector3 ) {
+			} else if ( parameter instanceof FRAME.Parameter.Vector3 ) {
 
 				var vectorX = new UI.Number()
 					.setValue( parameter.value[ 0 ] )
@@ -143,7 +143,7 @@ var Properties = function ( editor ) {
 				parameterRow.add( vectorY );
 				parameterRow.add( vectorZ );
 
-			} else if ( parameter instanceof FRAME.ModuleParameter.String ) {
+			} else if ( parameter instanceof FRAME.Parameter.String ) {
 
 				var parameterValue = new UI.Input()
 					.setValue( parameter.value )
@@ -157,7 +157,7 @@ var Properties = function ( editor ) {
 
 				parameterRow.add( parameterValue );
 
-			} else if ( parameter instanceof FRAME.ModuleParameter.Color ) {
+			} else if ( parameter instanceof FRAME.Parameter.Color ) {
 
 				var parameterValue = new UI.Color()
 					.setHexValue( parameter.value )

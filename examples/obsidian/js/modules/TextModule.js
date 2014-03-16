@@ -23,9 +23,9 @@
 
 		parameters: {
 
-			text:          new FRAME.ModuleParameter.String( 'Text', 'text' ),
-			startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 0, 0, 20 ] ),
-			endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ 0, 0, 40 ] )
+			text:          new FRAME.Parameter.String( 'Text', 'text' ),
+			startPosition: new FRAME.Parameter.Vector3( 'Camera Start', [ 0, 0, 20 ] ),
+			endPosition:   new FRAME.Parameter.Vector3( 'Camera End', [ 0, 0, 40 ] )
 
 		},
 

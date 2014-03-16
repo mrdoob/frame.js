@@ -124,11 +124,11 @@
 
 		parameters: {
 
-			startPosition:       new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 100, 100, 100 ] ),
-			endPosition:         new FRAME.ModuleParameter.Vector3( 'Camera End', [ - 100, 100, 100 ] ),
-			startPositionTarget: new FRAME.ModuleParameter.Vector3( 'Camera Target Start', [ 0, 0, 0 ] ),
-			endPositionTarget:   new FRAME.ModuleParameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] ),
-			lightIntensity:      new FRAME.ModuleParameter.Float( 'Light intensity', 1 )
+			startPosition:       new FRAME.Parameter.Vector3( 'Camera Start', [ 100, 100, 100 ] ),
+			endPosition:         new FRAME.Parameter.Vector3( 'Camera End', [ - 100, 100, 100 ] ),
+			startPositionTarget: new FRAME.Parameter.Vector3( 'Camera Target Start', [ 0, 0, 0 ] ),
+			endPositionTarget:   new FRAME.Parameter.Vector3( 'Camera Target End', [ 0, 0, 2000 ] ),
+			lightIntensity:      new FRAME.Parameter.Float( 'Light intensity', 1 )
 
 		},
 

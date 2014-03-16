@@ -14,8 +14,8 @@ define( [ 'Config', 'WebGLRendererModule' ], function ( config, renderer ) {
 
 			parameters: {
 
-				url:     new FRAME.ModuleParameter.String( 'URL', '' ),
-				opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1, 0, 1 )
+				url:     new FRAME.Parameter.String( 'URL', '' ),
+				opacity: new FRAME.Parameter.Float( 'Opacity', 1, 0, 1 )
 
 			},
 

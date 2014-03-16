@@ -42,8 +42,8 @@
 
 		parameters: {
 
-			startPosition: new FRAME.ModuleParameter.Vector3( 'Camera Start', [ 100, 100, 100 ] ),
-			endPosition:   new FRAME.ModuleParameter.Vector3( 'Camera End', [ - 100, 100, 100 ] )
+			startPosition: new FRAME.Parameter.Vector3( 'Camera Start', [ 100, 100, 100 ] ),
+			endPosition:   new FRAME.Parameter.Vector3( 'Camera End', [ - 100, 100, 100 ] )
 
 		},
 

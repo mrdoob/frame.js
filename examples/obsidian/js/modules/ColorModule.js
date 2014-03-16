@@ -17,8 +17,8 @@
 
 		parameters: {
 
-			color:   new FRAME.ModuleParameter.Color( 'Color', 0xffffff ),
-			opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1, 0, 1 )
+			color:   new FRAME.Parameter.Color( 'Color', 0xffffff ),
+			opacity: new FRAME.Parameter.Float( 'Opacity', 1, 0, 1 )
 
 		},
 
