@@ -8,6 +8,7 @@ Timeline.Curves = function ( editor ) {
 	var scale = 32;
 
 	var svg = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' );
+	svg.style.position = 'fixed';
 	svg.setAttribute( 'width', 2048 );
 	svg.setAttribute( 'height', 128 );
 	container.dom.appendChild( svg );

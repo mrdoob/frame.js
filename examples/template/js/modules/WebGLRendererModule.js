@@ -1,4 +1,4 @@
-( function ( config ) {
+define( [ 'Config' ], function ( config ) {
 
 	var dom = document.createElement( 'div' );
 	dom.style.position = 'absolute';
@@ -30,24 +30,6 @@
 
 	onWindowResize();
 
-	config.renderer = renderer;
+	return renderer;
 
-	//
-
-	return new FRAME.Module( {
-
-		parameters: {
-
-			clear: new FRAME.ModuleParameter.Boolean( 'Clear', true )
-
-		},
-
-		update: function ( parameters ) {
-
-			if ( parameters.clear === true ) renderer.clear();
-
-		}
-
-	} );
-
-} )
+} );

@@ -193,7 +193,7 @@ var FRAME = ( function () {
 						if ( element.end > time ) {
 
 							active.push( element );
-							element.module.start( element.parameters );
+							element.module.start();
 
 						}
 
@@ -235,7 +235,7 @@ var FRAME = ( function () {
 					for ( var i = 0, l = active.length; i < l; i ++ ) {
 
 						var element = active[ i ];
-						element.module.update( element.parameters, ( time - element.start ) / ( element.end - element.start ) );
+						element.module.update( ( time - element.start ) / ( element.end - element.start ) );
 
 					}
 
@@ -258,17 +258,15 @@ var FRAME = ( function () {
 			
 			var id = 0;
 			
-			return function ( name, layer, start, end, module, parameters ) {
+			return function ( module, layer, start, end ) {
 
 				this.id = id ++;
-				this.name = name;
+				this.module = module;
 				this.layer = layer;
 				this.start = start;
 				this.end = end;
-				this.module = module;
-				this.parameters = parameters;
 
-				this.module.init( this.parameters );
+				this.module.init();
 				
 			};
 

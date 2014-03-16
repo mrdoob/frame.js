@@ -1,36 +1,38 @@
-( function ( config ) {
+define( [ 'WebGLRendererModule' ], function ( renderer ) {
 
-	var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
+	return function () {
 
-	var scene = new THREE.Scene();
+		var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
 
-	var material = new THREE.MeshBasicMaterial( { transparent: true } );
-	var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), material );
+		var scene = new THREE.Scene();
 
-	scene.add( mesh );
+		var geometry = new THREE.PlaneGeometry( 2, 2 );
+		var material = new THREE.MeshBasicMaterial( { depthTest: false, depthWrite: false, transparent: true } );
 
-	var renderer = config.renderer;
+		var mesh = new THREE.Mesh( geometry, material );
 
-	//
+		scene.add( mesh );
 
-	return new FRAME.Module( {
+		return new FRAME.Module( {
 
-		parameters: {
+			parameters: {
 
-			color:   new FRAME.ModuleParameter.Color( 'Color', 0xffffff ),
-			opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1, 0, 1 )
+				color:   new FRAME.ModuleParameter.Color( 'Color', 0xffffff ),
+				opacity: new FRAME.ModuleParameter.Float( 'Opacity', 1, 0, 1 )
 
-		},
+			},
 
-		update: function ( parameters ) {
+			update: function () {
 
-			material.color.setHex( parameters.color );
-			material.opacity = parameters.opacity;
+				material.color.setHex( this.parameters.color.value );
+				material.opacity = this.parameters.opacity.value;
 
-			renderer.render( scene, camera );
+				renderer.render( scene, camera );
 
-		}
+			}
 
-	} );
+		} );
 
-} )
+	};
+
+} );

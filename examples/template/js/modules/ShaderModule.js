@@ -1,38 +1,34 @@
-( function ( config ) {
+define( [ 'Config', 'WebGLRendererModule' ], function ( config, renderer ) {
 
-	var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
+	return function () {
 
-	var scene = new THREE.Scene();
+		var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
 
-	var renderer = config.renderer;
+		var scene = new THREE.Scene();
 
-	var uniforms = {
-		time: { type: "f", value: 1.0 },
-		mouse: { type: "v2", value: new THREE.Vector2( 0.5, 0.5 ) },
-		resolution: { type: "v2", value: new THREE.Vector2( 800, 600 ) }
-	};
+		var uniforms = {
+			time: { type: "f", value: 1.0 },
+			mouse: { type: "v2", value: new THREE.Vector2( 0.5, 0.5 ) },
+			resolution: { type: "v2", value: new THREE.Vector2( 800, 600 ) }
+		};
 
-	var materials = {};
+		var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ) );
+		scene.add( mesh );
 
-	var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), new THREE.MeshBasicMaterial() );
-	scene.add( mesh );
+		return new FRAME.Module( {
 
-	return new FRAME.Module( {
+			parameters: {
 
-		parameters: {
+				url: new FRAME.ModuleParameter.String( 'URL', '' ),
+				time: new FRAME.ModuleParameter.Float( 'Time', 0 ),
+				mouse: new FRAME.ModuleParameter.Vector2( 'Mouse', [ 0.5, 0.5 ] )
 
-			url: new FRAME.ModuleParameter.String( 'URL', '' ),
-			time: new FRAME.ModuleParameter.Float( 'Time', 0 ),
-			mouse: new FRAME.ModuleParameter.Vector2( 'Mouse', [ 0.5, 0.5 ] )
+			},
 
-		},
-
-		init: function ( parameters ) {
-
-			if ( materials[ parameters.url ] === undefined ) {
+			init: function () {
 
 				var loader = new THREE.XHRLoader();
-				loader.load( config.path + parameters.url, function ( text ) {
+				loader.load( config.rootPath + this.parameters.url.value, function ( text ) {
 
 					var material = new THREE.ShaderMaterial( {
 						uniforms: uniforms,
@@ -40,30 +36,25 @@
 						fragmentShader: text
 					} );
 
-					materials[ parameters.url ] = material;
 					mesh.material = material;
 
 				} );
 
+			},
+
+			update: function () {
+
+				console.log( this.parameters.url.value )
+
+				uniforms.time.value = this.parameters.time.value;
+				uniforms.mouse.value.fromArray( this.parameters.mouse.value );
+
+				renderer.render( scene, camera );
+
 			}
 
-		},
+		} );
 
-		update: function ( parameters ) {
+	};
 
-			if ( materials[ parameters.url ] !== undefined ) { // TODO: load callback should avoid this
-
-				mesh.material = materials[ parameters.url ];
-
-			}
-
-			// uniforms.time.value = ( t * parameters.speed ) + parameters.offset;
-			uniforms.time.value = parameters.time;
-			uniforms.mouse.value.fromArray( parameters.mouse );
-			renderer.render( scene, camera );
-
-		}
-
-	} );
-
-} )
+} );

@@ -17,7 +17,6 @@ Timeline.Modules = function ( editor ) {
 
 	}() ) + ')' );
 
-	var duration = 0;
 	var scale = 32;
 
 	var Block = ( function ( element ) {
@@ -133,7 +132,7 @@ Timeline.Modules = function ( editor ) {
 
 		var name = document.createElement( 'div' );
 		name.className = 'name';
-		name.textContent = element.name;
+		name.textContent = element.module.name;
 		dom.appendChild( name );
 
 		var resizeRight = document.createElement( 'div' );

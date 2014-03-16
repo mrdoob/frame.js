@@ -7,8 +7,12 @@
 	<link id="theme" href="css/dark.css" rel="stylesheet" />
 	<body>
 
+
 		<script src="js/libs/signals.min.js"></script>
 		<script src="js/libs/ui.js"></script>
+
+		<script src="js/libs/require.min.js"></script>
+
 
 		<script src="js/Editor.js"></script>
 		<script src="js/Menubar.js"></script>
@@ -53,14 +57,9 @@
 				"config":{
 					"width": 800,
 					"height": 600,
-					"path": "../examples/template/",
+					"rootPath": "../examples/template/",
+					"modulesPath": "js/modules/",
 					"audio": "files/lug00ber-bastion_amstel.ogg"
-				},
-				"modules":{
-					"WebGLRendererModule": "js/modules/WebGLRendererModule.js",
-					"ColorModule": "js/modules/ColorModule.js",
-					"ShaderModule": "js/modules/ShaderModule.js",
-					"ImageModule": "js/modules/ImageModule.js"
 				},
 				"curves":[
 					[ "linear", [ 0, 0, 14, 10 ] ], // blobs effect time
@@ -77,7 +76,7 @@
 					[ "linear", [ 56, 1, 60, 0 ] ] // white fade in
 				],
 				"timeline": [
-					[ 0, 0, 70, "WebGLRendererModule", { "dom": null } ],
+					[ 0, 0, 70, "ClearModule" ],
 					[ 1, 0, 14, "ShaderModule", { "url": "files/shaders/lights.fs", "time": "$0" } ],
 					[ 2, 0, 14, "ColorModule", { "color": 0x000000, "opacity": "$1" } ],
 					[ 1, 14, 21, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$2", "mouse": [ 0.75, 0.75 ] } ],
@@ -93,7 +92,7 @@
 					[ 3, 56, 60, "ColorModule", { "color": 0xffffff, "opacity": "$11" } ]
 				]
 			};
-			
+
 			/*
 			var json = {
 				"config":{
@@ -163,48 +162,19 @@
 			};
 			*/
 
-			// passing dom to config
-
 			json.config.dom = viewport.dom;
+
+			define( 'Config', json.config );
 
 			// load modules
 
 			var modules = {};
-			var loaded = 0, total = 0;
 
-			var loadModule = function ( name, file ) {
+			require.config( {
 
-				// console.log( 'Loading:', name );
+				baseUrl: json.config.rootPath + json.config.modulesPath
 
-				var request = new XMLHttpRequest();
-				request.addEventListener( 'load', function ( event ) {
-
-					loaded ++;
-
-					console.log( 'Loaded (' + loaded + '/' + total + '):', name );
-
-					modules[ name ] = eval( event.target.responseText )( json.config );
-					modules[ name ].name = name;
-
-					if ( loaded === total ) {
-
-						init();
-
-					}
-
-				}, false );
-				request.open( 'GET', file, true );
-				request.send( null );
-
-				total ++;	
-
-			};
-
-			for ( var key in json.modules ) {
-
-				loadModule( key, json.config.path + json.modules[ key ] );
-
-			}
+			} );
 
 			// curves
 
@@ -235,53 +205,26 @@
 
 			// init timeline
 
-			var init = function () {
+			var loadElement = function ( data ) {
 
-				for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
+				var layer = data[ 0 ];
+				var start = data[ 1 ];
+				var end = data[ 2 ];
+				var moduleName = data[ 3 ];
+				var parameters = data[ 4 ];
 
-					var data = json.timeline[ i ];
+				require( [ moduleName ], function ( constructor ) {
 
-					var layer = data[ 0 ];
-					var start = data[ 1 ];
-					var end = data[ 2 ];
-					var moduleName = data[ 3 ];
-					var parameters = data[ 4 ];
-
-					var module;
-
-					if ( modules[ moduleName ] === undefined ) {
-
-						console.log( 'FRAME: Missing module: ' + moduleName );
-						continue;
-						
-					} else {
-						
-						module = modules[ moduleName ];
-						
-					}
-
-					// parameters
+					var module = constructor();
+					module.name = moduleName;
 
 					if ( parameters === undefined ) parameters = {};
-
-					for ( var key in module.parameters ) {
-
-						// set defaults
-
-						if ( parameters[ key ] === undefined ) {
-
-							parameters[ key ] = module.parameters[ key ].value;
-
-						}
-
-					}
 
 					for ( var key in parameters ) {
 
 						if ( module.parameters[ key ] === undefined ) {
 
 							console.log( 'FRAME: [' + moduleName + '] doesn\'t have parameter "' + key + '"' );
-							delete parameters[ key ];
 							continue;
 
 						}
@@ -294,7 +237,7 @@
 
 							( function ( curve ) {
 
-								Object.defineProperty( parameters, key, {
+								Object.defineProperty( module.parameters[ key ], 'value', {
 
 									get: function() {
 
@@ -306,20 +249,30 @@
 
 							} )( curves[ id ] )
 
+						} else {
+
+							module.parameters[ key ].value = parameter;
+
 						}
 
 					}
 			
-					var element = new FRAME.TimelineElement( moduleName, layer, start, end, module, parameters );
+					var element = new FRAME.TimelineElement( module, layer, start, end );
 
 					editor.add( element );
 
-				}
+				} );
 
-				var hash = location.hash.substr( 1 );
-				signals.setTime.dispatch( hash !== '' ? hash : 0 );
+			}
 
-			};
+			for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
+
+				loadElement( json.timeline[ i ] );
+
+			}
+
+			var hash = location.hash.substr( 1 );
+			signals.setTime.dispatch( hash !== '' ? hash : 0 );
 
 			//
 
@@ -330,7 +283,7 @@
 				editor.signals.durationChanged.dispatch( audio.duration );
 
 			} );
-			audio.src = json.config.path + json.config.audio;
+			audio.src = json.config.rootPath + json.config.audio;
 			document.body.appendChild( audio );
 
 			signals.play.add( function () {
