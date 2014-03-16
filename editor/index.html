@@ -11,8 +11,7 @@
 		<script src="js/libs/signals.min.js"></script>
 		<script src="js/libs/ui.js"></script>
 
-		<script src="js/libs/require.min.js"></script>
-
+		<script src="js/libs/curl.min.js"></script>
 
 		<script src="js/Editor.js"></script>
 		<script src="js/Menubar.js"></script>
@@ -169,7 +168,7 @@
 
 			var modules = {};
 
-			require.config( {
+			curl.config( {
 
 				baseUrl: json.config.rootPath + json.config.modulesPath
 
@@ -212,7 +211,7 @@
 				var moduleName = data[ 3 ];
 				var parameters = data[ 4 ];
 
-				require( [ moduleName ], function ( moduleInstance ) {
+				curl( [ moduleName ], function ( moduleInstance ) {
 
 					var module = moduleInstance();
 					module.name = moduleName;
