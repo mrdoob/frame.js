@@ -14,6 +14,7 @@ var FRAME = ( function () {
 
                 };
 
+                this.points = points;
 				this.value = 0;
 
 				this.update = function ( time ) {
@@ -63,6 +64,10 @@ var FRAME = ( function () {
 
 				var delta = max - min;
 
+				this.frequency = frequency;
+				this.offset = offset;
+				this.min = min;
+				this.max = max;
 				this.value = 0;
 
 				this.update = function ( time ) {

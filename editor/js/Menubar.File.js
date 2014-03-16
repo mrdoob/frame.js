@@ -30,6 +30,24 @@ Menubar.File = function ( editor ) {
 			"timeline": []
 		};
 		
+		// curves
+
+		var curves = editor.timeline.curves;
+
+		for ( var i = 0, l = curves.length; i < l; i ++ ) {
+
+			var curve = curves[ i ];
+
+			if ( curve instanceof FRAME.Curves.Linear ) {
+
+				data.curves.push( [ 'linear', curve.points ] );
+
+			}
+
+		}
+
+		// timeline
+
 		var elements = editor.timeline.elements;
 		
 		for ( var i = 0, l = elements.length; i < l; i ++ ) {
