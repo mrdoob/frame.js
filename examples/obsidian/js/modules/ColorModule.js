@@ -6,12 +6,10 @@ define( [ 'WebGLRendererModule' ], function ( renderer ) {
 
 		var scene = new THREE.Scene();
 
-		var material = new THREE.MeshBasicMaterial( { transparent: true } );
-		var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), material );
+		var geometry = new THREE.PlaneGeometry( 2, 2 );
+		var material = new THREE.MeshBasicMaterial( { depthTest: false, depthWrite: false, transparent: true } );
 
-		scene.add( mesh );
-
-		//
+		scene.add( new THREE.Mesh( geometry, material ) );
 
 		return new FRAME.Module( {
 
