@@ -91,7 +91,7 @@ define( [ 'Config', 'WebGLRendererModule' ], function ( config, renderer ) {
 
 				if ( texts[ string ] === undefined ) {
 
-					init();
+					this.init();
 
 				}
 
