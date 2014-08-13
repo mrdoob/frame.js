@@ -1,9 +1,10 @@
 define( [ 'Config' ], function ( config ) {
 
 	var dom = document.createElement( 'div' );
-	dom.style.position = 'absolute';
+	dom.style.position = 'relative';
 	dom.style.width = '100%';
 	dom.style.height = '100%';
+	dom.style.backgroundColor = 'black';
 	config.dom.appendChild( dom );
 
 	var renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
