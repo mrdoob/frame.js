@@ -1,90 +1,35 @@
-﻿* {
-	vertical-align: middle;
-}
-
-body {
-	background-color: #333;
-	font-family: Arial, sans-serif;
-	font-size: 14px;
-	margin: 0;
-	overflow: hidden;
-}
-
-hr {
-	border: 0px;
-	border-top: 1px solid #ccc;
-}
-
-button {
-	position: relative;
-	color: #555;
-	background-color: #888;
-	border: 0px;
-	cursor: pointer;
-}
-
-.Panel {
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-
-	/* No support for these yet */
-	-o-user-select: none;
-	user-select: none;
-}
-
-input.Input {
-	color: #3AC785;
-	font-size: 12px;
-	background-color: #444;
-	border: 0px;
-	padding: 2px 4px;
-}
-
-input.Number {
-	color: #3A85C7;
-	font-size: 12px;							/** TODO: Use of !imporant is not ideal **/
-	background-color: transparent!important;	/* For now this is a quick fix a rendering issue due to inherited background */
-	border: 1px solid transparent;
-	padding: 2px;
-	cursor: col-resize;
-}
-
-#properties {
-	position: absolute;
-	top: 32px;
-	bottom: 30%;
-	left: 0px;
-	width: 300px;
-	color: #888;
-	background-color: #555;
-}
-
-	#properties hr {
-		border-color: #666;
-	}
-
-	#properties > .Panel {
-		padding: 8px;
-	}
-
-	#properties .Panel {
-		margin-bottom: 10px;
-	}
-
 #viewport {
 	position: absolute;
 	top: 32px;
-	bottom: 30%;
-	left: 300px;
-	right: 0px;
+	bottom: calc(30% + 32px);
+	left: 0px;
+	right: 300px;
 	background-color: #000;
+}
+
+#effect {
+	position: absolute;
+	top: 32px;
+	bottom: calc(30% + 32px);
+	left: 0px;
+	right: 300px;
+	opacity: 0.9;
+}
+
+#controls {
+	position: absolute;
+	background-color: #666;
+	top: calc(70% - 32px);
+	left: 0px;
+	right: 300px;
+	height: 32px;
 }
 
 #timeline {
 	position: absolute;
 	top: 70%;
-	width: 100%;
+	left: 0px;
+	right: 300px;
 	height: 30%;
 	background-color: #555;
 }
@@ -106,14 +51,23 @@ input.Number {
 		margin: 7px 10px;
 		color: rgba(0,0,0,0.5);
 		cursor: default;
+		white-space: nowrap;
 	}
 
 	#timeline .block.selected {
 		background-color: #8f8;
 		border-left: 1px solid #afa;
 		border-top: 1px solid #afa;
-		border-right: 1px solid #7f7;
-		border-bottom: 1px solid #7f7;
+		border-right: 1px solid #5f5;
+		border-bottom: 1px solid #5f5;
+	}
+
+	#timeline .block.disabled {
+		background: repeating-linear-gradient( 45deg, #88f, #88f 5px, #77f 5px, #77f 10px );
+	}
+
+	#timeline .block.disabled.selected {
+		background: repeating-linear-gradient( 45deg, #8f8, #8f8 5px, #5f5 5px, #5f5 10px );
 	}
 
 #menubar {
@@ -161,3 +115,46 @@ input.Number {
 					color: #fff;
 					background-color: #08f;
 				}
+
+#sidebar {
+	position: absolute;
+	right: 0;
+	top: 32px;
+	bottom: 0px;
+	width: 300px;
+	color: #888;
+	background-color: #555;
+}
+
+	#sidebar * {
+		vertical-align: middle;
+	}
+
+	#sidebar hr {
+		border-color: #666;
+	}
+
+	#sidebar .Panel {
+		color: #888;
+		padding: 10px;
+	}
+
+	#sidebar .Row {
+		min-height: 20px;
+		margin-bottom: 10px;
+	}
+
+#tabs {
+	background-color: #333;
+}
+
+	#tabs span {
+		color: #555;
+		border-right: 1px solid #444;
+		padding: 10px;
+	}
+
+	#tabs span.selected {
+		color: #888;
+		background-color: #555;
+	}

@@ -1,3 +1,7 @@
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 Timeline.Curves = function ( editor ) {
 
 	var signals = editor.signals;
@@ -15,15 +19,16 @@ Timeline.Curves = function ( editor ) {
 
 	var path = document.createElementNS( 'http://www.w3.org/2000/svg', 'path' );
 	path.setAttribute( 'style', 'stroke: #444444; stroke-width: 1px; fill: none;' );
-	path.setAttribute( 'd', 'M 0 64 2048 65')
+	path.setAttribute( 'd', 'M 0 64 2048 65');
 	svg.appendChild( path );
 
 	var path = document.createElementNS( 'http://www.w3.org/2000/svg', 'path' );
 	path.setAttribute( 'style', 'stroke: #00ff00; stroke-width: 1px; fill: none;' );
 	svg.appendChild( path );
 
-	var drawCurve = function () {
+	function drawCurve() {
 
+		/*
 		var curve = selected;
 		var drawing = '';
 
@@ -36,8 +41,9 @@ Timeline.Curves = function ( editor ) {
 		}
 
 		path.setAttribute( 'd', drawing );
+		*/
 
-	};
+	}
 
 	// signals
 
@@ -56,11 +62,11 @@ Timeline.Curves = function ( editor ) {
 	signals.timelineScaled.add( function ( value ) {
 
 		scale = value;
-					
+
 		drawCurve();
 
 	} );
 
 	return container;
 
-}
+};

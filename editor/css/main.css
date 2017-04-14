@@ -1,0 +1,75 @@
+body {
+	background-color: #333;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	margin: 0;
+	overflow: hidden;
+}
+
+hr {
+	border: 0px;
+	border-top: 1px solid #ccc;
+}
+
+button {
+	position: relative;
+	color: #555;
+	background-color: #888;
+	border: 0px;
+	cursor: pointer;
+	outline: none; /* osx */
+}
+	button:hover {
+		background-color: #999;
+	}
+
+.Panel {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+
+	/* No support for these yet */
+	-o-user-select: none;
+	user-select: none;
+}
+
+input.Input {
+	color: #3AC785;
+	font-size: 12px;
+	background-color: #444;
+	border: 0px;
+	padding: 2px 4px;
+}
+
+input.Number {
+	color: #3A85C7;
+	font-size: 12px;							/** TODO: Use of !imporant is not ideal **/
+	background-color: transparent!important;	/* For now this is a quick fix a rendering issue due to inherited background */
+	border: 1px solid transparent;
+	padding: 2px;
+	cursor: col-resize;
+}
+
+select.Select {
+	color: #3AC785;
+	font-size: 12px;
+	background-color: #444;
+	border: 0px;
+	padding: 2px 4px;
+}
+
+.CodeMirror {
+	position: absolute !important;
+	top: 37px;
+	width: 100% !important;
+	height: calc(100% - 37px) !important;
+}
+
+.CodeMirror-errorLine {
+	background: rgba(200, 50, 0, 0.2) !important;
+}
+
+
+input, textarea, keygen, select, button {
+	font: 11px system-ui;
+}

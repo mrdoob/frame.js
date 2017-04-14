@@ -1,3 +1,7 @@
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 Menubar.File = function ( editor ) {
 
 	var signals = editor.signals;
@@ -11,79 +15,48 @@ Menubar.File = function ( editor ) {
 	title.setPadding( '8px' );
 	container.add( title );
 
-	//
-
 	var options = new UI.Panel();
 	options.setClass( 'options' );
 	container.add( options );
 
+	// New
+
+	var option = new UI.Row();
+	option.setClass( 'option' );
+	option.setTextContent( 'New' );
+	option.onClick( function () {
+
+		if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
+
+			editor.clear();
+
+		}
+
+	} );
+	options.add( option );
+
 	// export
-	
+
 	var option = new UI.Panel();
 	option.setClass( 'option' );
 	option.setTextContent( 'Export' );
-	option.onClick( function () {
-	
-		var data = {
-			"config": {},
-			"curves": [],
-			"timeline": []
-		};
-		
-		// curves
+	option.onClick( Export );
+	options.add( option );
 
-		var curves = editor.timeline.curves;
+	signals.exportState.add( Export );
 
-		for ( var i = 0, l = curves.length; i < l; i ++ ) {
+	function Export () {
 
-			var curve = curves[ i ];
-
-			if ( curve instanceof FRAME.Curves.Linear ) {
-
-				data.curves.push( [ 'linear', curve.points ] );
-
-			}
-
-		}
-
-		// elements
-
-		var elements = editor.timeline.elements;
-		
-		for ( var i = 0, l = elements.length; i < l; i ++ ) {
-			
-			var element = elements[ i ];
-			var module = element.module;
-
-			var parameters = {};
-
-			for ( var key in module.parameters ) {
-
-				parameters[ key ] = module.parameters[ key ].value;
-
-			}
-			
-			data.timeline.push( [
-				element.layer,
-				element.start,
-				element.end,
-				element.module.name,
-				parameters
-			] );
-			
-		}
-		
-		var output = JSON.stringify( data, null );
+		var output = JSON.stringify( editor.toJSON(), null, '\t' );
 
 		var blob = new Blob( [ output ], { type: 'text/plain' } );
 		var objectURL = URL.createObjectURL( blob );
 
 		window.open( objectURL, '_blank' );
 		window.focus();
-	
-	} );
-	options.add( option );
+
+	}
 
 	return container;
 
-}
+};

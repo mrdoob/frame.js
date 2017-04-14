@@ -1,4 +1,8 @@
-Timeline.Modules = function ( editor ) {
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
+Timeline.Animations = function ( editor ) {
 
 	var signals = editor.signals;
 
@@ -19,32 +23,37 @@ Timeline.Modules = function ( editor ) {
 
 	var scale = 32;
 
-	var Block = ( function ( element ) {
-		
+	var Block = ( function ( animation ) {
+
 		var scope = this;
 
 		var dom = document.createElement( 'div' );
 		dom.className = 'block';
 		dom.style.position = 'absolute';
 		dom.style.height = '30px';
+		dom.addEventListener( 'click', function ( event ) {
+
+			editor.selectAnimation( animation );
+
+		} );
 		dom.addEventListener( 'mousedown', function ( event ) {
 
 			var movementX = 0;
 			var movementY = 0;
 
-			var onMouseMove = function ( event ) {
+			function onMouseMove( event ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
-				element.start += movementX / scale;
-				element.end += movementX / scale;
+				animation.start += movementX / scale;
+				animation.end += movementX / scale;
 
-				if ( element.start < 0 ) {
+				if ( animation.start < 0 ) {
 
-					var offset = - element.start;
+					var offset = - animation.start;
 
-					element.start += offset;
-					element.end += offset;
+					animation.start += offset;
+					animation.end += offset;
 
 				}
 
@@ -52,36 +61,28 @@ Timeline.Modules = function ( editor ) {
 
 				if ( movementY >= 30 ) {
 
-					element.layer ++;
+					animation.layer ++;
 					movementY = 0;
 
 				}
 
 				if ( movementY <= -30 ) {
 
-					element.layer --;
+					animation.layer --;
 					movementY = 0;
 
 				}
 
-				update();
+				signals.animationModified.dispatch( animation );
 
-				signals.timelineElementChanged.dispatch( element );
+			}
 
-			};
-
-			var onMouseUp = function ( event ) {
-				
-				if ( Math.abs( movementX ) < 2 ) {
-					
-					editor.select( element )
-					
-				}
+			function onMouseUp( event ) {
 
 				document.removeEventListener( 'mousemove', onMouseMove );
 				document.removeEventListener( 'mouseup', onMouseUp );
 
-			};
+			}
 
 			document.addEventListener( 'mousemove', onMouseMove, false );
 			document.addEventListener( 'mouseup', onMouseUp, false );
@@ -96,33 +97,31 @@ Timeline.Modules = function ( editor ) {
 		resizeLeft.addEventListener( 'mousedown', function ( event ) {
 
 			event.stopPropagation();
-			
+
 			var movementX = 0;
 
-			var onMouseMove = function ( event ) {
+			function onMouseMove( event ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
-				element.start += movementX / scale;
-				
-				update();
+				animation.start += movementX / scale;
 
-				signals.timelineElementChanged.dispatch( element );
+				signals.animationModified.dispatch( animation );
 
-			};
+			}
 
-			var onMouseUp = function ( event ) {
-				
+			function onMouseUp( event ) {
+
 				if ( Math.abs( movementX ) < 2 ) {
-					
-					editor.select( element )
-					
+
+					editor.selectAnimation( animation );
+
 				}
 
 				document.removeEventListener( 'mousemove', onMouseMove );
 				document.removeEventListener( 'mouseup', onMouseUp );
 
-			};
+			}
 
 			document.addEventListener( 'mousemove', onMouseMove, false );
 			document.addEventListener( 'mouseup', onMouseUp, false );
@@ -132,7 +131,6 @@ Timeline.Modules = function ( editor ) {
 
 		var name = document.createElement( 'div' );
 		name.className = 'name';
-		name.textContent = element.module.name;
 		dom.appendChild( name );
 
 		var resizeRight = document.createElement( 'div' );
@@ -145,67 +143,93 @@ Timeline.Modules = function ( editor ) {
 		resizeRight.addEventListener( 'mousedown', function ( event ) {
 
 			event.stopPropagation();
-			
+
 			var movementX = 0;
 
-			var onMouseMove = function ( event ) {
+			function onMouseMove( event ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
-				element.end += movementX / scale;
-				
-				update();
+				animation.end += movementX / scale;
 
-				signals.timelineElementChanged.dispatch( element );
+				signals.animationModified.dispatch( animation );
 
-			};
+			}
 
-			var onMouseUp = function ( event ) {
-				
+			function onMouseUp( event ) {
+
 				if ( Math.abs( movementX ) < 2 ) {
-					
-					editor.select( element )
-					
+
+					editor.selectAnimation( animation );
+
 				}
 
 				document.removeEventListener( 'mousemove', onMouseMove );
 				document.removeEventListener( 'mouseup', onMouseUp );
 
-			};
+			}
 
 			document.addEventListener( 'mousemove', onMouseMove, false );
 			document.addEventListener( 'mouseup', onMouseUp, false );
 
 		}, false );
 		dom.appendChild( resizeRight );
-		
-		var update = function () {
 
-			dom.style.left = ( element.start * scale ) + 'px';
-			dom.style.top = ( element.layer * 32 ) + 'px';
-			dom.style.width = ( ( element.end - element.start ) * scale - 2 ) + 'px';
+		//
 
-		};
+		function getAnimation() {
+
+			return animation;
+
+		}
+
+		function select() {
+
+			dom.classList.add( 'selected' );
+
+		}
+
+		function deselect() {
+
+			dom.classList.remove( 'selected' );
+
+		}
+
+		function update() {
+
+			animation.enabled === false ? dom.classList.add( 'disabled' ) : dom.classList.remove( 'disabled' );
+
+			dom.style.left = ( animation.start * scale ) + 'px';
+			dom.style.top = ( animation.layer * 32 ) + 'px';
+			dom.style.width = ( ( animation.end - animation.start ) * scale - 2 ) + 'px';
+
+			name.innerHTML = animation.name + ' <span style="opacity:0.5">' + animation.effect.name + '</span>';
+
+		}
 
 		update();
 
-		this.dom = dom;
-		
-		this.select = function () {
-		  
-			dom.className = 'block selected';
-			
+		return {
+			dom: dom,
+			getAnimation: getAnimation,
+			select: select,
+			deselect: deselect,
+			update: update
 		};
-		
-		this.deselect = function () {
 
-			dom.className = 'block';
-			
-		};
-		
-		this.update = update;
+	} );
 
-		return this;
+	container.dom.addEventListener( 'dblclick', function ( event ) {
+
+		var start = event.offsetX / scale;
+		var end = start + 2;
+		var layer = Math.floor( event.offsetY / 32 );
+
+		var effect = new FRAME.Effect( 'Effect' );
+		editor.addEffect( effect );
+
+		var animation = new FRAME.Animation( 'Animation', start, end, layer, effect );
+		editor.addAnimation( animation );
 
 	} );
 
@@ -214,49 +238,79 @@ Timeline.Modules = function ( editor ) {
 	var blocks = {};
 	var selected = null;
 
-	signals.elementAdded.add( function ( element ) {
+	signals.animationAdded.add( function ( animation ) {
 
-		var block = new Block( element );
+		var block = new Block( animation );
 		container.dom.appendChild( block.dom );
-		
-		blocks[ element.id ] = block;
+
+		blocks[ animation.id ] = block;
 
 	} );
-	
-	signals.elementSelected.add( function ( element ) {
+
+	signals.animationModified.add( function ( animation ) {
+
+		blocks[ animation.id ].update();
+
+	} );
+
+	signals.animationSelected.add( function ( animation ) {
 
 		if ( blocks[ selected ] !== undefined ) {
-			
+
 			blocks[ selected ].deselect();
-			
+
 		}
-		
-		selected = element.id;
+
+		if ( animation === null ) return;
+
+		selected = animation.id;
 		blocks[ selected ].select();
 
 	} );
 
-	signals.elementRemoved.add( function ( element ) {
-	
-			var block = blocks[ element.id ];
-			container.dom.removeChild( block.dom )
-			
-			delete blocks[ element.id ];
-	
+	signals.animationRemoved.add( function ( animation ) {
+
+			var block = blocks[ animation.id ];
+			container.dom.removeChild( block.dom );
+
+			delete blocks[ animation.id ];
+
 	} );
 
 	signals.timelineScaled.add( function ( value ) {
 
 		scale = value;
-					
+
 		for ( var key in blocks ) {
-		
+
 			blocks[ key ].update();
-			
+
+		}
+
+	} );
+
+	signals.animationRenamed.add( function ( animation ) {
+
+		blocks[ animation.id ].update();
+
+	} );
+
+	signals.effectRenamed.add( function ( effect ) {
+
+		for ( var key in blocks ) {
+
+			var block = blocks[ key ];
+
+			if ( block.getAnimation().effect === effect ) {
+
+				block.update();
+
+			}
+
 		}
 
 	} );
 
 	return container;
 
-}
+};

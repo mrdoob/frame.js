@@ -1,40 +1,57 @@
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 var Viewport = function ( editor ) {
 
-	var container = new UI.Panel();
-
-	var time = 0;
-	var timeline = editor.timeline;
-
-	// signals
-
+	var scope = this;
 	var signals = editor.signals;
 
-	signals.timeChanged.add( function ( value ) {
+	var container = this.container = new UI.Panel();
+	container.setId( 'viewport' );
 
-		time = value;
-		timeline.update( time );
+	FRAME.setDOM( container.dom );
 
-	} );
+	/*
+	editor.signals.fullscreen.add( function () {
 
-	signals.timelineElementChanged.add( function ( element ) {
+		var element = container.dom;
 
-		timeline.reset();
-		timeline.sort();
-		timeline.update( time );
-
-	} );
-
-	signals.fullscreen.add( function () {
-
-		var elem = container.dom.children[ 0 ];
-
-		if ( elem.requestFullscreen ) elem.requestFullscreen();
-		if ( elem.msRequestFullscreen ) elem.msRequestFullscreen();
-		if ( elem.mozRequestFullScreen ) elem.mozRequestFullScreen();
-		if ( elem.webkitRequestFullscreen ) elem.webkitRequestFullscreen();
+		if ( element.requestFullscreen ) element.requestFullscreen();
+		if ( element.msRequestFullscreen ) element.msRequestFullscreen();
+		if ( element.mozRequestFullScreen ) element.mozRequestFullScreen();
+		if ( element.webkitRequestFullscreen ) element.webkitRequestFullscreen();
 
 	} );
+	*/
+
+	signals.editorCleared.add( clear );
+	signals.includesCleared.add( clear );
+
+	function clear () {
+
+		scope.clear();
+
+	}
 
 	return container;
 
-}
+};
+
+Viewport.prototype = {
+
+	clear: function () {
+
+		var container = this.container;
+
+		while ( container.dom.children.length ) {
+
+			container.dom.removeChild( container.dom.lastChild );
+
+		}
+
+		return this;
+
+	}
+
+};

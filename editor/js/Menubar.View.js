@@ -1,3 +1,7 @@
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 Menubar.View = function ( editor ) {
 
 	var container = new UI.Panel();
@@ -16,12 +20,12 @@ Menubar.View = function ( editor ) {
 	container.add( options );
 
 	// remove
-	
+
 	var option = new UI.Panel();
 	option.setClass( 'option' );
 	option.setTextContent( 'Fullscreen' );
 	option.onClick( function () {
-	
+
 		editor.signals.fullscreen.dispatch();
 
 	} );

@@ -4,360 +4,191 @@
 		<meta charset="utf-8">
 		<title>frame.js editor</title>
 	</head>
+	<link href="css/main.css" rel="stylesheet" />
 	<link id="theme" href="css/dark.css" rel="stylesheet" />
 	<body>
 
+		<link rel="stylesheet" href="js/libs/codemirror/codemirror.css">
+		<link rel="stylesheet" href="js/libs/codemirror/theme/monokai.css">
+		<script src="js/libs/codemirror/codemirror.js"></script>
+		<script src="js/libs/codemirror/mode/javascript.js"></script>
 
 		<script src="js/libs/signals.min.js"></script>
 		<script src="js/libs/ui.js"></script>
 
-		<script src="js/libs/curl.min.js"></script>
-
 		<script src="js/Editor.js"></script>
+		<script src="js/Code.js"></script>
+		<script src="js/Config.js"></script>
 		<script src="js/Menubar.js"></script>
 		<script src="js/Menubar.File.js"></script>
 		<script src="js/Menubar.Edit.js"></script>
 		<script src="js/Menubar.View.js"></script>
 		<script src="js/Menubar.Help.js"></script>
-		<script src="js/Properties.js"></script>
+		<script src="js/Sidebar.js"></script>
+		<script src="js/Sidebar.Animation.js"></script>
+		<script src="js/Sidebar.Project.js"></script>
+		<script src="js/Sidebar.Settings.js"></script>
 		<script src="js/Viewport.js"></script>
+		<script src="js/Controls.js"></script>
 		<script src="js/Timeline.js"></script>
-		<script src="js/Timeline.Modules.js"></script>
+		<script src="js/Timeline.Animations.js"></script>
 		<script src="js/Timeline.Curves.js"></script>
 
-		<!-- <script src="../build/frame.min.js"></script> -->
 		<script src="../src/Frame.js"></script>
 
-		<script src="../examples/obsidian/js/libs/raf.min.js"></script>
-		<script src="../examples/obsidian/js/libs/three.min.js"></script>
-
-		<script src="../examples/obsidian/files/fonts/helvetiker_regular.typeface.js"></script>
+		<!-- Project specific files -->
 
 		<script>
 
+
 			var editor = new Editor();
-			var signals = editor.signals;
 
-			var properties = new Properties( editor ).setId( 'properties' );
-			document.body.appendChild( properties.dom );
-
-			var viewport = new Viewport( editor ).setId( 'viewport' );
+			var viewport = new Viewport( editor );
 			document.body.appendChild( viewport.dom );
 
-			var timeline = new Timeline( editor ).setId( 'timeline' );
+			var code = new Code( editor );
+			document.body.appendChild( code.dom );
+
+			var sidebar = new Sidebar( editor );
+			document.body.appendChild( sidebar.dom );
+
+			var controls = new Controls( editor );
+			document.body.appendChild( controls.dom );
+
+			var timeline = new Timeline( editor );
 			document.body.appendChild( timeline.dom );
 
-			var menubar = new Menubar( editor ).setId( 'menubar' );
+			var menubar = new Menubar( editor );
 			document.body.appendChild( menubar.dom );
 
-			//
+			// LocalStorage
 
-			/*
-			var json = {
-				"config":{
-					"width": 800,
-					"height": 600,
-					"rootPath": "../examples/template/",
-					"modulesPath": "js/modules/",
-					"audio": "files/lug00ber-bastion_amstel.ogg"
-				},
-				"curves":[
-					[ "linear", [ 0, 0, 14, 10 ] ], // blobs effect time
-					[ "linear", [ 0, 1, 14, 0 ] ], // black fade in
-					[ "linear", [ 14, 0, 21, 6 ] ], // spherecubes 1
-					[ "linear", [ 21, 0, 28, 6 ] ], // spherecubes 2
-					[ "linear", [ 28, 0, 35, 20 ] ], // planedistort 1
-					[ "linear", [ 35, 450, 42, 470 ] ], // planedistort 2
-					[ "linear", [ 35, 1, 37, 0 ] ], // white fade in
-					[ "linear", [ 42, 0, 49, 20 ] ], // field 1
-					[ "linear", [ 42, 1, 44, 0 ] ], // white fade in
-					[ "linear", [ 49, 450, 56, 470 ] ], // field 2
-					[ "linear", [ 56, 0, 70, 10 ] ], // blobs
-					[ "linear", [ 56, 1, 60, 0 ] ] // white fade in
-				],
-				"timeline": [
-					[ 0, 0, 14, "ShaderModule", { "url": "files/shaders/lights.fs", "time": "$0" } ],
-					[ 1, 0, 14, "ColorModule", { "color": 0x000000, "opacity": "$1" } ],
-					[ 0, 14, 21, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$2", "mouse": [ 0.75, 0.75 ] } ],
-					[ 0, 21, 28, "ShaderModule", { "url": "files/shaders/cubeballs.fs", "time": "$3", "mouse": [ -0.75, 0.25 ] } ],
-					[ 0, 28, 35, "ShaderModule", { "url": "files/shaders/planedistort.fs", "time": "$4" } ],
-					[ 0, 35, 42, "ShaderModule", { "url": "files/shaders/planedistort.fs", "time": "$5" } ],
-					[ 1, 35, 37, "ColorModule", { "color": 0xffffff, "opacity": "$6" } ],
-					[ 0, 42, 49, "ShaderModule", { "url": "files/shaders/field.fs", "time": "$7" } ],
-					[ 1, 42, 44, "ColorModule", { "color": 0xffffff, "opacity": "$8" } ],
-					[ 0, 49, 56, "ShaderModule", { "url": "files/shaders/field.fs", "time": "$9" } ],
-					[ 0, 56, 70, "ShaderModule", { "url": "files/shaders/blobs.fs", "time": "$10" } ],
-					[ 0, 56, 70, "ImageModule", { "url": "files/credits.png" } ],
-					[ 2, 56, 60, "ColorModule", { "color": 0xffffff, "opacity": "$11" } ]
-				]
-			};
-			*/
+			editor.signals.animationAdded.add( saveState );
+			editor.signals.animationModified.add( saveState );
+			editor.signals.animationRemoved.add( saveState );
+			editor.signals.animationRenamed.add( saveState );
+			editor.signals.effectCompiled.add( saveState );
+			editor.signals.effectRenamed.add( saveState );
+			editor.signals.includeChanged.add( saveState );
+			editor.signals.includeRemoved.add( saveState );
+			editor.signals.editorCleared.add( saveState );
 
-			var json = {
-				"config":{
-					"width":1280,
-					"height":720,
-					"rootPath":"../examples/obsidian/",
-					"modulesPath": "js/modules/",					
-					"audio":"files/obsidian.ogg"
-				},
-				"modules":{
-					"WebGLRendererModule":"js/modules/WebGLRendererModule.js",
-					"ColorModule":"js/modules/ColorModule.js",
-					"TextModule":"js/modules/TextModule.js",
-					"SceneModule":"js/modules/SceneModule.js",
-					"Scene2Module":"js/modules/Scene2Module.js",
-					"Scene2bModule":"js/modules/Scene2bModule.js",
-					"Scene3Module":"js/modules/Scene3Module.js",
-					"Scene4Module":"js/modules/Scene4Module.js",
-					"Scene5Module":"js/modules/Scene5Module.js",
-					"Scene6Module":"js/modules/Scene6Module.js",
-					"Scene6bModule":"js/modules/Scene6bModule.js",
-					"Scene7Module":"js/modules/Scene7Module.js"
-				},
-				"curves":[
-					["linear",[0,0.9,4.3125,0]],
-					["linear",[13.10237494155758,0.75,13.209243333664636,0]],
-					["linear",[13.222523546148029,0.75,13.320538463266152,0]],
-					["linear",[13.33381867574956,0.75,13.453967280340017,0]],
-					["linear",[13.524806843061466,0.75,13.644955447651922,0]],
-					["linear",[13.647662866830075,0.75,13.767811471420531,0]],
-					["linear",[13.820206681001373,0.75,13.94035528559183,0]],
-					["linear",[13.93287025565171,0.75,14.053018860242167,0]],
-					["linear",[82.27357633279475,0.9,83.49363893376405,0]],
-					["saw",0.869,0.6,1,0]
-				],
-				"timeline":[
-					[0,0,247,"ClearModule"],
-					[1,0,14.052395209580844,"SceneModule",{"startPosition":[100,100,100],"endPosition":[-100,100,100]}],
-					[3,0,4.3125,"ColorModule",{"color":12312063,"opacity":"$0"}],
-					[2,4.3125,8.261979594939186,"TextModule",{"text":"xplsv","startPosition":[0,0,18],"endPosition":[0,0,15]}],
-					[2,10.304385479837494,14.056710007672898,"TextModule",{"text":"presents","startPosition":[0,0,18],"endPosition":[0,0,15]}],
-					[3,13.10237494155758,13.209243333664636,"ColorModule",{"color":12312063,"opacity":"$1"}],
-					[3,13.222523546148029,13.320538463266152,"ColorModule",{"color":12312063,"opacity":"$2"}],
-					[3,13.33381867574956,13.453967280340017,"ColorModule",{"color":12312063,"opacity":"$3"}],
-					[3,13.524806843061466,13.644955447651922,"ColorModule",{"color":12312063,"opacity":"$4"}],
-					[3,13.647662866830075,13.767811471420531,"ColorModule",{"color":12312063,"opacity":"$5"}],
-					[3,13.820206681001373,13.94035528559183,"ColorModule",{"color":12312063,"opacity":"$6"}],
-					[3,13.93287025565171,14.053018860242167,"ColorModule",{"color":12312063,"opacity":"$7"}],
-					[1,14.052395209580844,28.042290419161688,"Scene2Module",{"startPosition":[-20,-20,30],"endPosition":[0,0,2030],"startPositionTarget":[-50,0,0],"endPositionTarget":[25,0,2000],"lightIntensity":"$9"}],
-					[1,28.042290419161688,41.84468562874253,"Scene2bModule",{"startPosition":[400,0,-100],"endPosition":[50,0,2100],"startPositionTarget":[0,0,0],"endPositionTarget":[0,0,2000],"lightIntensity":"$9"}],
-					[1,41.84468562874253,55.647080838323376,"Scene2Module",{"startPosition":[50,-50,300],"endPosition":[-50,-25,1700],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050],"lightIntensity":"$9"}],
-					[1,55.647080838323376,69.44947604790423,"Scene2bModule",{"startPosition":[50,0,100],"endPosition":[150,0,2100],"startPositionTarget":[0,0,-50],"endPositionTarget":[0,0,2050],"lightIntensity":"$9"}],
-					[1,69.44947604790423,82.27260323341517,"Scene2Module",{"startPosition":[-100,-100,1100],"endPosition":[-50,0,2100],"startPositionTarget":[0,0,500],"endPositionTarget":[0,0,2000],"lightIntensity":"$9"}],
-					[3,82.27357633279475,83.49363893376405,"ColorModule",{"color":12312063,"opacity":"$8"}],
-					[1,83.49302603717142,111.45731305212999,"Scene3Module",{"startPosition":[-600,0,0],"endPosition":[-600,0,0]}],
-					[2,83.4942100076729,86.99777831660283,"TextModule",{"text":"coding / mr.doob x three.js","startPosition":[0,0,40],"endPosition":[0,0,35]}],
-					[2,87.04752956038395,90.4018441379706,"TextModule",{"text":"direction / trace","startPosition":[0,0,40],"endPosition":[0,0,35]}],
-					[2,90.45159538175169,93.88053682500997,"TextModule",{"text":"music / om unit x lorn","startPosition":[0,0,40],"endPosition":[0,0,35]}],
-					[2,93.93028806879107,97.40898075583046,"TextModule",{"text":"for euskal 2013","startPosition":[0,0,40],"endPosition":[0,0,35]}],
-					[2,97.40898075583046,111.45371117871889,"TextModule",{"text":"OBSIDIAN","startPosition":[0,0,20],"endPosition":[0,0,7]}],
-					[1,111.45731305212999,125.32785006708855,"Scene4Module",{"startPosition":[0,0,200],"endPosition":[0,0,700]}],
-					[1,125.32785006708855,139.1983870820471,"Scene4Module",{"startPosition":[0,50,50],"endPosition":[300,-100,600]}],
-					[1,139.1983870820471,153.06892409700566,"Scene5Module",{"startPosition":[50,-500,500],"endPosition":[0,50,1500]}],
-					[1,153.06892409700566,166.93946111196422,"Scene6bModule",{"startPosition":[700,30,-500],"endPosition":[200,-100,1800]}],
-					[1,166.93946111196422,180.80999812692278,"Scene6Module",{"startPosition":[100,0,300],"endPosition":[-1000,0,2200]}],
-					[1,180.81446111196422,236.55999812692278,"Scene7Module",{"startPosition":[0,0,50],"endPosition":[0,50,2000],"startPositionTarget":[0,0,0],"endPositionTarget":[0,500,0]}]
-				]
-			};
+			var timeout;
 
-			json.config.dom = viewport.dom;
+			function saveState() {
 
-			define( 'Config', json.config );
+				clearTimeout( timeout );
 
-			// load modules
+				timeout = setTimeout( function () {
 
-			var modules = {};
+					editor.config.setKey( 'state', JSON.stringify( editor.toJSON() ) );
 
-			curl.config( {
-
-				baseUrl: json.config.rootPath + json.config.modulesPath
-
-			} );
-
-			// curves
-
-			var curves = [];
-
-			for ( var i = 0, l = json.curves.length; i < l; i ++ ) {
-
-				var data = json.curves[ i ];
-
-				var curve;
-
-				switch ( data[ 0 ] ) {
-					case 'linear':
-						curve = new FRAME.Curves.Linear( data[ 1 ] );
-						break;
-					case 'sin':
-						curve = new FRAME.Curves.Sin();
-						break;
-					case 'saw':
-						curve = new FRAME.Curves.Saw( data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ] );
-						break;
-				}
-
-				editor.addCurve( curve );
-				curves.push( curve );
+				}, 1000 );
 
 			}
-
-			// init timeline
-
-			var loadElement = function ( data ) {
-
-				var layer = data[ 0 ];
-				var start = data[ 1 ];
-				var end = data[ 2 ];
-				var moduleName = data[ 3 ];
-				var parameters = data[ 4 ];
-
-				curl( [ moduleName ], function ( moduleInstance ) {
-
-					var module = moduleInstance();
-					module.name = moduleName;
-
-					if ( parameters === undefined ) parameters = {};
-
-					for ( var key in parameters ) {
-
-						if ( module.parameters[ key ] === undefined ) {
-
-							console.log( 'FRAME: [' + moduleName + '] doesn\'t have parameter "' + key + '"' );
-							continue;
-
-						}
-
-						var parameter = parameters[ key ];
-
-						if ( typeof( parameter ) === 'string' && parameter.charAt( 0 ) === '$' ) {
-
-							var id = parseInt( parameter.substr( 1 ) );
-
-							( function ( curve ) {
-
-								Object.defineProperty( module.parameters[ key ], 'value', {
-
-									get: function() {
-
-										return curve.value;
-
-									}
-									
-								});
-
-							} )( curves[ id ] )
-
-						} else {
-
-							module.parameters[ key ].value = parameter;
-
-						}
-
-					}
-			
-					var element = new FRAME.TimelineElement( module, layer, start, end );
-
-					editor.add( element );
-
-				} );
-
-			}
-
-			for ( var i = 0, l = json.timeline.length; i < l; i ++ ) {
-
-				loadElement( json.timeline[ i ] );
-
-			}
-
-			var hash = location.hash.substr( 1 );
-			signals.setTime.dispatch( hash !== '' ? hash : 0 );
 
 			//
 
-			var time = 0;
-			var audio = document.createElement( 'audio' );
-			audio.addEventListener( 'durationchange', function ( event ) {
+			var state = editor.config.getKey( 'state' );
 
-				editor.signals.durationChanged.dispatch( audio.duration );
+			if ( state !== undefined ) {
 
-			} );
-			audio.src = json.config.rootPath + json.config.audio;
-			document.body.appendChild( audio );
+				editor.fromJSON( JSON.parse( state ) );
 
-			signals.play.add( function () {
+			}
 
-				if ( audio.paused === true ) {
+			// Short-cuts
 
-					audio.currentTime = time;
-					audio.play();
-					animate();
-
-				} else {
-
-					audio.pause();
-
-				}
-
-			} );
-
-			signals.setTime.add( function ( value ) {
-
-				time = Math.max( 0, value );
-
-				if ( audio.duration > 0 ) audio.currentTime = time;
-
-				location.hash = time;
-
-				signals.timeChanged.dispatch( time );
-
-			} );
-			
 			document.addEventListener( 'keydown', function ( event ) {
+
+				if ( event.metaKey || event.ctrlKey ) {
+
+					switch ( event.keyCode ) {
+						case 83: // prevent CMD + S
+							event.preventDefault();
+							break;
+						case 69: // CMD + E to export
+							event.preventDefault();
+							editor.signals.exportState.dispatch();
+							break;
+					}
+
+					return;
+
+				}
 
 				switch ( event.keyCode ) {
 
-					case 8: // prevent browser back 
+					case 8: // prevent browser back
 						event.preventDefault();
 						break;
 					case 32:
-						signals.play.dispatch();
+						editor.player.isPlaying ? editor.stop() : editor.play();
 						break;
 					case 37:
 						event.preventDefault();
-						signals.setTime.dispatch( time - 1 );
+						editor.setTime( editor.player.currentTime - 1 );
 						break;
 					case 39:
 						event.preventDefault();
-						signals.setTime.dispatch( time + 1 );
+						editor.setTime( editor.player.currentTime + 1 );
 						break;
 					case 38:
 						event.preventDefault();
-						audio.playbackRate = audio.playbackRate + 0.1;
-						signals.playbackRateChanged.dispatch( audio.playbackRate );
+						editor.speedUp();
 						break;
 					case 40:
 						event.preventDefault();
-						audio.playbackRate = audio.playbackRate - 0.1;
-						signals.playbackRateChanged.dispatch( audio.playbackRate );
+						editor.speedDown();
+						break;
+					case 83:
 						break;
 
 				}
 
 			} );
 
-			var animate = function () {
+			// Drop
 
-				if ( audio.paused === false ) {
+			document.addEventListener( 'dragover', function ( event ) {
 
-					requestAnimationFrame( animate );
+				event.preventDefault();
+				event.dataTransfer.dropEffect = 'copy';
+
+			}, false );
+
+			document.addEventListener( 'drop', function ( event ) {
+
+				event.preventDefault();
+
+				if ( event.dataTransfer.files.length > 0 ) {
+
+					var reader = new FileReader();
+					reader.addEventListener( 'load', function ( event ) {
+
+						if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
+
+							editor.clear();
+							editor.fromJSON( JSON.parse( event.target.result ) );
+
+						}
+
+					}, false );
+					reader.readAsText( event.dataTransfer.files[ 0 ] );
 
 				}
 
-				time = audio.currentTime;
-				signals.timeChanged.dispatch( time );
+			}, false );
 
-			};
+			//
+
+			window.addEventListener( 'resize', function () {
+
+				editor.signals.windowResized.dispatch();
+
+			} );
+
+			editor.signals.windowResized.dispatch();
 
 		</script>
 	</body>

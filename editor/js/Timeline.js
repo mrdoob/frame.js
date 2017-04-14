@@ -1,82 +1,47 @@
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 var Timeline = function ( editor ) {
 
 	var signals = editor.signals;
+	var player = editor.player;
 
 	var container = new UI.Panel();
-
-	var panel = new UI.Panel();
-	panel.setPosition( 'absolute' );
-	panel.setWidth( '300px' );
-	panel.setHeight( '100%' );
-	panel.dom.style.background = '#555';
-	container.add( panel );
+	container.setId( 'timeline' );
 
 	// controls
 
-	var controls = new UI.Panel();
-	controls.setPosition( 'absolute' );
-	controls.setWidth( '100%' );
-	controls.setPadding( '5px 0px' );
-	controls.setBackground( '#666' );
-	panel.add( controls );
+	/*
+	var buttons = new UI.Div();
+	buttons.setPosition( 'absolute' );
+	buttons.setTop( '5px' );
+	buttons.setRight( '5px' );
+	controls.add( buttons );
 
 	var button = new UI.Button();
-	button.setLabel( '►' );
-	button.setMarginLeft( '5px' );
-	button.setPaddingRight( '4px' );
-	button.onClick( function () { signals.play.dispatch() } );
-	controls.add( button );
+	button.setLabel( 'ANIMATIONS' );
+	button.onClick( function () {
 
-	var timeText = new UI.Text();
-	timeText.setColor( '#bbb' );
-	timeText.setMarginLeft( '5px' );
-	timeText.setValue( '0:00.00' );
-	controls.add( timeText );
-
-	var updateTimeText = function ( value ) {
-
-		var minutes = Math.floor( value / 60 );
-		var seconds = value % 60;
-		var padding = seconds < 10 ? '0' : '';
-
-		timeText.setValue( minutes + ':' + padding + seconds.toFixed( 2 ) );
-
-	};
-
-	var playbackRateText = new UI.Text();
-	playbackRateText.setColor( '#999' );
-	playbackRateText.setMarginLeft( '5px' );
-	playbackRateText.setValue( '1.0x' );
-	controls.add( playbackRateText );
-
-	var updatePlaybackRateText = function ( value ) {
-
-		playbackRateText.setValue( value.toFixed( 1 ) + 'x' );
-
-	};
-
-	var button = new UI.Button();
-	button.setLabel( 'MODULES' );
-	button.setMarginLeft( '60px' );
-	button.onClick( function () { 
-
-		modules.setDisplay( '' );
+		elements.setDisplay( '' );
 		curves.setDisplay( 'none' );
 
 	 } );
-	controls.add( button );
+	buttons.add( button );
 
 	var button = new UI.Button();
 	button.setLabel( 'CURVES' );
+	button.setMarginLeft( '4px' );
 	button.onClick( function () {
 
 		scroller.style.background = '';
 
-		modules.setDisplay( 'none' );
+		elements.setDisplay( 'none' );
 		curves.setDisplay( '' );
 
 	} );
-	controls.add( button );
+	buttons.add( button );
+	*/
 
 	// timeline
 
@@ -84,92 +49,111 @@ var Timeline = function ( editor ) {
 	document.addEventListener( 'keydown', function ( event ) { keysDown[ event.keyCode ] = true; } );
 	document.addEventListener( 'keyup',   function ( event ) { keysDown[ event.keyCode ] = false; } );
 
-	var time = 0;
 	var scale = 32;
 	var prevScale = scale;
-	var duration = 0;
 
 	var timeline = new UI.Panel();
 	timeline.setPosition( 'absolute' );
-	timeline.setLeft( '300px' );
-	timeline.setRight( '0px');
 	timeline.setTop( '0px' );
 	timeline.setBottom( '0px' );
+	timeline.setWidth( '100%' );
 	timeline.setOverflow( 'hidden' );
-	timeline.dom.addEventListener( 'mousewheel', function ( event ) {
-	
-		// check if [shift] is pressed
+	timeline.dom.addEventListener( 'wheel', function ( event ) {
 
-		if ( keysDown[ 16 ] === true ) {
+		if ( event.altKey === true ) {
 
 			event.preventDefault();
- 
-			scale = Math.max( 1, scale + ( event.wheelDeltaY / 10 ) );
+
+			scale = Math.max( 2, scale + ( event.deltaY / 10 ) );
 
 			signals.timelineScaled.dispatch( scale );
 
 		}
-	
+
 	} );
 	container.add( timeline );
 
-	var marks = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' );
-	marks.style.position = 'absolute';
-	marks.setAttribute( 'width', '100%' );
-	marks.setAttribute( 'height', '32px' );
-	timeline.dom.appendChild( marks );
+	var canvas = document.createElement( 'canvas' );
+	canvas.height = 32;
+	canvas.style.position = 'absolute';
+	canvas.addEventListener( 'mousedown', function ( event ) {
 
-	var marksPath = document.createElementNS( 'http://www.w3.org/2000/svg', 'path' );
-	marksPath.setAttribute( 'style', 'stroke: #888; stroke-width: 1px; fill: none;' );
-	marks.appendChild( marksPath );
+		event.preventDefault();
 
-	marks.addEventListener( 'mousedown', function ( event ) {
+		function onMouseMove( event ) {
 
-		var onMouseMove = function ( event ) {
-			
-			signals.setTime.dispatch( ( event.offsetX + scroller.scrollLeft ) / scale );
-
-		};
-
-		var onMouseUp = function ( event ) {
-
-			onMouseMove( event );
-
-			marks.removeEventListener( 'mousemove', onMouseMove );
-			document.removeEventListener( 'mouseup', onMouseUp );
-
-		};
-
-		marks.addEventListener( 'mousemove', onMouseMove, false );
-		document.addEventListener( 'mouseup', onMouseUp, false );
-
-	}, false );
-	timeline.dom.appendChild( marks );
-
-	var updateMarks = function () {
-
-		var drawing = '';
-		var scale4 = scale / 4;
-		var offset = - scroller.scrollLeft % scale;
-		var width = marks.getBoundingClientRect().width || 1024;
-
-		for ( var i = offset, l = width; i <= l; i += scale ) {
-
-			drawing += 'M ' + i + ' 8 L' + i + ' 24';
-			drawing += 'M ' + ( i + ( scale4 * 1 ) ) + ' 12 L' + ( i + ( scale4 * 1 ) ) + ' 20';
-			drawing += 'M ' + ( i + ( scale4 * 2 ) ) + ' 12 L' + ( i + ( scale4 * 2 ) ) + ' 20';
-			drawing += 'M ' + ( i + ( scale4 * 3 ) ) + ' 12 L' + ( i + ( scale4 * 3 ) ) + ' 20';
+			editor.setTime( ( event.offsetX + scroller.scrollLeft ) / scale );
 
 		}
 
-		marksPath.setAttribute( 'd', drawing );
+		function onMouseUp( event ) {
 
-	};
+			onMouseMove( event );
+
+			document.removeEventListener( 'mousemove', onMouseMove );
+			document.removeEventListener( 'mouseup', onMouseUp );
+
+		}
+
+		document.addEventListener( 'mousemove', onMouseMove, false );
+		document.addEventListener( 'mouseup', onMouseUp, false );
+
+	}, false );
+	timeline.dom.appendChild( canvas );
+
+	function updateMarks() {
+
+		canvas.width = scroller.clientWidth;
+
+		var context = canvas.getContext( '2d', { alpha: false } );
+
+		context.fillStyle = '#555';
+		context.fillRect( 0, 0, canvas.width, canvas.height );
+
+		context.strokeStyle = '#888';
+		context.beginPath();
+
+		context.translate( - scroller.scrollLeft, 0 );
+
+		var duration = editor.duration;
+		var width = duration * scale;
+		var scale4 = scale / 4;
+
+		for ( var i = 0.5; i <= width; i += scale ) {
+
+			context.moveTo( i + ( scale4 * 0 ), 18 ); context.lineTo( i + ( scale4 * 0 ), 26 );
+
+			if ( scale > 16 ) context.moveTo( i + ( scale4 * 1 ), 22 ), context.lineTo( i + ( scale4 * 1 ), 26 );
+			if ( scale >  8 ) context.moveTo( i + ( scale4 * 2 ), 22 ), context.lineTo( i + ( scale4 * 2 ), 26 );
+			if ( scale > 16 ) context.moveTo( i + ( scale4 * 3 ), 22 ), context.lineTo( i + ( scale4 * 3 ), 26 );
+
+		}
+
+		context.stroke();
+
+		context.font = '10px Arial';
+		context.fillStyle = '#888'
+		context.textAlign = 'center';
+
+		var step = Math.max( 1, Math.floor( 64 / scale ) );
+
+		for ( var i = 0; i < duration; i += step ) {
+
+			var minute = Math.floor( i / 60 );
+			var second = Math.floor( i % 60 );
+
+			var text = ( minute > 0 ? minute + ':' : '' ) + ( '0' + second ).slice( - 2 );
+
+			context.fillText( text, i * scale, 13 );
+
+		}
+
+	}
 
 	var scroller = document.createElement( 'div' );
 	scroller.style.position = 'absolute';
 	scroller.style.top = '32px';
-	scroller.style.bottom = '0px'
+	scroller.style.bottom = '0px';
 	scroller.style.width = '100%';
 	scroller.style.overflow = 'auto';
 	scroller.addEventListener( 'scroll', function ( event ) {
@@ -180,21 +164,23 @@ var Timeline = function ( editor ) {
 	}, false );
 	timeline.dom.appendChild( scroller );
 
-	var modules = new Timeline.Modules( editor );
-	scroller.appendChild( modules.dom );
+	var elements = new Timeline.Animations( editor );
+	scroller.appendChild( elements.dom );
 
+	/*
 	var curves = new Timeline.Curves( editor );
 	curves.setDisplay( 'none' );
 	scroller.appendChild( curves.dom );
+	*/
 
-	var updateContainers = function () {
+	function updateContainers() {
 
-		var width = duration * scale;
-		
-		modules.setWidth( width + 'px' );
-		curves.setWidth( width + 'px' );
+		var width = editor.duration * scale;
 
-	};
+		elements.setWidth( width + 'px' );
+		// curves.setWidth( width + 'px' );
+
+	}
 
 	//
 
@@ -213,50 +199,31 @@ var Timeline = function ( editor ) {
 		var context = canvas.getContext( '2d' );
 		context.fillStyle = '#f00';
 		context.fillRect( 8, 0, 1, 1 );
-		
+
 		return canvas.toDataURL();
 
 	}() ) + ')';
 	timeMark.style.pointerEvents = 'none';
 	timeline.dom.appendChild( timeMark );
 
-	var updateTimeMark = function () {
+	function updateTimeMark() {
 
-		timeMark.style.left = ( time * scale ) - scroller.scrollLeft - 8 + 'px';
+		timeMark.style.left = ( player.currentTime * scale ) - scroller.scrollLeft - 8 + 'px';
 
-	};
-
-	updateMarks();
+	}
 
 	// signals
 
-	signals.durationChanged.add( function ( value ) {
+	signals.timeChanged.add( function () {
 
-		duration = value;
-
-		updateContainers();
-
-	} );
-
-	signals.timeChanged.add( function ( value ) {
-
-		time = value;
-
-		updateTimeText( value );
 		updateTimeMark();
-
-	} );
-
-	signals.playbackRateChanged.add( function ( value ) {
-
-		updatePlaybackRateText( value );
 
 	} );
 
 	signals.timelineScaled.add( function ( value ) {
 
 		scale = value;
-			
+
 		scroller.scrollLeft = ( scroller.scrollLeft * value ) / prevScale;
 
 		updateMarks();
@@ -267,6 +234,13 @@ var Timeline = function ( editor ) {
 
 	} );
 
+	signals.windowResized.add( function () {
+
+		updateMarks();
+		updateContainers();
+
+	} );
+
 	return container;
 
-}
+};
