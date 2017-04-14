@@ -1,0 +1,63 @@
+{
+	"config": {},
+	"libraries": [],
+	"includes": [],
+	"effects": [
+		[
+			"Effect",
+			[
+				"var parameters = {",
+				"\tcolor: new FRAME.Parameters.Color( 'Color', 0x0000ff )",
+				"};",
+				"",
+				"var dom = FRAME.getDOM();",
+				"",
+				"// function init(){}",
+				"",
+				"function start(){}",
+				"",
+				"function update( progress ){",
+				"",
+				"\tdom.style.backgroundColor = '#' + Math.floor( parameters.color.value ).toString( 16 );",
+				"",
+				"}"
+			]
+		],
+		[
+			"Effect",
+			[
+				"var parameters = {};",
+				"",
+				"var dom = FRAME.getDOM();",
+				"",
+				"// function init(){}",
+				"",
+				"function start(){}",
+				"",
+				"function update( progress ){",
+				"",
+				"\tdom.style.backgroundColor = 'rgb(0,' + Math.floor( progress * 255 ) + ',0)';",
+				"",
+				"}"
+			]
+		]
+	],
+	"animations": [
+		[
+			"Animation",
+			0,
+			5,
+			0,
+			0,
+			true
+		],
+		[
+			"Animation",
+			5,
+			10,
+			1,
+			1,
+			true
+		]
+	]
+}
