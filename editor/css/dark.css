@@ -74,26 +74,39 @@
 	position: absolute;
 	width: 100%;
 	height: 32px;
-	background-color: #444;
-	padding: 0px;
-	margin: 0px;
+	background: #444;
+	padding: 0;
+	margin: 0;
+	right: 0;
+	top: 0;
 }
 
 	#menubar .menu {
 		float: left;
-		width: 50px;
 		cursor: pointer;
+		padding-right: 8px;
 	}
 
-	#menubar .Panel {
-		color: #888;
+	#menubar .menu.right {
+		float: right;
+		cursor: auto;
+		padding-right: 0;
+		text-align: right;
 	}
+
+		#menubar .menu .title {
+			display: inline-block;
+			color: #888;
+			margin: 0;
+			padding: 8px;
+		}
 
 		#menubar .menu .options {
+			position: absolute;
 			display: none;
-			padding: 5px 0px;
-			background-color: #333;
-			width: 140px;
+			padding: 5px 0;
+			background: #333;
+			width: 150px;
 		}
 
 		#menubar .menu:hover .options {
@@ -101,20 +114,31 @@
 		}
 
 			#menubar .menu .options hr {
-				border-color: #ddd;
+				border-color: #222;
 			}
 
 			#menubar .menu .options .option {
 				color: #888;
 				background-color: transparent;
 				padding: 5px 10px;
-				margin: 0px !important;
+				margin: 0 !important;
 			}
 
 				#menubar .menu .options .option:hover {
 					color: #fff;
 					background-color: #08f;
 				}
+
+				#menubar .menu .options .option:active {
+					background: transparent;
+				}
+
+		#menubar .menu .options .inactive {
+			color: #444;
+			background-color: transparent;
+			padding: 5px 10px;
+			margin: 0 !important;
+		}
 
 #sidebar {
 	position: absolute;

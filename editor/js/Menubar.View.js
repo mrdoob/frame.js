@@ -8,9 +8,8 @@ Menubar.View = function ( editor ) {
 	container.setClass( 'menu' );
 
 	var title = new UI.Panel();
-	title.setTextContent( 'View' ).setColor( '#888' );
-	title.setMargin( '0px' );
-	title.setPadding( '8px' );
+	title.setClass( 'title' );
+	title.setTextContent( 'View' );
 	container.add( title );
 
 	//

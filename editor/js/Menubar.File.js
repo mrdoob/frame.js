@@ -10,9 +10,8 @@ Menubar.File = function ( editor ) {
 	container.setClass( 'menu' );
 
 	var title = new UI.Panel();
-	title.setTextContent( 'File' ).setColor( '#888' );
-	title.setMargin( '0px' );
-	title.setPadding( '8px' );
+	title.setClass( 'title' );
+	title.setTextContent( 'File' );
 	container.add( title );
 
 	var options = new UI.Panel();

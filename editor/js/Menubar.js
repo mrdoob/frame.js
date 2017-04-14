@@ -9,7 +9,8 @@ var Menubar = function ( editor ) {
 
 	container.add( new Menubar.File( editor ) );
 	container.add( new Menubar.Edit( editor ) );
-	container.add( new Menubar.View( editor ) );
+	// container.add( new Menubar.View( editor ) );
+	container.add( new Menubar.Examples( editor ) );
 	container.add( new Menubar.Help( editor ) );
 
 	return container;
