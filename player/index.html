@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>frame.js player</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			html {
+				height: 100%;
+			}
+			body {
+				height: 100%;
+				margin: 0px;
+			}
+			#container {
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+
+		<script src="../src/Frame.js"></script>
+
+		<script>
+
+			FRAME.setDOM( document.getElementById( 'container' ) );
+
+			var timeline = new FRAME.Timeline();
+			var player = new FRAME.Player();
+
+			//
+
+			var query = window.location.search;
+
+			if ( query.substr( 1, 5 ) === 'file=' ) {
+
+				timeline.load( query.substr( 6 ), function () {
+
+					timeline.compile( player );
+					player.play();
+
+					window.requestAnimationFrame( animate );
+
+				} );
+
+			}
+
+			//
+
+			var prevTime = 0;
+
+			function animate( time ) {
+
+				player.tick( time - prevTime );
+				timeline.update( player.currentTime );
+
+				prevTime = time;
+
+				window.requestAnimationFrame( animate );
+
+			}
+
+		</script>
+	</body>
+</html>
