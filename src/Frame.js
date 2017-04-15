@@ -233,11 +233,11 @@ var FRAME = ( function () {
 		Effect: function ( name, source ) {
 
 			this.name = name;
-			this.source = source || 'var parameters = {\n\tvalue: new FRAME.Parameters.Float( \'Value\', 1.0 )\n};\n\n// function init(){}\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
+			this.source = source || 'var parameters = {\n\tvalue: new FRAME.Parameters.Float( \'Value\', 1.0 )\n};\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
 			this.program = null;
 			this.compile = function ( player ) {
 
-				this.program = ( new Function( 'player, parameters, init, start, end, update', this.source + '\nreturn { parameters: parameters, init: init, start: start, end: end, update: update };' ) )( player );
+				this.program = ( new Function( 'player, parameters, start, end, update', this.source + '\nreturn { parameters: parameters, start: start, end: end, update: update };' ) )( player );
 
 			};
 

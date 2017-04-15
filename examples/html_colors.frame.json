@@ -4,15 +4,13 @@
 	"includes": [],
 	"effects": [
 		[
-			"Effect",
+			"backgroundColor Parameter",
 			[
 				"var parameters = {",
 				"\tcolor: new FRAME.Parameters.Color( 'Color', 0x0000ff )",
 				"};",
 				"",
 				"var dom = FRAME.getDOM();",
-				"",
-				"// function init(){}",
 				"",
 				"function start(){}",
 				"",
@@ -24,13 +22,9 @@
 			]
 		],
 		[
-			"Effect",
+			"backgroundColor Fade In",
 			[
-				"var parameters = {};",
-				"",
 				"var dom = FRAME.getDOM();",
-				"",
-				"// function init(){}",
 				"",
 				"function start(){}",
 				"",
@@ -44,7 +38,7 @@
 	],
 	"animations": [
 		[
-			"Animation",
+			"",
 			0,
 			5,
 			0,
@@ -52,7 +46,7 @@
 			true
 		],
 		[
-			"Animation",
+			"",
 			5,
 			10,
 			1,
