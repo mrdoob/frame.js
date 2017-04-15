@@ -1,3 +1,23 @@
+button {
+	color: #555;
+	background-color: #888;
+	border: 0px;
+	padding: 5px 8px;
+	text-transform: uppercase;
+	cursor: pointer;
+	outline: none;
+}
+
+	button:hover {
+		background-color: #999;
+	}
+
+	button.selected {
+		background-color: #08f;
+	}
+
+/* UI */
+
 #viewport {
 	position: absolute;
 	top: 32px;

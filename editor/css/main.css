@@ -11,17 +11,7 @@ hr {
 	border-top: 1px solid #ccc;
 }
 
-button {
-	position: relative;
-	color: #555;
-	background-color: #888;
-	border: 0px;
-	cursor: pointer;
-	outline: none; /* osx */
-}
-	button:hover {
-		background-color: #999;
-	}
+textarea, input { outline: none; } /* osx */
 
 .Panel {
 	-moz-user-select: none;
@@ -67,9 +57,4 @@ select.Select {
 
 .CodeMirror-errorLine {
 	background: rgba(200, 50, 0, 0.2) !important;
-}
-
-
-input, textarea, keygen, select, button {
-	font: 11px system-ui;
 }
