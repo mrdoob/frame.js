@@ -19,9 +19,9 @@ Menubar.Examples = function ( editor ) {
 	// Examples
 
 	var items = [
-		{ title: 'HTML Colors', file: 'html_colors.frame.json' },
-		{ title: 'Three.js Cube', file: 'threejs_cube.frame.json' },
-		{ title: 'Three.js Shaders', file: 'threejs_shaders.frame.json' }
+		{ title: 'HTML Colors', file: 'html_colors.json' },
+		{ title: 'Three.js Cube', file: 'threejs_cube.json' },
+		{ title: 'Three.js Shaders', file: 'threejs_shaders.json' }
 	];
 
 	for ( var i = 0; i < items.length; i ++ ) {
