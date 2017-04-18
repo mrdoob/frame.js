@@ -95,6 +95,19 @@ var Controls = function ( editor ) {
 
 	}
 
+	var fullscreenButton = new UI.Button();
+	fullscreenButton.setBackground( 'url(files/fullscreen.svg)' );
+	fullscreenButton.setWidth( '20px' );
+	fullscreenButton.setHeight( '20px' );
+	fullscreenButton.setFloat( 'right' );
+	fullscreenButton.setVerticalAlign( 'middle' );
+	fullscreenButton.onClick( function () {
+
+		editor.signals.fullscreen.dispatch();
+
+	} );
+	row.add( fullscreenButton );
+
 	//
 
 	signals.playingChanged.add( function ( isPlaying ) {

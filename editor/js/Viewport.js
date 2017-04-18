@@ -12,10 +12,9 @@ var Viewport = function ( editor ) {
 
 	FRAME.setDOM( container.dom );
 
-	/*
 	editor.signals.fullscreen.add( function () {
 
-		var element = container.dom;
+		var element = container.dom.firstChild;
 
 		if ( element.requestFullscreen ) element.requestFullscreen();
 		if ( element.msRequestFullscreen ) element.msRequestFullscreen();
@@ -23,7 +22,6 @@ var Viewport = function ( editor ) {
 		if ( element.webkitRequestFullscreen ) element.webkitRequestFullscreen();
 
 	} );
-	*/
 
 	signals.editorCleared.add( clear );
 	signals.includesCleared.add( clear );

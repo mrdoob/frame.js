@@ -115,7 +115,7 @@ UI.Element.prototype = {
 // properties
 
 var properties = [
-	'position', 'left', 'top', 'right', 'bottom', 'width', 'height', 'display', 'overflow',
+	'position', 'left', 'top', 'right', 'bottom', 'width', 'height', 'display', 'float', 'overflow',
 	'border', 'borderLeft', 'borderTop', 'borderRight', 'borderBottom', 'borderColor',
 	'margin', 'marginLeft', 'marginTop', 'marginRight', 'marginBottom',
 	'padding', 'paddingLeft', 'paddingTop', 'paddingRight', 'paddingBottom',
