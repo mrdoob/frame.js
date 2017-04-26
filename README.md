@@ -8,8 +8,8 @@ Work in progres...
 
 ### Examples
 
-* http://mrdoob.github.io/frame.js/player/?file=../examples/threejs_cube.frame.json  
-* http://mrdoob.github.io/frame.js/player/?file=../examples/threejs_shaders.frame.json
+* http://mrdoob.github.io/frame.js/player/?file=../examples/threejs_cube.json  
+* http://mrdoob.github.io/frame.js/player/?file=../examples/threejs_shaders.json
 
 ### Projects
 
