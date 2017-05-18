@@ -512,7 +512,7 @@ var FRAME = ( function () {
 					/*
 					// update curves
 
-					for ( i = 0, l = curves.length; i < l; i ++ ) {
+					for ( var i = 0, l = curves.length; i < l; i ++ ) {
 
 						curves[ i ].update( time, time - prevtime );
 
@@ -523,7 +523,7 @@ var FRAME = ( function () {
 
 					active.sort( layerSort );
 
-					for ( i = 0, l = active.length; i < l; i ++ ) {
+					for ( var i = 0, l = active.length; i < l; i ++ ) {
 
 						animation = active[ i ];
 						animation.effect.program.update( ( time - animation.start ) / ( animation.end - animation.start ), time - prevtime );
