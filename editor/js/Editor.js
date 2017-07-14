@@ -184,6 +184,19 @@ Editor.prototype = {
 
 	},
 
+	removeInclude: function ( include ) {
+
+		var index = this.includes.indexOf( include );
+
+		this.includes.splice( index, 1 );
+
+		var script = document.getElementById( 'include-' + index );
+		document.head.removeChild( script );
+
+		this.signals.includeRemoved.dispatch();
+
+	},
+
 	selectInclude: function ( include ) {
 
 		this.signals.includeSelected.dispatch( include );
