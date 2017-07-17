@@ -34,6 +34,37 @@ Menubar.File = function ( editor ) {
 	} );
 	options.add( option );
 
+	// import
+
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Import' );
+	option.onClick( Import );
+	options.add( option );
+
+	var fileInput = document.createElement( 'input' );
+	fileInput.type = 'file';
+	fileInput.addEventListener( 'change', function ( event ) {
+
+		var reader = new FileReader();
+		reader.addEventListener( 'load', function ( event ) {
+
+			editor.clear();
+			editor.fromJSON( JSON.parse( event.target.result ) );
+
+		}, false );
+
+		reader.readAsText( fileInput.files[ 0 ] );
+
+	} );
+
+	function Import () {
+
+		if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) )
+			fileInput.click();
+
+	}
+
 	// export
 
 	var option = new UI.Panel();
