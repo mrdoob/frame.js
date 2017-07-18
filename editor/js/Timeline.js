@@ -190,19 +190,7 @@ var Timeline = function ( editor ) {
 	timeMark.style.left = '-8px';
 	timeMark.style.width = '16px';
 	timeMark.style.height = '100%';
-	timeMark.style.background = 'url(' + ( function () {
-
-		var canvas = document.createElement( 'canvas' );
-		canvas.width = 16;
-		canvas.height = 1;
-
-		var context = canvas.getContext( '2d' );
-		context.fillStyle = '#f00';
-		context.fillRect( 8, 0, 1, 1 );
-
-		return canvas.toDataURL();
-
-	}() ) + ')';
+	timeMark.style.background = 'linear-gradient(90deg, transparent 8px, #f00 8px, #f00 9px, transparent 9px) 0% 0% / 16px 16px repeat-y';
 	timeMark.style.pointerEvents = 'none';
 	timeline.dom.appendChild( timeMark );
 
