@@ -23,33 +23,21 @@ var Viewport = function ( editor ) {
 
 	} );
 
-	signals.editorCleared.add( clear );
-	signals.includesCleared.add( clear );
-
 	function clear () {
 
-		scope.clear();
+		var dom = container.dom;
 
-	}
+		while ( dom.children.length ) {
 
-	return container;
-
-};
-
-Viewport.prototype = {
-
-	clear: function () {
-
-		var container = this.container;
-
-		while ( container.dom.children.length ) {
-
-			container.dom.removeChild( container.dom.lastChild );
+			dom.removeChild( dom.lastChild );
 
 		}
 
-		return this;
-
 	}
+
+	signals.editorCleared.add( clear );
+	signals.includesCleared.add( clear );
+
+	return container;
 
 };
