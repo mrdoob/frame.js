@@ -25,12 +25,11 @@
 
 		<script>
 
-			FRAME.setDOM( document.getElementById( 'container' ) );
-
-			var player = new FRAME.Player();
 			var resources = new FRAME.Resources();
+			resources.set( 'dom', document.getElementById( 'container' ) );
 
 			var timeline = new FRAME.Timeline();
+			var player = new FRAME.Player();
 
 			//
 

@@ -7,7 +7,7 @@
 		[
 			"Renderer",
 			[
-				"var dom = FRAME.getDOM();",
+				"var dom = resources.get( 'dom' );",
 				"",
 				"var renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );",
 				"renderer.autoClear = false;",
@@ -48,7 +48,7 @@
 				"",
 				"};",
 				"",
-				"var dom = FRAME.getDOM();",
+				"var dom = resources.get( 'dom' );",
 				"var resolution = new THREE.Vector2( dom.clientWidth, dom.clientHeight );",
 				"",
 				"window.addEventListener( 'resize', function () {",
@@ -109,7 +109,7 @@
 		[
 			"ImageRenderer",
 			[
-				"var dom = FRAME.getDOM();",
+				"var dom = resources.get( 'dom' );",
 				"",
 				"function ImageRenderer( url, resolution ) {",
 				"\t",

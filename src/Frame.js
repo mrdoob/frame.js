@@ -4,25 +4,9 @@
 
 var FRAME = ( function () {
 
-	var dom = null;
-
 	return {
 
 		VERSION: 4,
-
-		getDOM: function () {
-
-			return dom;
-
-		},
-
-		setDOM: function ( value ) {
-
-			dom = value;
-
-		},
-
-		//
 
 		Player: function () {
 
@@ -561,6 +545,19 @@ var FRAME = ( function () {
 		},
 
 		// DEPRECATED
+
+		getDOM: function () {
+
+			console.error( 'FRAME.getDOM() has been removed.' );
+			return document.createElement( 'div' );
+
+		},
+
+		setDOM: function ( value ) {
+
+			console.error( 'FRAME.setDOM() has been removed.' );
+
+		},
 
 		addResource: function () {
 

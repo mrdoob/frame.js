@@ -10,7 +10,7 @@ var Viewport = function ( editor ) {
 	var container = this.container = new UI.Panel();
 	container.setId( 'viewport' );
 
-	FRAME.setDOM( container.dom );
+	editor.resources.set( 'dom', container.dom );
 
 	editor.signals.fullscreen.add( function () {
 

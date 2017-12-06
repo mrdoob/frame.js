@@ -10,7 +10,7 @@
 				"\tcolor: new FRAME.Parameters.Color( 'Color', 0x0000ff )",
 				"};",
 				"",
-				"var dom = FRAME.getDOM();",
+				"var dom = resources.get( 'dom' );",
 				"",
 				"function start(){}",
 				"",
@@ -24,7 +24,7 @@
 		[
 			"backgroundColor Fade In",
 			[
-				"var dom = FRAME.getDOM();",
+				"var dom = resources.get( 'dom' );",
 				"",
 				"function start(){}",
 				"",
