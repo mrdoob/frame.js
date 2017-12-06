@@ -15,8 +15,8 @@
 				"function start(){}",
 				"",
 				"function update( progress ){",
-				"",
-				"\tdom.style.backgroundColor = '#' + Math.floor( parameters.color.value ).toString( 16 );",
+				"\t",
+				"\tdom.style.backgroundColor = '#' + ( '000000' + Math.floor( parameters.color.value ).toString( 16 ) ).slice( - 6 );",
 				"",
 				"}"
 			]
