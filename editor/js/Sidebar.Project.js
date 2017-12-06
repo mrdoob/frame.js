@@ -37,6 +37,7 @@ Sidebar.Project = function ( editor ) {
 	} );
 	container.add( newInclude );
 
+	/*
 	var cleanEffects = new UI.Button( 'Clean Effects' );
 	cleanEffects.onClick( function () {
 
@@ -45,6 +46,7 @@ Sidebar.Project = function ( editor ) {
 	} );
 	cleanEffects.setMarginLeft( '4px' );
 	container.add( cleanEffects );
+	*/
 
 	var reload = new UI.Button( 'Reload Scripts' );
 	reload.onClick( function () {
