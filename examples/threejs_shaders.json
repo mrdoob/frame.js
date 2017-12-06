@@ -20,7 +20,7 @@
 				"\t",
 				"} );",
 				"",
-				"FRAME.addResource( 'renderer', renderer );"
+				"resources.set( 'renderer', renderer );"
 			]
 		],
 		[
@@ -59,7 +59,7 @@
 				"",
 				"function ShaderRenderer( shader_name ){",
 				"\t",
-				"\tvar renderer = FRAME.getResource( 'renderer' );",
+				"\tvar renderer = resources.get( 'renderer' );",
 				"\t",
 				"\tvar scene = new THREE.Scene();",
 				"",
@@ -102,7 +102,7 @@
 				"\t",
 				"}",
 				"",
-				"FRAME.addResource( 'ShaderRenderer', ShaderRenderer );",
+				"resources.set( 'ShaderRenderer', ShaderRenderer );",
 				""
 			]
 		],
@@ -113,7 +113,7 @@
 				"",
 				"function ImageRenderer( url, resolution ) {",
 				"\t",
-				"\tvar renderer = FRAME.getResource( 'renderer' );",
+				"\tvar renderer = resources.get( 'renderer' );",
 				"",
 				"\tvar scene = new THREE.Scene();",
 				"",
@@ -141,7 +141,7 @@
 				"\t",
 				"}",
 				"",
-				"FRAME.addResource( 'ImageRenderer', ImageRenderer );"
+				"resources.set( 'ImageRenderer', ImageRenderer );"
 			]
 		],
 		[
@@ -149,7 +149,7 @@
 			[
 				"function ColorRenderer( color ){",
 				"\t",
-				"\tvar renderer = FRAME.getResource( 'renderer' );",
+				"\tvar renderer = resources.get( 'renderer' );",
 				"\t",
 				"\tvar scene = new THREE.Scene();",
 				"",
@@ -180,7 +180,7 @@
 				"\t",
 				"}",
 				"",
-				"FRAME.addResource( 'ColorRenderer', ColorRenderer );"
+				"resources.set( 'ColorRenderer', ColorRenderer );"
 			]
 		]
 	],
@@ -216,7 +216,7 @@
 		[
 			"Lights",
 			[
-				"var ShaderRenderer = new FRAME.getResource( 'ShaderRenderer' );",
+				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'lights' );",
 				"",
 				"function start(){}",
@@ -233,7 +233,7 @@
 		[
 			"CubeBalls 1",
 			[
-				"var ShaderRenderer = new FRAME.getResource( 'ShaderRenderer' );",
+				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'cubeballs' ).setMouse( [ 0.75, 0.75 ] );",
 				"",
 				"function start(){}",
@@ -250,7 +250,7 @@
 		[
 			"CubeBalls 2",
 			[
-				"var ShaderRenderer = new FRAME.getResource( 'ShaderRenderer' );",
+				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'cubeballs' ).setMouse( [ -0.75, 0.25 ] );",
 				"",
 				"function start(){}",
@@ -267,7 +267,7 @@
 		[
 			"PlaneDistort 1",
 			[
-				"var ShaderRenderer = new FRAME.getResource( 'ShaderRenderer' );",
+				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'planedistort' );",
 				"",
 				"function start(){}",
@@ -284,7 +284,7 @@
 		[
 			"PlaneDistort 2",
 			[
-				"var ShaderRenderer = new FRAME.getResource( 'ShaderRenderer' );",
+				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'planedistort' );",
 				"",
 				"function start(){}",
@@ -301,7 +301,7 @@
 		[
 			"Field 1",
 			[
-				"var ShaderRenderer = new FRAME.getResource( 'ShaderRenderer' );",
+				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'field' );",
 				"",
 				"function start(){}",
@@ -318,7 +318,7 @@
 		[
 			"Field 2",
 			[
-				"var ShaderRenderer = new FRAME.getResource( 'ShaderRenderer' );",
+				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'field' );",
 				"",
 				"function start(){}",
@@ -335,7 +335,7 @@
 		[
 			"Blobs",
 			[
-				"var ShaderRenderer = new FRAME.getResource( 'ShaderRenderer' );",
+				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'blobs' );",
 				"",
 				"function start(){}",
@@ -352,7 +352,7 @@
 		[
 			"Black Fade Out",
 			[
-				"var ColorRenderer = new FRAME.getResource( 'ColorRenderer' );",
+				"var ColorRenderer = resources.get( 'ColorRenderer' );",
 				"var color = new ColorRenderer( 0x000000 );",
 				"",
 				"function start(){}",
@@ -369,7 +369,7 @@
 		[
 			"White Fade Out",
 			[
-				"var ColorRenderer = new FRAME.getResource( 'ColorRenderer' );",
+				"var ColorRenderer = resources.get( 'ColorRenderer' );",
 				"var color = new ColorRenderer( 0xffffff );",
 				"",
 				"function start(){}",
@@ -386,7 +386,7 @@
 		[
 			"Image",
 			[
-				"var ImageRenderer = new FRAME.getResource( 'ImageRenderer' );",
+				"var ImageRenderer = resources.get( 'ImageRenderer' );",
 				"var image = new ImageRenderer( '../examples/files/credits.png', [ 1024, 256 ] );",
 				"",
 				"function start(){}",

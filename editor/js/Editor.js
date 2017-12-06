@@ -60,6 +60,8 @@ var Editor = function () {
 	this.config = new Config( 'framejs-editor' );
 
 	this.player = new FRAME.Player();
+	this.resources = new FRAME.Resources();
+
 	this.duration = 500;
 
 	this.libraries = [];
@@ -174,10 +176,7 @@ Editor.prototype = {
 
 	addInclude: function ( name, source ) {
 
-		var script = document.createElement( 'script' );
-		script.id = 'include-' + this.includes.length;
-		script.textContent = '( function () { ' + source + ' } )()';
-		document.head.appendChild( script );
+		new Function( 'resources', source )( this.resources );
 
 		this.includes.push( { name: name, source: source } );
 		this.signals.includeAdded.dispatch();
@@ -189,10 +188,6 @@ Editor.prototype = {
 		var index = this.includes.indexOf( include );
 
 		this.includes.splice( index, 1 );
-
-		var script = document.getElementById( 'include-' + index );
-		document.head.removeChild( script );
-
 		this.signals.includeRemoved.dispatch();
 
 	},
@@ -207,23 +202,12 @@ Editor.prototype = {
 
 		var includes = this.includes;
 
-		for ( var i = 0; i < includes.length; i ++ ) {
-
-			var script = document.getElementById( 'include-' + i );
-			document.head.removeChild( script );
-
-		}
-
 		this.signals.includesCleared.dispatch();
 
 		for ( var i = 0; i < includes.length; i ++ ) {
 
 			var include = includes[ i ];
-
-			var script2 = document.createElement( 'script' );
-			script2.id = 'include-' + i;
-			script2.textContent = '( function () { ' + include.source + ' } )()';
-			document.head.appendChild( script2 );
+			new Function( 'resources', include.source )( this.resources );
 
 		}
 
@@ -253,6 +237,13 @@ Editor.prototype = {
 			this.signals.effectRemoved.dispatch( effect );
 
 		}
+
+	},
+
+	compileEffect: function ( effect ) {
+
+		effect.compile( this.resources, this.player );
+		editor.signals.effectCompiled.dispatch();
 
 	},
 
@@ -299,7 +290,7 @@ Editor.prototype = {
 
 		if ( effect.program === null ) {
 
-			effect.compile( this.player );
+			editor.compileEffect( effect );
 
 		}
 

@@ -27,8 +27,10 @@
 
 			FRAME.setDOM( document.getElementById( 'container' ) );
 
-			var timeline = new FRAME.Timeline();
 			var player = new FRAME.Player();
+			var resources = new FRAME.Resources();
+
+			var timeline = new FRAME.Timeline();
 
 			//
 
@@ -38,7 +40,7 @@
 
 				timeline.load( query.substr( 6 ), function () {
 
-					timeline.compile( player );
+					timeline.compile( resources, player );
 					player.play();
 
 					window.requestAnimationFrame( animate );

@@ -89,9 +89,7 @@ var Code = function ( editor ) {
 				try {
 
 					currentEffect.source = codemirror.getValue();
-					currentEffect.compile( editor.player );
-
-					editor.signals.effectCompiled.dispatch();
+					editor.compileEffect( currentEffect );
 
 				} catch ( e ) {
 

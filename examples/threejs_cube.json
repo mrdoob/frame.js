@@ -21,7 +21,7 @@
 				"\t",
 				"} );",
 				"",
-				"FRAME.addResource( 'renderer', renderer );"
+				"resources.set( 'renderer', renderer );"
 			]
 		]
 	],
@@ -34,7 +34,7 @@
 				"\tcolor: new FRAME.Parameters.Color( 'Color', 0x000000 )",
 				"};",
 				"",
-				"var renderer = FRAME.getResource( 'renderer' );",
+				"var renderer = resources.get( 'renderer' );",
 				"",
 				"function start(){",
 				"",
@@ -55,7 +55,7 @@
 			[
 				"var dom = FRAME.getDOM();",
 				"",
-				"var renderer = FRAME.getResource( 'renderer' );",
+				"var renderer = resources.get( 'renderer' );",
 				"",
 				"var camera = new THREE.PerspectiveCamera( 50, dom.clientWidth / dom.clientHeight, 0.1, 100 );",
 				"camera.position.z = 5;",
@@ -93,7 +93,7 @@
 				"\topacity: new FRAME.Parameters.Float( 'Opacity', 1, 0, 1 )",
 				"};",
 				"",
-				"var renderer = FRAME.getResource( 'renderer' );",
+				"var renderer = resources.get( 'renderer' );",
 				"",
 				"var camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );",
 				"var scene = new THREE.Scene();",

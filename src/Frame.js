@@ -6,11 +6,9 @@ var FRAME = ( function () {
 
 	var dom = null;
 
-	var resources = {};
-
 	return {
 
-		VERSION: 3,
+		VERSION: 4,
 
 		getDOM: function () {
 
@@ -21,18 +19,6 @@ var FRAME = ( function () {
 		setDOM: function ( value ) {
 
 			dom = value;
-
-		},
-
-		addResource: function ( name, resource ) {
-
-			resources[ name ] = resource;
-
-		},
-
-		getResource: function ( name ) {
-
-			return resources[ name ];
 
 		},
 
@@ -100,6 +86,28 @@ var FRAME = ( function () {
 					if ( loop ) {
 						if ( currentTime > loop[ 1 ] ) currentTime = loop[ 0 ];
 					}
+				}
+
+			}
+
+		},
+
+		Resources: function () {
+
+			var resources = {};
+
+			return {
+
+				get: function ( name ) {
+
+					return resources[ name ];
+
+				},
+
+				set: function ( name, resource ) {
+
+					resources[ name ] = resource;
+
 				}
 
 			}
@@ -234,9 +242,9 @@ var FRAME = ( function () {
 			this.name = name;
 			this.source = source || 'var parameters = {\n\tvalue: new FRAME.Parameters.Float( \'Value\', 1.0 )\n};\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
 			this.program = null;
-			this.compile = function ( player ) {
+			this.compile = function ( resources, player ) {
 
-				this.program = ( new Function( 'player, parameters, start, end, update', this.source + '\nreturn { parameters: parameters, start: start, end: end, update: update };' ) )( player );
+				this.program = ( new Function( 'resources, player, parameters, start, end, update', this.source + '\nreturn { parameters: parameters, start: start, end: end, update: update };' ) )( resources, player );
 
 			};
 
@@ -401,7 +409,7 @@ var FRAME = ( function () {
 
 				},
 
-				compile: function ( player ) {
+				compile: function ( resources, player ) {
 
 					var animations = this.animations;
 
@@ -411,7 +419,7 @@ var FRAME = ( function () {
 
 						if ( animation.effect.program === null ) {
 
-							animation.effect.compile( player );
+							animation.effect.compile( resources, player );
 
 						}
 
@@ -549,6 +557,20 @@ var FRAME = ( function () {
 				}
 
 			};
+
+		},
+
+		// DEPRECATED
+
+		addResource: function () {
+
+			console.error( 'FRAME.addResource() has been removed.' );
+
+		},
+
+		getResource: function () {
+
+			console.error( 'FRAME.getResource() has been removed.' );
 
 		}
 

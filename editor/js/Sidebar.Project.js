@@ -56,8 +56,7 @@ Sidebar.Project = function ( editor ) {
 		for ( var j = 0; j < effects.length; j++ ) {
 
 			var effect = effects[ j ];
-
-			effect.compile( editor.player );
+			editor.compileEffect( effect );
 
 		}
 
