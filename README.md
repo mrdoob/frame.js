@@ -1,6 +1,6 @@
 # frame.js
 
-Work in progres...
+Work in progress...
 
 ### Editor
 
