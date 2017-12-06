@@ -5,7 +5,6 @@
 var FRAME = ( function () {
 
 	var dom = null;
-	var player = null;
 
 	var resources = {};
 
