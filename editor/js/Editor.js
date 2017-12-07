@@ -176,7 +176,11 @@ Editor.prototype = {
 
 	addInclude: function ( name, source ) {
 
-		new Function( 'resources', source )( this.resources );
+		try {
+			new Function( 'resources', source )( this.resources );
+		} catch ( e ) {
+			console.error( e );
+		}
 
 		this.includes.push( { name: name, source: source } );
 		this.signals.includeAdded.dispatch();
@@ -207,7 +211,12 @@ Editor.prototype = {
 		for ( var i = 0; i < includes.length; i ++ ) {
 
 			var include = includes[ i ];
-			new Function( 'resources', include.source )( this.resources );
+
+			try {
+				new Function( 'resources', include.source )( this.resources );
+			} catch ( e ) {
+				console.error( e );
+			}
 
 		}
 
