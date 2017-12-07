@@ -128,11 +128,11 @@
 						break;
 					case 37:
 						event.preventDefault();
-						editor.setTime( editor.player.currentTime - 1 );
+						editor.setTime( editor.player.currentTime - editor.player.playbackRate );
 						break;
 					case 39:
 						event.preventDefault();
-						editor.setTime( editor.player.currentTime + 1 );
+						editor.setTime( editor.player.currentTime + editor.player.playbackRate );
 						break;
 					case 38:
 						event.preventDefault();
