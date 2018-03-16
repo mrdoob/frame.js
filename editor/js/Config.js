@@ -2,7 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Config = function ( name ) {
+var Config = function () {
+
+	var name = 'framejs-editor';
 
 	var storage = {};
 

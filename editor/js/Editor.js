@@ -57,7 +57,7 @@ var Editor = function () {
 
 	};
 
-	this.config = new Config( 'framejs-editor' );
+	this.config = new Config();
 
 	this.player = new FRAME.Player();
 	this.resources = new FRAME.Resources();
