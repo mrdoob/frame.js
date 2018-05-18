@@ -77,6 +77,22 @@ var FRAME = {
 	Resources: function () {
 
 		var resources = {};
+		var callbacks = [];
+		var loaded = 0;
+		var queued = 0;
+
+		function complete () {
+
+			loaded++;
+
+			if ( loaded >= queued && callbacks.length > 0 ) {
+				for ( var i = 0; i < callbacks.length; i++ ) {
+					callbacks[ i ]();
+				}
+				callbacks.length = 0;
+			}
+
+		};
 
 		return {
 
@@ -89,6 +105,23 @@ var FRAME = {
 			set: function ( name, resource ) {
 
 				resources[ name ] = resource;
+
+			},
+
+			queue: function () {
+
+				queued++;
+				return complete;
+
+			},
+
+			onLoad: function ( func ) {
+
+				if ( loaded >= queued ) {
+					func();
+				} else {
+					callbacks.push( func );
+				}
 
 			}
 

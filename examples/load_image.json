@@ -1,0 +1,82 @@
+{
+	"config": {},
+	"libraries": [],
+	"includes": [
+		[
+			"files/a-young-ladys-adventure.jpg",
+			[
+				"var image = document.createElement( 'img' );",
+				"",
+				"image.onload = resources.queue();",
+				"image.src = '../examples/files/a-young-ladys-adventure.jpg';",
+				"",
+				"resources.set( 'files/a-young-ladys-adventure.jpg', image );"
+			]
+		]
+	],
+	"effects": [
+		[
+			"Effect",
+			[
+				"var dom = resources.get( 'dom' );",
+				"var image = resources.get( 'files/a-young-ladys-adventure.jpg' );",
+				"",
+				"var group = document.createElement( 'div' );",
+				"group.style.background = 'white';",
+				"",
+				"image.style.display = 'block';",
+				"image.style.width = '33%';",
+				"",
+				"var title = document.createElement( 'p' );",
+				"title.innerHTML = 'Paul Klee, A Young Ladys Adventure, 1922';",
+				"",
+				"var copyright = document.createElement( 'p' );",
+				"copyright.innerHTML = 'Photo &copy; Tate';",
+				"",
+				"var creativeCommons = document.createElement( 'p' );",
+				"creativeCommons.innerHTML = 'CC-BY-NC-ND 3.0 (Unported)';",
+				"",
+				"var info = document.createElement( 'p' );",
+				"info.innerHTML = 'For more information: <a href=\"http://www.tate.org.uk/art/artworks/klee-a-young-ladys-adventure-n05659\">http://www.tate.org.uk/art/artworks/klee-a-young-ladys-adventure-n05659</a>';",
+				"",
+				"group.appendChild( image );",
+				"group.appendChild( title );",
+				"group.appendChild( copyright );",
+				"group.appendChild( creativeCommons );",
+				"group.appendChild( info );",
+				"",
+				"function start () {",
+				"\tfor ( var i = 0; i < group.children.length; i++ ) {",
+				"\t\tgroup.children[ i ].style.opacity = 0;",
+				"\t}",
+				"\tdom.appendChild( group );",
+				"}",
+				"",
+				"function end () {",
+				"\tplayer.pause();",
+				"}",
+				"",
+				"function update ( progress ) {",
+				"",
+				"\tvar elements = group.children;",
+				"\tvar index = Math.floor( progress * elements.length );",
+				"\tvar opacity = ( progress * elements.length ) % 1;",
+				"\tvar elem = elements[ index ];",
+				"\t",
+				"\telem.style.opacity = opacity;",
+				"",
+				"}"
+			]
+		]
+	],
+	"animations": [
+		[
+			"Reveal Painting",
+			0,
+			10,
+			0,
+			0,
+			true
+		]
+	]
+}

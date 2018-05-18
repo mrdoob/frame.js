@@ -40,7 +40,7 @@
 				timeline.load( query.substr( 6 ), function () {
 
 					timeline.compile( resources, player );
-					player.play();
+					resources.onLoad( player.play );
 
 					window.requestAnimationFrame( animate );
 
