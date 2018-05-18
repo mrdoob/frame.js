@@ -48,6 +48,9 @@ var FRAME = {
 				}
 				audio = value;
 			},
+			getLoop: function () {
+				return loop;
+			},
 			setLoop: function ( value ) {
 				loop = value;
 			},
