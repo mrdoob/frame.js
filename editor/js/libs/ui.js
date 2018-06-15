@@ -933,7 +933,7 @@ UI.Button = function ( value ) {
 	dom.className = 'Button';
 
 	this.dom = dom;
-	this.dom.textContent = value;
+	this.dom.textContent = value || '';
 
 	return this;
 
