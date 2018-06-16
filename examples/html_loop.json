@@ -22,7 +22,7 @@
 			]
 		],
 		[
-			"backgroundColor Fade In",
+			"Color",
 			[
 				"var dom = resources.get( 'dom' );",
 				"",
@@ -30,9 +30,27 @@
 				"",
 				"function update( progress ){",
 				"",
-				"\tdom.style.backgroundColor = 'rgb(0,' + Math.floor( progress * 255 ) + ',0)';",
+				"\tdom.style.backgroundColor = 'rgb(' + Math.floor( progress * 255 ) + ', 0, 0)';",
 				"",
 				"}"
+			]
+		],
+		[
+			"Loop",
+			[
+				"function start(){",
+				"",
+				"\tplayer.setLoop( [ 4, 8 ] );",
+				"",
+				"}",
+				"",
+				"function end(){",
+				"",
+				"\tplayer.setLoop( null );",
+				"",
+				"}",
+				"",
+				"function update( progress ){}"
 			]
 		]
 	],
@@ -40,17 +58,17 @@
 		[
 			"",
 			0,
-			5,
+			12,
 			0,
-			0,
+			1,
 			true
 		],
 		[
 			"",
-			5,
-			10,
+			4,
+			8,
 			1,
-			1,
+			2,
 			true
 		]
 	]
