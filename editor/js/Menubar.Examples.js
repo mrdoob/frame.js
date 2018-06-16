@@ -20,6 +20,7 @@ Menubar.Examples = function ( editor ) {
 
 	var items = [
 		{ title: 'HTML Colors', file: 'html_colors.json' },
+		{ title: 'HTML Loop', file: 'html_loop.json' },
 		{ title: 'Three.js Cube', file: 'threejs_cube.json' },
 		{ title: 'Three.js Shaders', file: 'threejs_shaders.json' }
 	];
