@@ -4,24 +4,6 @@
 	"includes": [],
 	"effects": [
 		[
-			"backgroundColor Parameter",
-			[
-				"var parameters = {",
-				"\tcolor: new FRAME.Parameters.Color( 'Color', 0x0000ff )",
-				"};",
-				"",
-				"var dom = resources.get( 'dom' );",
-				"",
-				"function start(){}",
-				"",
-				"function update( progress ){",
-				"\t",
-				"\tdom.style.backgroundColor = '#' + ( '000000' + Math.floor( parameters.color.value ).toString( 16 ) ).slice( - 6 );",
-				"",
-				"}"
-			]
-		],
-		[
 			"Color",
 			[
 				"var dom = resources.get( 'dom' );",
@@ -60,7 +42,7 @@
 			0,
 			12,
 			0,
-			1,
+			0,
 			true
 		],
 		[
@@ -68,7 +50,7 @@
 			4,
 			8,
 			1,
-			2,
+			1,
 			true
 		]
 	]
