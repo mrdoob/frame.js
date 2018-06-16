@@ -50,14 +50,14 @@ Timeline.Animations = function ( editor ) {
 
 				if ( movementY >= 30 ) {
 
-					animation.layer ++;
+					animation.layer = animation.layer + 1;
 					movementY = 0;
 
 				}
 
 				if ( movementY <= -30 ) {
 
-					animation.layer --;
+					animation.layer = Math.max( 0, animation.layer - 1 );
 					movementY = 0;
 
 				}
