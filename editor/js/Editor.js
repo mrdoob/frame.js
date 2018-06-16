@@ -24,6 +24,7 @@ var Editor = function () {
 
 		// effects
 
+		effectAdded: new Signal(),
 		effectRenamed: new Signal(),
 		effectRemoved: new Signal(),
 		effectSelected: new Signal(),
@@ -227,6 +228,7 @@ Editor.prototype = {
 	addEffect: function ( effect ) {
 
 		this.effects.push( effect );
+		this.signals.effectAdded.dispatch( effect );
 
 	},
 
@@ -252,7 +254,7 @@ Editor.prototype = {
 	compileEffect: function ( effect ) {
 
 		effect.compile( this.resources, this.player );
-		editor.signals.effectCompiled.dispatch();
+		this.signals.effectCompiled.dispatch( effect );
 
 	},
 
@@ -281,7 +283,7 @@ Editor.prototype = {
 
 			}
 
-			if ( !bound ) {
+			if ( bound === false ) {
 
 				scope.removeEffect( effect );
 
@@ -299,7 +301,7 @@ Editor.prototype = {
 
 		if ( effect.program === null ) {
 
-			editor.compileEffect( effect );
+			this.compileEffect( effect );
 
 		}
 
