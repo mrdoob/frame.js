@@ -19,6 +19,24 @@ Sidebar.Project = function ( editor ) {
 
 	container.add( new UI.Break(), new UI.Break() );
 
+	// Effects
+
+	container.add( new UI.Text( 'Effects' ).setTextTransform( 'uppercase' ) );
+	container.add( new UI.Break(), new UI.Break() );
+
+	var effects = new UI.Select().setMultiple( true ).setWidth( '280px' ).setMarginBottom( '8px' );
+	container.add( effects );
+
+	var cleanEffects = new UI.Button( 'Clean Effects' );
+	cleanEffects.onClick( function () {
+
+		editor.cleanEffects();
+
+	} );
+	container.add( cleanEffects );
+
+	container.add( new UI.Break(), new UI.Break() );
+
 	// Scripts
 
 	container.add( new UI.Text( 'Scripts' ).setTextTransform( 'uppercase' ) );
@@ -36,17 +54,6 @@ Sidebar.Project = function ( editor ) {
 
 	} );
 	container.add( newInclude );
-
-	/*
-	var cleanEffects = new UI.Button( 'Clean Effects' );
-	cleanEffects.onClick( function () {
-
-		editor.cleanEffects();
-
-	} );
-	cleanEffects.setMarginLeft( '4px' );
-	container.add( cleanEffects );
-	*/
 
 	var reload = new UI.Button( 'Reload Scripts' );
 	reload.onClick( function () {
@@ -68,6 +75,8 @@ Sidebar.Project = function ( editor ) {
 	} );
 	reload.setMarginLeft( '4px' );
 	container.add( reload );
+
+	container.add( new UI.Break(), new UI.Break() );
 
 	//
 
@@ -115,10 +124,35 @@ Sidebar.Project = function ( editor ) {
 
 	function update() {
 
+		updateLibraries();
+		updateEffects();
+		updateScripts();
+
+	}
+
+	function updateLibraries() {
+
 		libraries.setOptions( editor.libraries );
 		libraries.dom.size = editor.libraries.length;
 
-		//
+	}
+
+	function updateEffects() {
+
+		var names = [];
+
+		for ( var i = 0; i < editor.effects.length; i ++ ) {
+
+			names.push( editor.effects[ i ].name );
+
+		}
+
+		effects.setOptions( names );
+		effects.dom.size = editor.effects.length;
+
+	}
+
+	function updateScripts() {
 
 		includesContainer.clear();
 
@@ -135,9 +169,14 @@ Sidebar.Project = function ( editor ) {
 	// signals
 
 	signals.editorCleared.add( update );
-	signals.libraryAdded.add( update );
-	signals.includeAdded.add( update );
-	signals.includeRemoved.add( update );
+
+	signals.libraryAdded.add( updateLibraries );
+
+	signals.effectAdded.add( updateEffects );
+	signals.effectRemoved.add( updateEffects );
+
+	signals.includeAdded.add( updateScripts );
+	signals.includeRemoved.add( updateScripts );
 
 	return container;
 
