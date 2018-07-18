@@ -20,6 +20,7 @@ Sidebar.Animation = function ( editor ) {
 
 		var parameterRow = new UI.Row();
 		parameterRow.add( new UI.Text( parameter.name ).setWidth( '90px' ) );
+		var animation = editor.selected;
 
 		if ( parameter instanceof FRAME.Parameters.Boolean ) {
 
