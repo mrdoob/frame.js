@@ -168,6 +168,7 @@ button {
 	width: 300px;
 	color: #888;
 	background-color: #555;
+	overflow: auto;
 }
 
 	#sidebar * {
