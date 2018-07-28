@@ -80,19 +80,44 @@ var Editor = function () {
 
 		scope.timeline.reset();
 		scope.timeline.sort();
-		scope.timeline.update( scope.player.currentTime );
+
+		try {
+
+			scope.timeline.update( scope.player.currentTime );
+
+		} catch ( e ) {
+
+			console.error( e );
+
+		}
 
 	} );
 
 	this.signals.effectCompiled.add( function () {
 
-		scope.timeline.update( scope.player.currentTime );
+		try {
+
+			scope.timeline.update( scope.player.currentTime );
+
+		} catch ( e ) {
+
+			console.error( e );
+
+		}
 
 	} );
 
 	this.signals.timeChanged.add( function () {
 
-		scope.timeline.update( scope.player.currentTime );
+		try {
+
+			scope.timeline.update( scope.player.currentTime );
+
+		} catch ( e ) {
+
+			console.error( e );
+
+		}
 
 	} );
 
@@ -253,7 +278,16 @@ Editor.prototype = {
 
 	compileEffect: function ( effect ) {
 
-		effect.compile( this.resources, this.player );
+		try {
+
+			effect.compile( this.resources, this.player );
+
+		} catch ( e ) {
+
+			console.error( e );
+
+		}
+
 		this.signals.effectCompiled.dispatch( effect );
 
 	},
