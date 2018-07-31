@@ -34,33 +34,45 @@ Timeline.Animations = function ( editor ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
-				animation.start += movementX / scale;
-				animation.end += movementX / scale;
+				var start = animation.start + movementX / scale;
+				var end = animation.end + movementX / scale;
+				var layer = animation.layer;
+				
+				if (start < 0) {
+					
+					var offset = -animation.start;
 
-				if ( animation.start < 0 ) {
-
-					var offset = - animation.start;
-
-					animation.start += offset;
-					animation.end += offset;
-
+					start += offset;
+					end += offset;
+					
 				}
 
 				movementY += event.movementY | event.webkitMovementY | event.mozMovementY | 0;
 
-				if ( movementY >= 30 ) {
-
-					animation.layer = animation.layer + 1;
+				if (movementY >= 30) {
+					
+					layer += 1;
 					movementY = 0;
-
+					
 				}
 
-				if ( movementY <= -30 ) {
-
-					animation.layer = Math.max( 0, animation.layer - 1 );
+				if (movementY <= -30) {
+					
+					layer = Math.max(0, layer - 1);
 					movementY = 0;
-
+					
 				}
+				
+				if (editor.getOverlappingAnimation({
+					start: start,
+					end: end, 
+					layer: layer,
+					id: animation.id
+				})) return false;
+				
+				animation.start = start;
+				animation.end = end;
+				animation.layer = layer;
 
 				signals.animationModified.dispatch( animation );
 

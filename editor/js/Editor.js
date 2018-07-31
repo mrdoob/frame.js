@@ -318,12 +318,59 @@ Editor.prototype = {
 		this.signals.animationSelected.dispatch( animation );
 
 	},
+	
+	duplicateAnimation: function(animation) {
+		
+		if (animation === undefined) {
+			
+			animation = this.selected;
+			if (animation === null) return;
+			
+		}
+
+		var offset = animation.end - animation.start;
+
+		var copy = new FRAME.Animation(
+			animation.name,
+			animation.start + offset,
+			animation.end + offset,
+			animation.layer,
+			animation.effect
+		);
+		
+		var overlap = this.getOverlappingAnimation(copy);
+		while (overlap) {
+			
+			copy.end = overlap.end + (copy.end - copy.start);
+			copy.start = overlap.end;
+			overlap = this.getOverlappingAnimation(copy);
+			
+		}
+
+		this.addAnimation(copy);
+		this.selectAnimation(copy);
+		
+	},
 
 	removeAnimation: function ( animation ) {
 
 		this.timeline.remove( animation );
 		this.signals.animationRemoved.dispatch( animation );
 
+	},
+	
+	getOverlappingAnimation: function (animation) {
+		
+		for (let anim of this.timeline.animations) {
+			
+			if (anim.layer !== animation.layer || anim.id == animation.id) continue;
+			if ((anim.start <= animation.start && anim.end > animation.start) || 
+			    (anim.start < animation.end && anim.end > animation.end)) return anim;
+			
+		}
+		
+		return undefined;
+		
 	},
 
 	addCurve: function ( curve ) {
