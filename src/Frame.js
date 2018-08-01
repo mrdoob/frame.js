@@ -250,6 +250,17 @@ var FRAME = {
 			this.layer = layer;
 			this.effect = effect;
 			this.enabled = enabled;
+			
+			this.getPosition = function() {
+				
+				return {
+					start: this.start,
+					end: this.end,
+					layer: this.layer,
+					id: this.id
+				};
+				
+			};
 
 		};
 
