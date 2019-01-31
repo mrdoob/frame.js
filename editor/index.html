@@ -25,10 +25,12 @@
 
 		<script src="js/libs/signals.min.js"></script>
 		<script src="js/libs/ui.js"></script>
+		<script src="js/libs/mousetrap/mousetrap.min.js"></script>
 
 		<script src="js/Editor.js"></script>
 		<script src="js/Code.js"></script>
 		<script src="js/Config.js"></script>
+		<script src="js/Keyboard.js"></script>
 		<script src="js/Menubar.js"></script>
 		<script src="js/Menubar.File.js"></script>
 		<script src="js/Menubar.Edit.js"></script>
@@ -71,6 +73,8 @@
 			var menubar = new Menubar( editor );
 			document.body.appendChild( menubar.dom );
 
+			var keyboard = new Keyboard( editor );
+
 			// LocalStorage
 
 			editor.signals.animationAdded.add( saveState );
@@ -108,55 +112,7 @@
 			}
 
 			// Short-cuts
-
-			document.addEventListener( 'keydown', function ( event ) {
-
-				if ( event.metaKey || event.ctrlKey ) {
-
-					switch ( event.keyCode ) {
-						case 83: // prevent CMD + S
-							event.preventDefault();
-							break;
-						case 69: // CMD + E to export
-							event.preventDefault();
-							editor.signals.exportState.dispatch();
-							break;
-					}
-
-					return;
-
-				}
-
-				switch ( event.keyCode ) {
-
-					case 8: // prevent browser back
-						event.preventDefault();
-						break;
-					case 32:
-						editor.player.isPlaying ? editor.stop() : editor.play();
-						break;
-					case 37:
-						event.preventDefault();
-						editor.setTime( editor.player.currentTime - editor.player.playbackRate );
-						break;
-					case 39:
-						event.preventDefault();
-						editor.setTime( editor.player.currentTime + editor.player.playbackRate );
-						break;
-					case 38:
-						event.preventDefault();
-						editor.speedUp();
-						break;
-					case 40:
-						event.preventDefault();
-						editor.speedDown();
-						break;
-					case 83:
-						break;
-
-				}
-
-			} );
+			// -- Moved to Keyboard.js
 
 			// Drop
 
