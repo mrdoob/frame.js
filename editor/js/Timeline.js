@@ -204,19 +204,26 @@ var Timeline = function ( editor ) {
 	timeMark.style.pointerEvents = 'none';
 	timeline.dom.appendChild( timeMark );
 
-	var timelineWidth;
-	setTimeout(function() {
-		timelineWidth = timeline.dom.offsetWidth - 8;
-	}, 200);
-	
 	function updateTimeMark() {
-		var offsetLeft = (player.currentTime * scale) - scroller.scrollLeft - 8;
+
+		var offsetLeft = ( player.currentTime * scale ) - scroller.scrollLeft - 8;
+
 		timeMark.style.left = offsetLeft + 'px';
-		
-		// Auto-scroll if end is reached
-		if (editor.player.isPlaying && offsetLeft > timelineWidth) scroller.scrollLeft += timelineWidth;
-		
-		
+
+		if ( editor.player.isPlaying ) {
+
+			var timelineWidth = timeline.dom.offsetWidth - 8;
+
+			// Auto-scroll if end is reached
+
+			if ( offsetLeft > timelineWidth ) {
+
+				scroller.scrollLeft += timelineWidth;
+
+			}
+
+		}
+
 		// TODO Optimise this
 
 		var loop = player.getLoop();
