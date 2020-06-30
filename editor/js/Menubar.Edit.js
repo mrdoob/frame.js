@@ -25,22 +25,7 @@ Menubar.Edit = function ( editor ) {
 	option.setTextContent( 'Duplicate' );
 	option.onClick( function () {
 
-		if ( editor.selected === null ) return;
-
-		var selected = editor.selected;
-
-		var offset = selected.end - selected.start;
-
-		var animation = new FRAME.Animation(
-			selected.name,
-			selected.start + offset,
-			selected.end + offset,
-			selected.layer,
-			selected.effect
-		);
-
-		editor.addAnimation( animation );
-		editor.selectAnimation( animation );
+		editor.duplicateAnimation();
 
 	} );
 	options.add( option );

@@ -34,33 +34,40 @@ Timeline.Animations = function ( editor ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
-				animation.start += movementX / scale;
-				animation.end += movementX / scale;
+				var pos = animation.getPosition();
+				pos.start += movementX / scale;
+				pos.end += movementX / scale;
 
-				if ( animation.start < 0 ) {
+				if (pos.start < 0) {
+					
+					var offset = -animation.start;
 
-					var offset = - animation.start;
-
-					animation.start += offset;
-					animation.end += offset;
-
+					pos.start += offset;
+					pos.end += offset;
+					
 				}
 
 				movementY += event.movementY | event.webkitMovementY | event.mozMovementY | 0;
 
-				if ( movementY >= 30 ) {
-
-					animation.layer = animation.layer + 1;
+				if (movementY >= 30) {
+					
+					pos.layer += 1;
 					movementY = 0;
-
+					
 				}
 
-				if ( movementY <= -30 ) {
-
-					animation.layer = Math.max( 0, animation.layer - 1 );
+				if (movementY <= -30) {
+					
+					pos.layer = Math.max(0, pos.layer - 1);
 					movementY = 0;
-
+					
 				}
+				
+				if (editor.getOverlappingAnimation(pos)) return false;
+				
+				animation.start = pos.start;
+				animation.end = pos.end;
+				animation.layer = pos.layer;
 
 				signals.animationModified.dispatch( animation );
 
@@ -78,44 +85,56 @@ Timeline.Animations = function ( editor ) {
 
 		}, false );
 
+		var resizeOnMouseDown = function (event, left) {
+			
+			event.stopPropagation();
+
+			var movementX = 0;
+
+			function onMouseMove(event) {
+				
+				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
+				
+				let pos = animation.getPosition();
+				
+				if (left) {
+					pos.start += movementX / scale;
+					if (pos.start > pos.end - 0.1) return;
+				}
+				else {
+					pos.end += movementX / scale;
+				}
+				
+				// If the animation would overlap any other on the same layer, don't increase the size.
+				if (editor.getOverlappingAnimation(pos)) return;
+				
+				if (left) {
+					animation.start = pos.start;
+				}
+				else {
+					animation.end = pos.end;
+				}
+
+				signals.animationModified.dispatch(animation);
+			}
+			
+			function onMouseUp(event) {
+				if (Math.abs(movementX) < 2) editor.selectAnimation(animation);
+
+				document.removeEventListener('mousemove', onMouseMove);
+				document.removeEventListener('mouseup', onMouseUp);
+			}
+
+			document.addEventListener('mousemove', onMouseMove, false);
+			document.addEventListener('mouseup', onMouseUp, false);
+		}
+		
 		var resizeLeft = document.createElement( 'div' );
 		resizeLeft.style.position = 'absolute';
 		resizeLeft.style.width = '6px';
 		resizeLeft.style.height = '30px';
 		resizeLeft.style.cursor = 'w-resize';
-		resizeLeft.addEventListener( 'mousedown', function ( event ) {
-
-			event.stopPropagation();
-
-			var movementX = 0;
-
-			function onMouseMove( event ) {
-
-				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-
-				animation.start += movementX / scale;
-
-				signals.animationModified.dispatch( animation );
-
-			}
-
-			function onMouseUp( event ) {
-
-				if ( Math.abs( movementX ) < 2 ) {
-
-					editor.selectAnimation( animation );
-
-				}
-
-				document.removeEventListener( 'mousemove', onMouseMove );
-				document.removeEventListener( 'mouseup', onMouseUp );
-
-			}
-
-			document.addEventListener( 'mousemove', onMouseMove, false );
-			document.addEventListener( 'mouseup', onMouseUp, false );
-
-		}, false );
+		resizeLeft.addEventListener( 'mousedown', (event) => resizeOnMouseDown(event, true), false );
 		dom.appendChild( resizeLeft );
 
 		var name = document.createElement( 'div' );
@@ -129,39 +148,7 @@ Timeline.Animations = function ( editor ) {
 		resizeRight.style.width = '6px';
 		resizeRight.style.height = '30px';
 		resizeRight.style.cursor = 'e-resize';
-		resizeRight.addEventListener( 'mousedown', function ( event ) {
-
-			event.stopPropagation();
-
-			var movementX = 0;
-
-			function onMouseMove( event ) {
-
-				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
-
-				animation.end += movementX / scale;
-
-				signals.animationModified.dispatch( animation );
-
-			}
-
-			function onMouseUp( event ) {
-
-				if ( Math.abs( movementX ) < 2 ) {
-
-					editor.selectAnimation( animation );
-
-				}
-
-				document.removeEventListener( 'mousemove', onMouseMove );
-				document.removeEventListener( 'mouseup', onMouseUp );
-
-			}
-
-			document.addEventListener( 'mousemove', onMouseMove, false );
-			document.addEventListener( 'mouseup', onMouseUp, false );
-
-		}, false );
+		resizeRight.addEventListener( 'mousedown', (event) => resizeOnMouseDown(event, false), false );
 		dom.appendChild( resizeRight );
 
 		//
