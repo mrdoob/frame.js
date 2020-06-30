@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Menubar.Examples = function ( editor ) {
+function MenubarExamples( editor ) {
 
 	var container = new UI.Panel();
 	container.setClass( 'menu' );
@@ -59,4 +59,6 @@ Menubar.Examples = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { MenubarExamples };

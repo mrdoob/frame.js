@@ -2,7 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Editor = function () {
+import { Config } from './Config.js';
+
+function Editor() {
 
 	var Signal = signals.Signal;
 
@@ -580,4 +582,6 @@ Editor.prototype = {
 
 	}
 
-};
+}
+
+export { Editor };

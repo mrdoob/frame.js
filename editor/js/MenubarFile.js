@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Menubar.File = function ( editor ) {
+function MenubarFile( editor ) {
 
 	var signals = editor.signals;
 
@@ -89,4 +89,6 @@ Menubar.File = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { MenubarFile };

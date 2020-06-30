@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Code = function ( editor ) {
+function Code( editor ) {
 
 	var signals = editor.signals;
 
@@ -214,4 +214,6 @@ var Code = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { Code };

@@ -2,9 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Menubar.Help = function ( editor ) {
-
-	var signals = editor.signals;
+function MenubarHelp( editor ) {
 
 	var container = new UI.Panel();
 	container.setClass( 'menu' );
@@ -39,3 +37,5 @@ Menubar.Help = function ( editor ) {
 	return container;
 
 }
+
+export { MenubarHelp };

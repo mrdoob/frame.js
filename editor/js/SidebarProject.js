@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Sidebar.Project = function ( editor ) {
+function SidebarProject( editor ) {
 
 	var signals = editor.signals;
 
@@ -180,4 +180,6 @@ Sidebar.Project = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { SidebarProject };

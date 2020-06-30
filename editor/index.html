@@ -26,30 +26,17 @@
 		<script src="js/libs/signals.min.js"></script>
 		<script src="js/libs/ui.js"></script>
 
-		<script src="js/Editor.js"></script>
-		<script src="js/Code.js"></script>
-		<script src="js/Config.js"></script>
-		<script src="js/Menubar.js"></script>
-		<script src="js/Menubar.File.js"></script>
-		<script src="js/Menubar.Edit.js"></script>
-		<script src="js/Menubar.Examples.js"></script>
-		<script src="js/Menubar.Help.js"></script>
-		<script src="js/Sidebar.js"></script>
-		<script src="js/Sidebar.Animation.js"></script>
-		<script src="js/Sidebar.Project.js"></script>
-		<script src="js/Sidebar.Settings.js"></script>
-		<script src="js/Viewport.js"></script>
-		<script src="js/Controls.js"></script>
-		<script src="js/Timeline.js"></script>
-		<script src="js/Timeline.Animations.js"></script>
-		<script src="js/Timeline.Curves.js"></script>
-
 		<script src="../src/Frame.js"></script>
 
-		<!-- Project specific files -->
+		<script type="module">
 
-		<script>
-
+			import { Editor } from './js/Editor.js';
+			import { Viewport } from './js/Viewport.js';
+			import { Code } from './js/Code.js';
+			import { Sidebar } from './js/Sidebar.js';
+			import { Controls } from './js/Controls.js';
+			import { Timeline } from './js/Timeline.js';
+			import { Menubar } from './js/Menubar.js';
 
 			var editor = new Editor();
 

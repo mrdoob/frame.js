@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Timeline.Animations = function ( editor ) {
+function TimelineAnimations( editor ) {
 
 	var signals = editor.signals;
 
@@ -302,4 +302,6 @@ Timeline.Animations = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { TimelineAnimations };

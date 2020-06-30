@@ -2,7 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Timeline = function ( editor ) {
+import { TimelineAnimations } from './TimelineAnimations.js'
+
+function Timeline( editor ) {
 
 	var signals = editor.signals;
 	var player = editor.player;
@@ -164,7 +166,7 @@ var Timeline = function ( editor ) {
 	}, false );
 	timeline.dom.appendChild( scroller );
 
-	var elements = new Timeline.Animations( editor );
+	var elements = new TimelineAnimations( editor );
 	scroller.appendChild( elements.dom );
 
 	/*
@@ -276,4 +278,6 @@ var Timeline = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { Timeline };

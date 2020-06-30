@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Viewport = function ( editor ) {
+function Viewport( editor ) {
 
 	var scope = this;
 	var signals = editor.signals;
@@ -40,4 +40,6 @@ var Viewport = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { Viewport };

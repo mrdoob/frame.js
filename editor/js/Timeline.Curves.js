@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Timeline.Curves = function ( editor ) {
+function TimelineCurves( editor ) {
 
 	var signals = editor.signals;
 
@@ -69,4 +69,6 @@ Timeline.Curves = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { TimelineCurves };

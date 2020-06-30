@@ -2,7 +2,10 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Sidebar = function ( editor ) {
+import { SidebarAnimation } from './SidebarAnimation.js';
+import { SidebarProject } from './SidebarProject.js'
+
+function Sidebar( editor ) {
 
 	var container = new UI.Panel();
 	container.setId( 'sidebar' );
@@ -27,12 +30,12 @@ var Sidebar = function ( editor ) {
 	//
 
 	var animation = new UI.Span().add(
-		new Sidebar.Animation( editor )
+		new SidebarAnimation( editor )
 	);
 	container.add( animation );
 
 	var project = new UI.Span().add(
-		new Sidebar.Project( editor )
+		new SidebarProject( editor )
 	);
 	container.add( project );
 	/*
@@ -77,4 +80,6 @@ var Sidebar = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { Sidebar };

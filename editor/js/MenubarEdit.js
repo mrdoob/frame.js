@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Menubar.Edit = function ( editor ) {
+function MenubarEdit( editor ) {
 
 	var container = new UI.Panel();
 	container.setClass( 'menu' );
@@ -62,4 +62,6 @@ Menubar.Edit = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { MenubarEdit };

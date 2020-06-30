@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Sidebar.Animation = function ( editor ) {
+function SidebarAnimation( editor ) {
 
 	var signals = editor.signals;
 
@@ -346,4 +346,6 @@ Sidebar.Animation = function ( editor ) {
 
 	return container;
 
-};
+}
+
+export { SidebarAnimation };

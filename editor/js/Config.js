@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Config = function () {
+function Config() {
 
 	var name = 'framejs-editor';
 
@@ -50,4 +50,6 @@ var Config = function () {
 
 	};
 
-};
+}
+
+export { Config };
