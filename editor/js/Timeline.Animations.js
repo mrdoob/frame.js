@@ -33,9 +33,25 @@ Timeline.Animations = function ( editor ) {
 			function onMouseMove( event ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
+				
+				// Keyboard modifiers for finer control
+				var modifiedScale = scale;
+				if ( editor.keyboard.shiftIsDown ) {
+					modifiedScale = 64;
+				} else if ( editor.keyboard.modIsDown ) {
+					modifiedScale = 8;
+				}
+				
+				animation.start += movementX / modifiedScale;
+				animation.end += movementX / modifiedScale;
 
-				animation.start += movementX / scale;
-				animation.end += movementX / scale;
+				// Keyboard modifier for snapping to units - 10th/s
+				if ( editor.keyboard.optionIsDown ) {
+					var length = animation.end - animation.start;
+
+					animation.start = Math.round( animation.start * 10 ) / 10;
+					animation.end = Math.round( ( animation.start + length ) * 10 ) / 10;
+				}
 
 				if ( animation.start < 0 ) {
 
@@ -93,7 +109,20 @@ Timeline.Animations = function ( editor ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
-				animation.start += movementX / scale;
+				// Keyboard modifiers for finer control
+				var modifiedScale = scale;
+				if ( editor.keyboard.shiftIsDown ) {
+					modifiedScale = 64;
+				} else if ( editor.keyboard.modIsDown ) {
+					modifiedScale = 8;
+				}
+				
+				animation.start += movementX / modifiedScale;
+
+				// Keyboard modifier for snapping to units - 10th/s
+				if ( editor.keyboard.optionIsDown ) {
+					animation.start = Math.round( animation.start * 10 ) / 10;
+				}
 
 				signals.animationModified.dispatch( animation );
 
@@ -139,7 +168,20 @@ Timeline.Animations = function ( editor ) {
 
 				movementX = event.movementX | event.webkitMovementX | event.mozMovementX | 0;
 
-				animation.end += movementX / scale;
+				// Keyboard modifiers for finer control
+				var modifiedScale = scale;
+				if ( editor.keyboard.shiftIsDown ) {
+					modifiedScale = 64;
+				} else if ( editor.keyboard.modIsDown ) {
+					modifiedScale = 8;
+				}
+				
+				animation.end += movementX / modifiedScale;
+
+				// Keyboard modifier for snapping to units - 10th/s
+				if ( editor.keyboard.optionIsDown ) {
+					animation.end = Math.round( animation.end * 10 ) / 10;
+				}
 
 				signals.animationModified.dispatch( animation );
 
