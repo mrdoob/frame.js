@@ -1,3 +1,11 @@
+*::-webkit-scrollbar {
+	width: 1em;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: #888;
+}
+
 button {
 	color: #555;
 	background-color: #888;
