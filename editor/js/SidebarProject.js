@@ -84,15 +84,15 @@ function SidebarProject( editor ) {
 
 		var include = editor.includes[ id ];
 
-		var span = new UI.Span();
+		var div = new UI.Div().setMarginBottom( '4px' );
 
-		var name = new UI.Input( include.name ).setWidth( '130px' ).setFontSize( '12px' );
+		var name = new UI.Input( include.name ).setWidth( '130px' );
 		name.onChange( function () {
 
 			include.name = this.getValue();
 
 		} );
-		span.add( name );
+		div.add( name );
 
 		var edit = new UI.Button( 'Edit' );
 		edit.setMarginLeft( '4px' );
@@ -101,7 +101,7 @@ function SidebarProject( editor ) {
 			editor.selectInclude( include );
 
 		} );
-		span.add( edit );
+		div.add( edit );
 
 		var remove = new UI.Button( 'Remove' );
 		remove.setMarginLeft( '4px' );
@@ -114,9 +114,9 @@ function SidebarProject( editor ) {
 			}
 
 		} );
-		span.add( remove );
+		div.add( remove );
 
-		return span;
+		return div;
 
 	}
 

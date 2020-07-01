@@ -204,7 +204,30 @@ function Timeline( editor ) {
 	timeMark.style.height = '100%';
 	timeMark.style.background = 'linear-gradient(90deg, transparent 8px, #f00 8px, #f00 9px, transparent 9px) 0% 0% / 16px 16px repeat-y';
 	timeMark.style.pointerEvents = 'none';
+	timeMark.style.marginTop = '16px';
+	timeMark.appendChild( createTimeMarkImage() );
 	timeline.dom.appendChild( timeMark );
+
+	function createTimeMarkImage() {
+
+		var canvas = document.createElement( 'canvas' );
+		canvas.width = 16;
+		canvas.height = 16;
+
+		var context = canvas.getContext( '2d' );
+		context.fillStyle = '#f00';
+		context.beginPath();
+		context.moveTo( 2, 0 );
+		context.lineTo( 14, 0 );
+		context.lineTo( 14, 10 );
+		context.lineTo( 8, 16 );
+		context.lineTo( 2, 10 );
+		context.lineTo( 2, 0 );
+		context.fill();
+
+		return canvas;
+
+	}
 
 	function updateTimeMark() {
 

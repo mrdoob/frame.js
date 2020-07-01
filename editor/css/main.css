@@ -23,12 +23,17 @@ textarea, input { outline: none; } /* osx */
 	user-select: none;
 }
 
+button {
+	border-radius: 4px;
+}
+
 input.Input {
 	color: #3AC785;
 	font-size: 12px;
 	background-color: #444;
 	border: 0px;
-	padding: 2px 4px;
+	padding: 5px 8px;
+	border-radius: 4px;
 }
 
 input.Number {
@@ -36,7 +41,6 @@ input.Number {
 	font-size: 12px;							/** TODO: Use of !imporant is not ideal **/
 	background-color: transparent!important;	/* For now this is a quick fix a rendering issue due to inherited background */
 	border: 1px solid transparent;
-	padding: 2px;
 	cursor: col-resize;
 }
 
@@ -45,7 +49,8 @@ select.Select {
 	font-size: 12px;
 	background-color: #444;
 	border: 0px;
-	padding: 2px 4px;
+	padding: 5px 8px;
+	border-radius: 4px;
 }
 
 .CodeMirror {

@@ -68,6 +68,7 @@ button {
 		border-top: 1px solid #aaf;
 		border-right: 1px solid #77f;
 		border-bottom: 1px solid #77f;
+		border-radius: 4px;
 		overflow: hidden;
 	}
 
