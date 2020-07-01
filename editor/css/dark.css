@@ -64,10 +64,9 @@ button {
 
 	#timeline .block {
 		background-color: #88f;
-		border-left: 1px solid #aaf;
+		border: 0px;
 		border-top: 1px solid #aaf;
-		border-right: 1px solid #77f;
-		border-bottom: 1px solid #77f;
+		border-left: 1px solid #aaf;
 		border-radius: 4px;
 		overflow: hidden;
 	}
@@ -84,19 +83,17 @@ button {
 	}
 
 	#timeline .block.selected {
-		background-color: #8f8;
-		border-left: 1px solid #afa;
-		border-top: 1px solid #afa;
-		border-right: 1px solid #5f5;
-		border-bottom: 1px solid #5f5;
+		border-top: 1px solid #aea;
+		border-left: 1px solid #aea;
+		background-color: #8d8;
 	}
 
 	#timeline .block.disabled {
-		background: repeating-linear-gradient( 45deg, #88f, #88f 5px, #77f 5px, #77f 10px );
+		background-color: #668;
 	}
 
 	#timeline .block.disabled.selected {
-		background: repeating-linear-gradient( 45deg, #8f8, #8f8 5px, #5f5 5px, #5f5 10px );
+		background: #474;
 	}
 
 #menubar {

@@ -190,7 +190,7 @@ function TimelineAnimations( editor ) {
 
 			dom.style.left = ( animation.start * scale ) + 'px';
 			dom.style.top = ( animation.layer * 32 ) + 'px';
-			dom.style.width = ( ( animation.end - animation.start ) * scale - 2 ) + 'px';
+			dom.style.width = ( ( animation.end - animation.start ) * scale ) + 'px';
 
 			name.innerHTML = animation.name + ' <span style="opacity:0.5">' + animation.effect.name + '</span>';
 
