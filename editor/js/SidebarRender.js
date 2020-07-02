@@ -88,11 +88,11 @@ function SidebarRender( editor ) {
 
 		if ( audio !== null ) {
 
-			await ffmpeg.run( `-framerate ${fps} -pattern_type glob -i *.png -i audio.mp3 -c:a copy -shortest -c:v libx264 -pix_fmt yuv420p -preset slow -crf 8 out.mp4`, { output: 'out.mp4' });
+			await ffmpeg.run( `-framerate ${fps} -pattern_type glob -i *.png -i audio.mp3 -c:a aac -shortest -c:v libx264 -pix_fmt yuv420p -preset slow -crf 8 out.mp4`, { output: 'out.mp4' });
 
 		} else {
 
-			await ffmpeg.run( `-framerate ${fps} -pattern_type glob -i *.png -c:a copy -shortest -c:v libx264 -pix_fmt yuv420p -preset slow -crf 8 out.mp4`, { output: 'out.mp4' });
+			await ffmpeg.run( `-framerate ${fps} -pattern_type glob -i *.png -c:v libx264 -pix_fmt yuv420p -preset slow -crf 8 out.mp4`, { output: 'out.mp4' });
 
 		}
 
