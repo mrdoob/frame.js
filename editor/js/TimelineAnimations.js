@@ -8,7 +8,7 @@ function TimelineAnimations( editor ) {
 
 	var container = new UI.Panel();
 	container.setHeight( '100%' );
-	container.setBackground( 'linear-gradient(#444 1px, transparent 1px) 0% 0% / 32px 32px repeat' );
+	container.setBackground( 'linear-gradient(#555 1px, transparent 1px) 0% 0% / 32px 32px repeat' );
 
 	var scale = 32;
 
@@ -19,7 +19,7 @@ function TimelineAnimations( editor ) {
 		var dom = document.createElement( 'div' );
 		dom.className = 'block';
 		dom.style.position = 'absolute';
-		dom.style.height = '30px';
+		dom.style.height = '31px';
 		dom.addEventListener( 'click', function ( event ) {
 
 			editor.selectAnimation( animation );

@@ -59,7 +59,7 @@ button {
 	left: 0px;
 	right: 300px;
 	height: 30%;
-	background-color: #555;
+	background-color: #444;
 }
 
 	#timeline .block {
@@ -67,7 +67,7 @@ button {
 		border: 0px;
 		border-top: 1px solid #aaf;
 		border-left: 1px solid #aaf;
-		border-radius: 4px;
+		border-radius: 2px;
 		overflow: hidden;
 	}
 
