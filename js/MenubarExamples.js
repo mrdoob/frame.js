@@ -40,7 +40,7 @@ function MenubarExamples( editor ) {
 
 					editor.clear();
 
-					const response = await fetch( '../examples/' + item.file );
+					const response = await fetch( './examples/' + item.file );
 					await editor.fromJSON( await response.json() );
 
 				}
