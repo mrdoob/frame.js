@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { Player, Resources, Effect, Animation, Timeline } from '../../src/Frame.js';
+import { Player, Resources, Code, Animation, Timeline } from '../../src/Frame.js';
 import { Config } from './Config.js';
 
 function Editor() {
@@ -13,17 +13,13 @@ function Editor() {
 
 		editorCleared: new Signal(),
 
-		// libraries
+		// scripts
 
-		libraryAdded: new Signal(),
-
-		// includes
-
-		includeAdded: new Signal(),
-		includeSelected: new Signal(),
-		includeChanged: new Signal(),
-		includeRemoved: new Signal(),
-		includesCleared: new Signal(),
+		scriptAdded: new Signal(),
+		scriptSelected: new Signal(),
+		scriptChanged: new Signal(),
+		scriptRemoved: new Signal(),
+		scriptsCleared: new Signal(),
 
 		// effects
 
@@ -68,8 +64,7 @@ function Editor() {
 
 	this.duration = 500;
 
-	this.libraries = [];
-	this.includes = [];
+	this.scripts = [];
 	this.effects = [];
 	this.timeline = new Timeline();
 
@@ -187,64 +182,83 @@ Editor.prototype = {
 
 	},
 
-	// libraries
+	// scripts
 
-	addLibrary: function ( url, content ) {
-
-		var script = document.createElement( 'script' );
-		script.id = 'library-' + this.libraries.length;
-		script.textContent = content;
-		document.head.appendChild( script );
-
-		this.libraries.push( url );
-		this.signals.libraryAdded.dispatch();
-
-	},
-
-	// includes
-
-	addInclude: function ( name, source ) {
+	addScript: async function ( script ) {
 
 		try {
-			new Function( 'resources', source )( this.resources );
+
+			await script.compile( this.resources, this.player );
+
 		} catch ( e ) {
+
 			console.error( e );
+
 		}
 
-		this.includes.push( { name: name, source: source } );
-		this.signals.includeAdded.dispatch();
+		this.scripts.push( script );
+		this.signals.scriptAdded.dispatch();
 
 	},
 
-	removeInclude: function ( include ) {
+	selectScript: function ( script ) {
 
-		var index = this.includes.indexOf( include );
-
-		this.includes.splice( index, 1 );
-		this.signals.includeRemoved.dispatch();
+		this.signals.scriptSelected.dispatch( script );
 
 	},
 
-	selectInclude: function ( include ) {
+	removeScript: function ( script ) {
 
-		this.signals.includeSelected.dispatch( include );
+		var index = this.scripts.indexOf( script );
+
+		this.scripts.splice( index, 1 );
+		this.signals.scriptRemoved.dispatch();
 
 	},
 
-	reloadIncludes: function () {
+	createScript: function () {
 
-		var includes = this.includes;
+		this.scripts.push( new Code( { name: '', source: '' } ) );
+		this.signals.scriptAdded.dispatch();
 
-		this.signals.includesCleared.dispatch();
+	},
 
-		for ( var i = 0; i < includes.length; i ++ ) {
+	reloadScripts: async function () {
 
-			var include = includes[ i ];
+		this.signals.scriptsCleared.dispatch();
+
+		const scripts = this.scripts;
+
+		for ( let i = 0; i < scripts.length; i ++ ) {
+
+			const script = scripts[ i ];
 
 			try {
-				new Function( 'resources', include.source )( this.resources );
+
+				await script.compile( this.resources, this.player );
+
 			} catch ( e ) {
+
 				console.error( e );
+
+			}
+
+		}
+
+		const effects = this.effects;
+
+		for ( let i = 0; i < effects.length; i ++ ) {
+
+			const effect = effects[ i ];
+
+			try {
+
+				await effect.compile( this.resources, this.player );
+
+			} catch ( e ) {
+
+				console.error( e );
+
 			}
 
 		}
@@ -279,11 +293,11 @@ Editor.prototype = {
 
 	},
 
-	compileEffect: function ( effect ) {
+	compileEffect: async function ( effect ) {
 
 		try {
 
-			effect.compile( this.resources, this.player );
+			await effect.compile( this.resources, this.player );
 
 		} catch ( e ) {
 
@@ -332,13 +346,13 @@ Editor.prototype = {
 
 	// animations
 
-	addAnimation: function ( animation ) {
+	addAnimation: async function ( animation ) {
 
 		var effect = animation.effect;
 
 		if ( effect.program === null ) {
 
-			this.compileEffect( effect );
+			await this.compileEffect( effect );
 
 		}
 
@@ -363,6 +377,35 @@ Editor.prototype = {
 
 	},
 
+	createAnimation: function ( start, end, layer ) {
+
+		var effect = new Code( { name: 'Effect' } );
+		this.addEffect( effect );
+
+		var animation = new Animation( { name: 'Animation', start: start, end: end, layer: layer, effect: effect } );
+		this.addAnimation( animation );
+
+	},
+
+	duplicateAnimation: function ( animation ) {
+
+		var offset = animation.end - animation.start;
+
+		var duplicate = new Animation( {
+			name: animation.name,
+			start: animation.start + offset,
+			end: animation.end + offset,
+			layer: animation.layer,
+			effect: animation.effect
+		} );
+
+		this.addAnimation( duplicate );
+		this.selectAnimation( duplicate );
+
+	},
+
+	/*
+
 	addCurve: function ( curve ) {
 
 		this.timeline.curves.push( curve );
@@ -370,10 +413,13 @@ Editor.prototype = {
 
 	},
 
+	*/
+
 	clear: function () {
 
-		this.libraries = [];
-		this.includes = [];
+		this.player.setAudio( null );
+
+		this.scripts = [];
 		this.effects = [];
 
 		while ( this.timeline.animations.length > 0 ) {
@@ -382,111 +428,81 @@ Editor.prototype = {
 
 		}
 
+		this.timeline.reset();
+
 		this.signals.editorCleared.dispatch();
 
 	},
 
-	fromJSON: function ( json ) {
-
-		function loadFile( url, onLoad ) {
-
-			var request = new XMLHttpRequest();
-			request.open( 'GET', url, true );
-			request.addEventListener( 'load', function ( event ) {
-
-				onLoad( event.target.response );
-
-			} );
-			request.send( null );
-
-		}
-
-		function loadLibraries( libraries, onLoad ) {
-
-			var count = 0;
-
-			function loadNext() {
-
-				if ( count === libraries.length ) {
-
-					onLoad();
-					return;
-
-				}
-
-				var url = libraries[ count ++ ];
-
-				loadFile( url, function ( content ) {
-
-					scope.addLibrary( url, content );
-					loadNext();
-
-				} );
-
-			}
-
-			loadNext();
-
-		}
+	fromJSON: async function ( json ) {
 
 		var scope = this;
 
-		var libraries = json.libraries || [];
+		var scripts = json.scripts;
 
-		loadLibraries( libraries, function () {
+		if ( scripts === undefined ) {
 
-			var includes = json.includes;
+			console.warn( 'Editor: Converting legacy includes to scripts.' );
+			scripts = json.includes;
 
-			for ( var i = 0, l = includes.length; i < l; i ++ ) {
+		}
 
-				var data = includes[ i ];
+		for ( var i = 0, l = scripts.length; i < l; i ++ ) {
 
-				var name = data[ 0 ];
-				var source = data[ 1 ];
+			var data = scripts[ i ];
 
-				if ( Array.isArray( source ) ) source = source.join( '\n' );
+			if ( Array.isArray( data ) ) {
 
-				scope.addInclude( name, source );
-
-			}
-
-			var effects = json.effects;
-
-			for ( var i = 0, l = effects.length; i < l; i ++ ) {
-
-				var data = effects[ i ];
-
-				var name = data[ 0 ];
-				var source = data[ 1 ];
-
-				if ( Array.isArray( source ) ) source = source.join( '\n' );
-
-				scope.addEffect( new Effect( name, source ) );
+				console.warn( 'Editor: Converting legacy Code format:', data );
+				data = { name: data[ 0 ], source: data[ 1 ] };
 
 			}
 
-			var animations = json.animations;
+			if ( Array.isArray( data.source ) ) data.source = data.source.join( '\n' );
 
-			for ( var i = 0, l = animations.length; i < l; i ++ ) {
+			await scope.addScript( new Code( data ) );
 
-				var data = animations[ i ];
+		}
 
-				var animation = new Animation(
-					data[ 0 ],
-					data[ 1 ],
-					data[ 2 ],
-					data[ 3 ],
-					scope.effects[ data[ 4 ] ],
-					data[ 5 ]
-				);
+		const effects = json.effects;
 
-				scope.addAnimation( animation );
+		for ( let i = 0, l = effects.length; i < l; i ++ ) {
+
+			let data = effects[ i ];
+
+			if ( Array.isArray( data ) ) {
+
+				console.warn( 'Editor: Converting legacy Code format:', data );
+				data = { name: data[ 0 ], source: data[ 1 ] };
 
 			}
 
-			scope.setTime( 0 );
+			if ( Array.isArray( data.source ) ) data.source = data.source.join( '\n' );
 
-		} );
+			scope.addEffect( new Code( data ) );
+
+		}
+
+		const animations = json.animations;
+
+		for ( let i = 0, l = animations.length; i < l; i ++ ) {
+
+			let data = animations[ i ];
+
+			if ( Array.isArray( data ) ) {
+
+				console.warn( 'Editor: Converting legacy Animation format:', data );
+				data = { name: data[ 0 ], start: data[ 1 ], end: data[ 2 ], layer: data[ 3 ], effectId: data[ 4 ], enabled: data[ 5 ] };
+
+			}
+
+			data.effect = scope.effects[ data.effectId ];
+
+			await scope.addAnimation( new Animation( data ) );
+
+		}
+
+		scope.setTime( 0 );
 
 	},
 
@@ -494,8 +510,7 @@ Editor.prototype = {
 
 		var json = {
 			"config": {},
-			"libraries": this.libraries.slice(),
-			"includes": [],
+			"scripts": [],
 			"effects": [],
 			// "curves": [],
 			"animations": []
@@ -519,18 +534,14 @@ Editor.prototype = {
 		}
 		*/
 
-		// includes
+		// scripts
 
-		var includes = this.includes;
+		var scripts = this.scripts;
 
-		for ( var i = 0, l = includes.length; i < l; i ++ ) {
+		for ( var i = 0, l = scripts.length; i < l; i ++ ) {
 
-			var include = includes[ i ];
-
-			var name = include.name;
-			var source = include.source;
-
-			json.includes.push( [ name, source.split( '\n' ) ] );
+			var script = scripts[ i ];
+			json.scripts.push( script.serialise() );
 
 		}
 
@@ -541,11 +552,7 @@ Editor.prototype = {
 		for ( var i = 0, l = effects.length; i < l; i ++ ) {
 
 			var effect = effects[ i ];
-
-			var name = effect.name;
-			var source = effect.source;
-
-			json.effects.push( [ name, source.split( '\n' ) ] );
+			json.effects.push( effect.serialise() );
 
 		}
 
@@ -556,26 +563,7 @@ Editor.prototype = {
 		for ( var i = 0, l = animations.length; i < l; i ++ ) {
 
 			var animation = animations[ i ];
-			var effect = animation.effect;
-
-			/*
-			var parameters = {};
-
-			for ( var key in module.parameters ) {
-
-				parameters[ key ] = module.parameters[ key ].value;
-
-			}
-			*/
-
-			json.animations.push( [
-				animation.name,
-				animation.start,
-				animation.end,
-				animation.layer,
-				this.effects.indexOf( animation.effect ),
-				animation.enabled
-			] );
+			json.animations.push( animation.serialise( effects ) );
 
 		}
 

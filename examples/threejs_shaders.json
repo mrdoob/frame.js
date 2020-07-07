@@ -1,12 +1,11 @@
 {
 	"config": {},
-	"libraries": [
-		"../examples/js/libs/three.min.js"
-	],
-	"includes": [
-		[
-			"Renderer",
-			[
+	"scripts": [
+		{
+			"name": "Renderer",
+			"source": [
+				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"",
 				"var dom = resources.get( 'dom' );",
 				"",
 				"var renderer = new THREE.WebGLRenderer();",
@@ -23,10 +22,12 @@
 				"",
 				"resources.set( 'renderer', renderer );"
 			]
-		],
-		[
-			"ShaderRenderer",
-			[
+		},
+		{
+			"name": "ShaderRenderer",
+			"source": [
+				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"",
 				"var SHADERS = {",
 				"\t",
 				"\t// by @mnstrmnch (remixed by @mrdoob)",
@@ -101,10 +102,12 @@
 				"resources.set( 'ShaderRenderer', ShaderRenderer );",
 				""
 			]
-		],
-		[
-			"ImageRenderer",
-			[
+		},
+		{
+			"name": "ImageRenderer",
+			"source": [
+				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"",
 				"var dom = resources.get( 'dom' );",
 				"",
 				"function ImageRenderer( url, width, height ) {",
@@ -142,10 +145,12 @@
 				"",
 				"resources.set( 'ImageRenderer', ImageRenderer );"
 			]
-		],
-		[
-			"ColorRenderer",
-			[
+		},
+		{
+			"name": "ColorRenderer",
+			"source": [
+				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"",
 				"function ColorRenderer( color ){",
 				"\t",
 				"\tvar renderer = resources.get( 'renderer' );",
@@ -181,12 +186,12 @@
 				"",
 				"resources.set( 'ColorRenderer', ColorRenderer );"
 			]
-		]
+		}
 	],
 	"effects": [
-		[
-			"Audio Player",
-			[
+		{
+			"name": "Audio Player",
+			"source": [
 				"var audio = document.createElement( 'audio' );",
 				"audio.src = '../examples/files/lug00ber-bastion_amstel.mp3';",
 				"",
@@ -204,10 +209,10 @@
 				"",
 				"function update( progress ){}"
 			]
-		],
-		[
-			"Lights",
-			[
+		},
+		{
+			"name": "Lights",
+			"source": [
 				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'lights' );",
 				"",
@@ -221,10 +226,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"CubeBalls 1",
-			[
+		},
+		{
+			"name": "CubeBalls 1",
+			"source": [
 				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'cubeballs' ).setMouse( [ 0.75, 0.75 ] );",
 				"",
@@ -238,10 +243,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"CubeBalls 2",
-			[
+		},
+		{
+			"name": "CubeBalls 2",
+			"source": [
 				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'cubeballs' ).setMouse( [ -0.75, 0.25 ] );",
 				"",
@@ -255,10 +260,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"PlaneDistort 1",
-			[
+		},
+		{
+			"name": "PlaneDistort 1",
+			"source": [
 				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'planedistort' );",
 				"",
@@ -272,10 +277,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"PlaneDistort 2",
-			[
+		},
+		{
+			"name": "PlaneDistort 2",
+			"source": [
 				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'planedistort' );",
 				"",
@@ -289,10 +294,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"Field 1",
-			[
+		},
+		{
+			"name": "Field 1",
+			"source": [
 				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'field' );",
 				"",
@@ -306,10 +311,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"Field 2",
-			[
+		},
+		{
+			"name": "Field 2",
+			"source": [
 				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'field' );",
 				"",
@@ -323,10 +328,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"Blobs",
-			[
+		},
+		{
+			"name": "Blobs",
+			"source": [
 				"var ShaderRenderer = resources.get( 'ShaderRenderer' );",
 				"var shader = new ShaderRenderer( 'blobs' );",
 				"",
@@ -340,10 +345,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"Black Fade Out",
-			[
+		},
+		{
+			"name": "Black Fade Out",
+			"source": [
 				"var ColorRenderer = resources.get( 'ColorRenderer' );",
 				"var color = new ColorRenderer( 0x000000 );",
 				"",
@@ -357,10 +362,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"White Fade Out",
-			[
+		},
+		{
+			"name": "White Fade Out",
+			"source": [
 				"var ColorRenderer = resources.get( 'ColorRenderer' );",
 				"var color = new ColorRenderer( 0xffffff );",
 				"",
@@ -374,10 +379,10 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"Image",
-			[
+		},
+		{
+			"name": "Image",
+			"source": [
 				"var ImageRenderer = resources.get( 'ImageRenderer' );",
 				"var image = new ImageRenderer( '../examples/files/credits.png', 1024, 256 );",
 				"",
@@ -391,120 +396,120 @@
 				"",
 				"}"
 			]
-		]
+		}
 	],
 	"animations": [
-		[
-			"",
-			0,
-			71,
-			0,
-			0,
-			true
-		],
-		[
-			"Scene 1",
-			0,
-			14,
-			1,
-			1,
-			true
-		],
-		[
-			"",
-			0,
-			14,
-			2,
-			9,
-			true
-		],
-		[
-			"Scene 2",
-			14,
-			21,
-			1,
-			2,
-			true
-		],
-		[
-			"Animation",
-			21,
-			28,
-			1,
-			3,
-			true
-		],
-		[
-			"Animation",
-			28,
-			35,
-			1,
-			4,
-			true
-		],
-		[
-			"Animation",
-			35,
-			42,
-			1,
-			5,
-			true
-		],
-		[
-			"Animation",
-			35,
-			37,
-			2,
-			10,
-			true
-		],
-		[
-			"Animation",
-			42,
-			49,
-			1,
-			6,
-			true
-		],
-		[
-			"Animation",
-			42,
-			44,
-			2,
-			10,
-			true
-		],
-		[
-			"Animation",
-			49,
-			56,
-			1,
-			7,
-			true
-		],
-		[
-			"",
-			56,
-			71,
-			1,
-			8,
-			true
-		],
-		[
-			"",
-			56,
-			71,
-			2,
-			11,
-			true
-		],
-		[
-			"",
-			56,
-			60,
-			3,
-			10,
-			true
-		]
+		{
+			"name": "",
+			"start": 0,
+			"end": 71,
+			"layer": 0,
+			"effectId": 0,
+			"enabled": true
+		},
+		{
+			"name": "Scene 1",
+			"start": 0,
+			"end": 14,
+			"layer": 1,
+			"effectId": 1,
+			"enabled": true
+		},
+		{
+			"name": "",
+			"start": 0,
+			"end": 14,
+			"layer": 2,
+			"effectId": 9,
+			"enabled": true
+		},
+		{
+			"name": "Scene 2",
+			"start": 14,
+			"end": 21,
+			"layer": 1,
+			"effectId": 2,
+			"enabled": true
+		},
+		{
+			"name": "Animation",
+			"start": 21,
+			"end": 28,
+			"layer": 1,
+			"effectId": 3,
+			"enabled": true
+		},
+		{
+			"name": "Animation",
+			"start": 28,
+			"end": 35,
+			"layer": 1,
+			"effectId": 4,
+			"enabled": true
+		},
+		{
+			"name": "Animation",
+			"start": 35,
+			"end": 42,
+			"layer": 1,
+			"effectId": 5,
+			"enabled": true
+		},
+		{
+			"name": "Animation",
+			"start": 35,
+			"end": 37,
+			"layer": 2,
+			"effectId": 10,
+			"enabled": true
+		},
+		{
+			"name": "Animation",
+			"start": 42,
+			"end": 49,
+			"layer": 1,
+			"effectId": 6,
+			"enabled": true
+		},
+		{
+			"name": "Animation",
+			"start": 42,
+			"end": 44,
+			"layer": 2,
+			"effectId": 10,
+			"enabled": true
+		},
+		{
+			"name": "Animation",
+			"start": 49,
+			"end": 56,
+			"layer": 1,
+			"effectId": 7,
+			"enabled": true
+		},
+		{
+			"name": "",
+			"start": 56,
+			"end": 71,
+			"layer": 1,
+			"effectId": 8,
+			"enabled": true
+		},
+		{
+			"name": "",
+			"start": 56,
+			"end": 71,
+			"layer": 2,
+			"effectId": 11,
+			"enabled": true
+		},
+		{
+			"name": "",
+			"start": 56,
+			"end": 60,
+			"layer": 3,
+			"effectId": 10,
+			"enabled": true
+		}
 	]
 }

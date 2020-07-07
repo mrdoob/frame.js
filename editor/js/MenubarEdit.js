@@ -27,20 +27,7 @@ function MenubarEdit( editor ) {
 
 		if ( editor.selected === null ) return;
 
-		var selected = editor.selected;
-
-		var offset = selected.end - selected.start;
-
-		var animation = new FRAME.Animation(
-			selected.name,
-			selected.start + offset,
-			selected.end + offset,
-			selected.layer,
-			selected.effect
-		);
-
-		editor.addAnimation( animation );
-		editor.selectAnimation( animation );
+		editor.duplicateAnimation( editor.selected );
 
 	} );
 	options.add( option );

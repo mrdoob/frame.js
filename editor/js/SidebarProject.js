@@ -9,13 +9,33 @@ function SidebarProject( editor ) {
 	var container = new UI.Panel();
 	container.setId( 'project' );
 
-	// Libraries
+	// Scripts
 
-	container.add( new UI.Text( 'Libraries' ).setTextTransform( 'uppercase' ) );
+	container.add( new UI.Text( 'Scripts' ).setTextTransform( 'uppercase' ) );
 	container.add( new UI.Break(), new UI.Break() );
 
-	var libraries = new UI.Select().setMultiple( true ).setWidth( '280px' );
-	container.add( libraries );
+	var scriptsContainer = new UI.Row();
+	container.add( scriptsContainer );
+
+	var newScript = new UI.Button( 'New' );
+	newScript.onClick( function () {
+
+		editor.createScript();
+
+	} );
+	container.add( newScript );
+
+	var reload = new UI.Button( 'Reload Scripts' );
+	reload.onClick( async function () {
+
+		await editor.reloadScripts();
+
+		editor.timeline.reset();
+		editor.timeline.update( editor.player.currentTime );
+
+	} );
+	reload.setMarginLeft( '4px' );
+	container.add( reload );
 
 	container.add( new UI.Break(), new UI.Break() );
 
@@ -37,59 +57,18 @@ function SidebarProject( editor ) {
 
 	container.add( new UI.Break(), new UI.Break() );
 
-	// Scripts
-
-	container.add( new UI.Text( 'Scripts' ).setTextTransform( 'uppercase' ) );
-	container.add( new UI.Break(), new UI.Break() );
-
-	var includesContainer = new UI.Row();
-	container.add( includesContainer );
-
-	var newInclude = new UI.Button( 'New' );
-	newInclude.onClick( function () {
-
-		editor.addInclude( 'Name', '' );
-
-		update();
-
-	} );
-	container.add( newInclude );
-
-	var reload = new UI.Button( 'Reload Scripts' );
-	reload.onClick( function () {
-
-		editor.reloadIncludes();
-
-		var effects = editor.effects;
-
-		for ( var j = 0; j < effects.length; j++ ) {
-
-			var effect = effects[ j ];
-			editor.compileEffect( effect );
-
-		}
-
-		editor.timeline.reset();
-		editor.timeline.update( editor.player.currentTime );
-
-	} );
-	reload.setMarginLeft( '4px' );
-	container.add( reload );
-
-	container.add( new UI.Break(), new UI.Break() );
-
 	//
 
-	function buildInclude( id ) {
+	function buildScript( id ) {
 
-		var include = editor.includes[ id ];
+		var script = editor.scripts[ id ];
 
 		var div = new UI.Div().setMarginBottom( '4px' );
 
-		var name = new UI.Input( include.name ).setWidth( '130px' );
+		var name = new UI.Input( script.name ).setWidth( '130px' );
 		name.onChange( function () {
 
-			include.name = this.getValue();
+			script.name = this.getValue();
 
 		} );
 		div.add( name );
@@ -98,7 +77,7 @@ function SidebarProject( editor ) {
 		edit.setMarginLeft( '4px' );
 		edit.onClick( function () {
 
-			editor.selectInclude( include );
+			editor.selectScript( script );
 
 		} );
 		div.add( edit );
@@ -109,7 +88,7 @@ function SidebarProject( editor ) {
 
 			if ( confirm( 'Are you sure?' ) ) {
 
-				editor.removeInclude( include );
+				editor.removeScript( script );
 
 			}
 
@@ -124,16 +103,22 @@ function SidebarProject( editor ) {
 
 	function update() {
 
-		updateLibraries();
-		updateEffects();
 		updateScripts();
+		updateEffects();
 
 	}
 
-	function updateLibraries() {
+	function updateScripts() {
 
-		libraries.setOptions( editor.libraries );
-		libraries.dom.size = editor.libraries.length;
+		scriptsContainer.clear();
+
+		var scripts = editor.scripts;
+
+		for ( var i = 0; i < scripts.length; i ++ ) {
+
+			scriptsContainer.add( buildScript( i ) );
+
+		}
 
 	}
 
@@ -152,31 +137,15 @@ function SidebarProject( editor ) {
 
 	}
 
-	function updateScripts() {
-
-		includesContainer.clear();
-
-		var includes = editor.includes;
-
-		for ( var i = 0; i < includes.length; i ++ ) {
-
-			includesContainer.add( buildInclude( i ) );
-
-		}
-
-	}
-
 	// signals
 
 	signals.editorCleared.add( update );
 
-	signals.libraryAdded.add( updateLibraries );
+	signals.scriptAdded.add( updateScripts );
+	signals.scriptRemoved.add( updateScripts );
 
 	signals.effectAdded.add( updateEffects );
 	signals.effectRemoved.add( updateEffects );
-
-	signals.includeAdded.add( updateScripts );
-	signals.includeRemoved.add( updateScripts );
 
 	return container;
 

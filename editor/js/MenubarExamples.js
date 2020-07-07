@@ -34,19 +34,14 @@ function MenubarExamples( editor ) {
 			var option = new UI.Row();
 			option.setClass( 'option' );
 			option.setTextContent( item.title );
-			option.onClick( function () {
+			option.onClick( async function () {
 
 				if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
 
-					var request = new XMLHttpRequest();
-					request.open( 'GET', '../examples/' + item.file, true );
-					request.addEventListener( 'load', function ( event ) {
+					editor.clear();
 
-						editor.clear();
-						editor.fromJSON( JSON.parse( event.target.responseText ) );
-
-					}, false );
-					request.send( null );
+					const response = await fetch( '../examples/' + item.file );
+					await editor.fromJSON( await response.json() );
 
 				}
 

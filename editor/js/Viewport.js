@@ -36,7 +36,7 @@ function Viewport( editor ) {
 	}
 
 	signals.editorCleared.add( clear );
-	signals.includesCleared.add( clear );
+	signals.scriptsCleared.add( clear );
 
 	return container;
 

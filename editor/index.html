@@ -26,7 +26,7 @@
 		<script src="js/libs/signals.min.js"></script>
 		<script src="js/libs/ui.js"></script>
 
-		<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.8.3/dist/ffmpeg.min.js"></script>
+		<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.8.3/dist/ffmpeg.min.js" defer></script>
 
 		<script type="module">
 
@@ -66,8 +66,8 @@
 			editor.signals.animationRenamed.add( saveState );
 			editor.signals.effectCompiled.add( saveState );
 			editor.signals.effectRenamed.add( saveState );
-			editor.signals.includeChanged.add( saveState );
-			editor.signals.includeRemoved.add( saveState );
+			editor.signals.scriptChanged.add( saveState );
+			editor.signals.scriptRemoved.add( saveState );
 			editor.signals.editorCleared.add( saveState );
 
 			var timeout;

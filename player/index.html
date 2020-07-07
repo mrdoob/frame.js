@@ -21,15 +21,15 @@
 	<body>
 		<div id="container"></div>
 
-		<script src="../src/Frame.js"></script>
+		<script type="module">
 
-		<script>
+			import { Resources, Player, Timeline } from '../src/Frame.js';
 
-			var resources = new FRAME.Resources();
+			var resources = new Resources();
 			resources.set( 'dom', document.getElementById( 'container' ) );
 
-			var timeline = new FRAME.Timeline();
-			var player = new FRAME.Player();
+			var timeline = new Timeline();
+			var player = new Player();
 
 			//
 
@@ -37,18 +37,22 @@
 
 			if ( query.substr( 1, 5 ) === 'file=' ) {
 
-				timeline.load( query.substr( 6 ), function () {
-
-					timeline.compile( resources, player );
-					player.play();
-
-					window.requestAnimationFrame( animate );
-
-				} );
+				load( query.substr( 6 ) );
 
 			}
 
 			//
+
+			async function load( path ) {
+
+				await timeline.load( path );
+				await timeline.compile( resources, player );
+
+				player.play();
+
+				window.requestAnimationFrame( animate );
+
+			}
 
 			var prevTime = 0;
 

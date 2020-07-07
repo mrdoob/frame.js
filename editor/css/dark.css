@@ -89,11 +89,11 @@ button {
 	}
 
 	#timeline .block.disabled {
-		background-color: #668;
+		background: repeating-linear-gradient( 45deg, #88f, #88f 1px, #77a 2px, #77a 3px );
 	}
 
 	#timeline .block.disabled.selected {
-		background: #474;
+		background: repeating-linear-gradient( 45deg, #8d8, #8d8 2px, #5a5 2px, #5a5 3px );
 	}
 
 #menubar {

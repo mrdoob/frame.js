@@ -46,7 +46,7 @@ function Code( editor ) {
 	var errorLine = null;
 
 	var currentEffect = null;
-	var currentInclude = null;
+	var currentScript = null;
 
 	var codemirror = CodeMirror( container.dom, {
 		value: '',
@@ -73,11 +73,11 @@ function Code( editor ) {
 
 			}
 
-			if ( currentInclude !== null ) {
+			if ( currentScript !== null ) {
 
-				currentInclude.source = codemirror.getValue();
+				currentScript.source = codemirror.getValue();
 
-				editor.signals.includeChanged.dispatch();
+				editor.signals.scriptChanged.dispatch();
 
 			} else if ( currentEffect !== null ) {
 
@@ -178,21 +178,21 @@ function Code( editor ) {
 		codemirror.clearHistory();
 
 		currentEffect = effect;
-		currentInclude = null;
+		currentScript = null;
 
 	} );
 
-	signals.includeSelected.add( function ( include ) {
+	signals.scriptSelected.add( function ( script ) {
 
 		container.setDisplay( '' );
 
-		title.setValue( include.name );
+		title.setValue( script.name );
 
-		codemirror.setValue( include.source );
+		codemirror.setValue( script.source );
 		codemirror.clearHistory();
 
 		currentEffect = null;
-		currentInclude = include;
+		currentScript = script;
 
 	} );
 
@@ -208,7 +208,7 @@ function Code( editor ) {
 		codemirror.clearHistory();
 
 		currentEffect = effect;
-		currentInclude = null;
+		currentScript = null;
 
 	} );
 

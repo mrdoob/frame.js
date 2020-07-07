@@ -2,6 +2,8 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+window.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+
 const	VERSION = 5;
 
 const FRAME = {
@@ -229,40 +231,73 @@ Curves: {
 },
 */
 
-function Effect( name, source ) {
+const DEFAULT_SOURCE = 'var parameters = {\n\tvalue: new FRAME.Parameters.Float( \'Value\', 1.0 )\n};\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
 
-	this.name = name;
-	this.source = source || 'var parameters = {\n\tvalue: new FRAME.Parameters.Float( \'Value\', 1.0 )\n};\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
+function Code( data ) {
+
+	this.name = data.name;
+	this.source = data.source !== undefined ? data.source : DEFAULT_SOURCE;
 	this.program = null;
-	this.compile = function ( resources, player ) {
+	this.compile = async function ( resources, player ) {
 
-		this.program = ( new Function( 'FRAME, resources, player, parameters, start, end, update', this.source + '\nreturn { parameters: parameters, start: start, end: end, update: update };' ) )( FRAME, resources, player );
+		const properties = 'FRAME, resources, player, parameters, start, end, update';
+		const source = this.source + '\nreturn { parameters: parameters, start: start, end: end, update: update };';
+
+		if ( /await/.test( this.source ) ) {
+
+			this.program = await ( new AsyncFunction( properties, source ) )( FRAME, resources, player );
+
+		} else {
+
+			this.program = ( new Function( properties, source ) )( FRAME, resources, player );
+
+		}
 
 	};
 
 }
 
+Code.prototype.serialise = function () {
+
+	return {
+		name: this.name,
+		source: this.source.split( '\n' )
+	};
+
+};
+
 let animationId = 0;
 
-function Animation( name, start, end, layer, effect, enabled ) {
+function Animation( data ) {
 
-	if ( enabled === undefined ) enabled = true; // TODO remove this
+	if ( typeof data === 'string' ) console.error( '!!!' );
 
 	this.id = animationId ++;
-	this.name = name;
-	this.start = start;
-	this.end = end;
-	this.layer = layer;
-	this.effect = effect;
-	this.enabled = enabled;
-
-	// this.serialise = function () {};
+	this.name = data.name;
+	this.start = data.start;
+	this.end = data.end;
+	this.layer = data.layer;
+	this.effect = data.effect;
+	this.enabled = data.enabled !== undefined ? data.enabled : true;
 
 }
 
+Animation.prototype.serialise = function ( effects ) {
+
+	return {
+		name: this.name,
+		start: this.start,
+		end: this.end,
+		layer: this.layer,
+		effectId: effects.indexOf( this.effect ),
+		enabled: this.enabled
+	};
+
+};
+
 function Timeline() {
 
-	const includes = [];
+	const scripts = [];
 	const effects = [];
 
 	const animations = [];
@@ -276,144 +311,68 @@ function Timeline() {
 	function layerSort( a, b ) { return a.layer - b.layer; }
 	function startSort( a, b ) { return a.start === b.start ? layerSort( a, b ) : a.start - b.start; }
 
-	function loadFile( url, onLoad ) {
-
-		const request = new XMLHttpRequest();
-		request.open( 'GET', url, true );
-		request.addEventListener( 'load', function ( event ) {
-
-			onLoad( event.target.response );
-
-		} );
-		request.send( null );
-
-	}
-
 	return {
 
 		animations: animations,
 		curves: curves,
 
-		load: function ( url, onLoad ) {
+		load: async function ( url ) {
 
-			const scope = this;
-
-			loadFile( url, function ( text ) {
-
-				scope.parse( JSON.parse( text ), onLoad );
-
-			} );
+			const response = await fetch( url );
+			this.parse( await response.json() );
 
 		},
 
-		loadLibraries: function ( libraries, onLoad ) {
+		parse: function ( json ) {
 
-			let count = 0;
+			const scope = this;
 
-			function loadNext() {
+			// scripts
 
-				if ( count === libraries.length ) {
+			for ( let i = 0; i < json.scripts.length; i ++ ) {
 
-					onLoad();
-					return;
+				const data = json.scripts[ i ];
 
-				}
+				if ( Array.isArray( data.source ) ) data.source = data.source.join( '\n' );
 
-				const url = libraries[ count ++ ];
-
-				loadFile( url, function ( content ) {
-
-					const script = document.createElement( 'script' );
-					script.id = 'library-' + count;
-					script.textContent = '( function () { ' + content + '} )()';
-					document.head.appendChild( script );
-
-					loadNext();
-
-				} );
-
+				scripts.push( new Code( data ) );
 
 			}
 
-			loadNext();
+			// Effects
+
+			for ( let i = 0; i < json.effects.length; i ++ ) {
+
+				const data = json.effects[ i ];
+
+				if ( Array.isArray( data.source ) ) data.source = data.source.join( '\n' );
+
+				effects.push( new Code( data ) );
+
+			}
+
+			for ( let i = 0; i < json.animations.length; i ++ ) {
+
+				const data = json.animations[ i ];
+
+				data.effect = effects[ data.effectId ];
+
+				const animation = new Animation( data );
+
+				animations.push( animation );
+
+			}
+
+			scope.sort();
 
 		},
 
-		parse: function ( json, onLoad ) {
+		compile: async function ( resources, player ) {
 
-			const scope = this;
+			for ( let i = 0, l = scripts.length; i < l; i ++ ) {
 
-			const libraries = json.libraries || [];
-
-			this.loadLibraries( libraries, function () {
-
-				// Includes
-
-				for ( let i = 0; i < json.includes.length; i ++ ) {
-
-					const data = json.includes[ i ];
-					const name = data[ 0 ];
-					const source = data[ 1 ];
-
-					if ( Array.isArray( source ) ) source = source.join( '\n' );
-
-					includes.push( new Effect( name, source ) );
-
-				}
-
-				// Effects
-
-				for ( let i = 0; i < json.effects.length; i ++ ) {
-
-					const data = json.effects[ i ];
-
-					const name = data[ 0 ];
-					const source = data[ 1 ];
-
-					if ( Array.isArray( source ) ) source = source.join( '\n' );
-
-					effects.push( new Effect( name, source ) );
-
-				}
-
-				for ( let i = 0; i < json.animations.length; i ++ ) {
-
-					const data = json.animations[ i ];
-
-					const animation = new Animation(
-						data[ 0 ],
-						data[ 1 ],
-						data[ 2 ],
-						data[ 3 ],
-						effects[ data[ 4 ] ],
-						data[ 5 ]
-					);
-
-					animations.push( animation );
-
-				}
-
-				scope.sort();
-
-				if ( onLoad ) onLoad();
-
-			} );
-
-		},
-
-		compile: function ( resources, player ) {
-
-			const animations = this.animations;
-
-			for ( let i = 0, l = includes.length; i < l; i++ ) {
-
-				const include = includes[ i ];
-
-				if ( include.program === null ) {
-
-					include.compile( resources, player );
-
-				}
+				const script = scripts[ i ];
+				await script.compile( resources, player );
 
 			}
 
@@ -423,7 +382,7 @@ function Timeline() {
 
 				if ( animation.effect.program === null ) {
 
-					animation.effect.compile( resources, player );
+					await animation.effect.compile( resources, player );
 
 				}
 
@@ -562,4 +521,4 @@ function Timeline() {
 
 }
 
-export { Player, Resources, Effect, Animation, Timeline };
+export { Player, Resources, Code, Animation, Timeline };

@@ -1,12 +1,11 @@
 {
 	"config": {},
-	"libraries": [
-		"../examples/js/libs/three.min.js"
-	],
-	"includes": [
-		[
-			"Renderer",
-			[
+	"scripts": [
+		{
+			"name": "Renderer",
+			"source": [
+				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"",
 				"var dom = resources.get( 'dom' );",
 				"",
 				"var renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );",
@@ -23,12 +22,14 @@
 				"",
 				"resources.set( 'renderer', renderer );"
 			]
-		]
+		}
 	],
 	"effects": [
-		[
-			"Clear",
-			[
+		{
+			"name": "Clear",
+			"source": [
+				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"",
 				"var parameters = {",
 				"\tcolor: new FRAME.Parameters.Color( 'Color', 0x000000 )",
 				"};",
@@ -47,10 +48,12 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"Cube",
-			[
+		},
+		{
+			"name": "Cube",
+			"source": [
+				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"",
 				"var dom = resources.get( 'dom' );",
 				"",
 				"var renderer = resources.get( 'renderer' );",
@@ -82,10 +85,12 @@
 				"",
 				"}"
 			]
-		],
-		[
-			"Fade Out",
-			[
+		},
+		{
+			"name": "Fade Out",
+			"source": [
+				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"",
 				"var parameters = {",
 				"\tcolor:   new FRAME.Parameters.Color( 'Color', 0xffffff ),",
 				"\topacity: new FRAME.Parameters.Float( 'Opacity', 1, 0, 1 )",
@@ -111,32 +116,32 @@
 				"",
 				"}"
 			]
-		]
+		}
 	],
 	"animations": [
-		[
-			"",
-			0,
-			9,
-			0,
-			0,
-			true
-		],
-		[
-			"",
-			0,
-			16,
-			1,
-			1,
-			true
-		],
-		[
-			"",
-			4.5,
-			7.5,
-			2,
-			2,
-			true
-		]
+		{
+			"name": "",
+			"start": 0,
+			"end": 9,
+			"layer": 0,
+			"effectId": 0,
+			"enabled": true
+		},
+		{
+			"name": "",
+			"start": 0,
+			"end": 16,
+			"layer": 1,
+			"effectId": 1,
+			"enabled": true
+		},
+		{
+			"name": "",
+			"start": 4.5,
+			"end": 7.5,
+			"layer": 2,
+			"effectId": 2,
+			"enabled": true
+		}
 	]
 }
