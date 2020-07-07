@@ -4,7 +4,7 @@
 		{
 			"name": "Renderer",
 			"source": [
-				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"const THREE = await import( './examples/js/libs/three.module.js' );",
 				"",
 				"var dom = resources.get( 'dom' );",
 				"",
@@ -26,7 +26,7 @@
 		{
 			"name": "ShaderRenderer",
 			"source": [
-				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"const THREE = await import( './examples/js/libs/three.module.js' );",
 				"",
 				"var SHADERS = {",
 				"\t",
@@ -106,7 +106,7 @@
 		{
 			"name": "ImageRenderer",
 			"source": [
-				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"const THREE = await import( './examples/js/libs/three.module.js' );",
 				"",
 				"var dom = resources.get( 'dom' );",
 				"",
@@ -149,7 +149,7 @@
 		{
 			"name": "ColorRenderer",
 			"source": [
-				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"const THREE = await import( './examples/js/libs/three.module.js' );",
 				"",
 				"function ColorRenderer( color ){",
 				"\t",
@@ -193,7 +193,7 @@
 			"name": "Audio Player",
 			"source": [
 				"var audio = document.createElement( 'audio' );",
-				"audio.src = '../examples/files/lug00ber-bastion_amstel.mp3';",
+				"audio.src = './examples/files/lug00ber-bastion_amstel.mp3';",
 				"",
 				"function start(){",
 				"",
@@ -384,7 +384,7 @@
 			"name": "Image",
 			"source": [
 				"var ImageRenderer = resources.get( 'ImageRenderer' );",
-				"var image = new ImageRenderer( '../examples/files/credits.png', 1024, 256 );",
+				"var image = new ImageRenderer( './examples/files/credits.png', 1024, 256 );",
 				"",
 				"function start(){}",
 				"",

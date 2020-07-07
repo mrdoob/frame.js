@@ -4,7 +4,7 @@
 		{
 			"name": "Renderer",
 			"source": [
-				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"const THREE = await import( './examples/js/libs/three.module.js' );",
 				"",
 				"var dom = resources.get( 'dom' );",
 				"",
@@ -28,7 +28,7 @@
 		{
 			"name": "Clear",
 			"source": [
-				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"const THREE = await import( './examples/js/libs/three.module.js' );",
 				"",
 				"var parameters = {",
 				"\tcolor: new FRAME.Parameters.Color( 'Color', 0x000000 )",
@@ -52,7 +52,7 @@
 		{
 			"name": "Cube",
 			"source": [
-				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"const THREE = await import( './examples/js/libs/three.module.js' );",
 				"",
 				"var dom = resources.get( 'dom' );",
 				"",
@@ -89,7 +89,7 @@
 		{
 			"name": "Fade Out",
 			"source": [
-				"const THREE = await import( '../examples/js/libs/three.module.js' );",
+				"const THREE = await import( './examples/js/libs/three.module.js' );",
 				"",
 				"var parameters = {",
 				"\tcolor:   new FRAME.Parameters.Color( 'Color', 0xffffff ),",

@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { Player, Resources, Code, Animation, Timeline } from '../../src/Frame.js';
+import { Player, Resources, Code, Animation, Timeline } from '../Frame.js';
 import { Config } from './Config.js';
 
 function Editor() {
