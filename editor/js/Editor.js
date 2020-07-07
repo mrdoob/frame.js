@@ -2,6 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { Player, Resources, Effect, Animation, Timeline } from '../../src/Frame.js';
 import { Config } from './Config.js';
 
 function Editor() {
@@ -62,15 +63,15 @@ function Editor() {
 
 	this.config = new Config();
 
-	this.player = new FRAME.Player();
-	this.resources = new FRAME.Resources();
+	this.player = new Player();
+	this.resources = new Resources();
 
 	this.duration = 500;
 
 	this.libraries = [];
 	this.includes = [];
 	this.effects = [];
-	this.timeline = new FRAME.Timeline();
+	this.timeline = new Timeline();
 
 	this.selected = null;
 
@@ -460,7 +461,7 @@ Editor.prototype = {
 
 				if ( Array.isArray( source ) ) source = source.join( '\n' );
 
-				scope.addEffect( new FRAME.Effect( name, source ) );
+				scope.addEffect( new Effect( name, source ) );
 
 			}
 
@@ -470,7 +471,7 @@ Editor.prototype = {
 
 				var data = animations[ i ];
 
-				var animation = new FRAME.Animation(
+				var animation = new Animation(
 					data[ 0 ],
 					data[ 1 ],
 					data[ 2 ],
@@ -509,7 +510,7 @@ Editor.prototype = {
 
 			var curve = curves[ i ];
 
-			if ( curve instanceof FRAME.Curves.Linear ) {
+			if ( curve instanceof Curves.Linear ) {
 
 				json.curves.push( [ 'linear', curve.points ] );
 

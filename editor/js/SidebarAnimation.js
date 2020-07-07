@@ -21,7 +21,7 @@ function SidebarAnimation( editor ) {
 		var parameterRow = new UI.Row();
 		parameterRow.add( new UI.Text( parameter.name ).setWidth( '90px' ) );
 
-		if ( parameter instanceof FRAME.Parameters.Boolean ) {
+		if ( parameter.isBoolean ) {
 
 			var parameterValue = new UI.Checkbox()
 				.setValue( parameter.value )
@@ -36,7 +36,7 @@ function SidebarAnimation( editor ) {
 
 			values[ key ] = parameterValue;
 
-		} else if ( parameter instanceof FRAME.Parameters.Integer ) {
+		} else if ( parameter.isInteger ) {
 
 			var parameterValue = new UI.Integer()
 				.setRange( parameter.min, parameter.max )
@@ -53,7 +53,7 @@ function SidebarAnimation( editor ) {
 
 			values[ key ] = parameterValue;
 
-		} else if ( parameter instanceof FRAME.Parameters.Float ) {
+		} else if ( parameter.isFloat ) {
 
 			var parameterValue = new UI.Number()
 				.setRange( parameter.min, parameter.max )
@@ -70,7 +70,7 @@ function SidebarAnimation( editor ) {
 
 			values[ key ] = parameterValue;
 
-		} else if ( parameter instanceof FRAME.Parameters.Vector2 ) {
+		} else if ( parameter.isVector2 ) {
 
 			var vectorX = new UI.Number()
 				.setValue( parameter.value[ 0 ] )
@@ -95,7 +95,7 @@ function SidebarAnimation( editor ) {
 			parameterRow.add( vectorX );
 			parameterRow.add( vectorY );
 
-		} else if ( parameter instanceof FRAME.Parameters.Vector3 ) {
+		} else if ( parameter.isVector3 ) {
 
 			var vectorX = new UI.Number()
 				.setValue( parameter.value[ 0 ] )
@@ -131,7 +131,7 @@ function SidebarAnimation( editor ) {
 			parameterRow.add( vectorY );
 			parameterRow.add( vectorZ );
 
-		} else if ( parameter instanceof FRAME.Parameters.String ) {
+		} else if ( parameter.isString ) {
 
 			var parameterValue = new UI.Input()
 				.setValue( parameter.value )
@@ -145,7 +145,7 @@ function SidebarAnimation( editor ) {
 
 			parameterRow.add( parameterValue );
 
-		} else if ( parameter instanceof FRAME.Parameters.Color ) {
+		} else if ( parameter.isColor ) {
 
 			var parameterValue = new UI.Color()
 				.setHexValue( parameter.value )
