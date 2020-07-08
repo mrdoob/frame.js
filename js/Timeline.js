@@ -235,6 +235,7 @@ function Timeline( editor ) {
 
 		timeMark.style.left = offsetLeft + 'px';
 
+		/*
 		if ( editor.player.isPlaying ) {
 
 			var timelineWidth = timeline.dom.offsetWidth - 8;
@@ -248,6 +249,7 @@ function Timeline( editor ) {
 			}
 
 		}
+		*/
 
 		// TODO Optimise this
 
