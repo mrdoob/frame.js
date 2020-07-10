@@ -14,6 +14,7 @@ Work in progress.
 
 ### Projects
 
+* https://with.in/watch/what-you-dont-know/ ([editor](https://within-unlimited.github.io/what-you-dont-know/editor/))
 * https://with.in/watch/under-neon-lights/ ([editor](https://within-unlimited.github.io/under-neon-lights/))
 * http://fernandojsg.com/lab/thiswayjs/
 * https://xplsv.github.io/obsidian/
