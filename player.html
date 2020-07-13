@@ -50,7 +50,7 @@
 
 				player.play();
 
-				window.requestAnimationFrame( animate );
+				animate( prevTime = performance.now() );
 
 			}
 
