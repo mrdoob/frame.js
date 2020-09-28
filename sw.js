@@ -54,7 +54,7 @@ const assets = [
 
 self.addEventListener( 'install', async function () {
 
-	const cache = await caches.open( 'threejs-editor' );
+	const cache = await caches.open( 'framejs-editor' );
 
 	assets.forEach( function ( asset ) {
 
