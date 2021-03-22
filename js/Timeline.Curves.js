@@ -6,7 +6,7 @@ function TimelineCurves( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 
 	var selected = null;
 	var scale = 32;

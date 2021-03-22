@@ -2,18 +2,20 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIButton, UIPanel, UIRow, UIText } from './libs/ui.js';
+
 function Controls( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setId( 'controls' );
 
-	var row = new UI.Row();
+	var row = new UIRow();
 	row.setPadding( '6px' );
 	container.add( row );
 
-	var prevButton = new UI.Button();
+	var prevButton = new UIButton();
 	prevButton.setBackground( 'url(files/prev.svg)' );
 	prevButton.setWidth( '20px' );
 	prevButton.setHeight( '20px' );
@@ -26,7 +28,7 @@ function Controls( editor ) {
 	} );
 	row.add( prevButton );
 
-	var playButton = new UI.Button();
+	var playButton = new UIButton();
 	playButton.setBackground( 'url(files/play.svg)' );
 	playButton.setWidth( '20px' );
 	playButton.setHeight( '20px' );
@@ -39,7 +41,7 @@ function Controls( editor ) {
 	} );
 	row.add( playButton );
 
-	var nextButton = new UI.Button();
+	var nextButton = new UIButton();
 	nextButton.setBackground( 'url(files/next.svg)' );
 	nextButton.setWidth( '20px' );
 	nextButton.setHeight( '20px' );
@@ -66,7 +68,7 @@ function Controls( editor ) {
 	playButton.onKeyDown( ignoreKeys );
 	nextButton.onKeyDown( ignoreKeys );
 
-	var timeText = new UI.Text();
+	var timeText = new UIText();
 	timeText.setColor( '#bbb' );
 	timeText.setWidth( '60px' );
 	timeText.setMarginLeft( '10px' );
@@ -83,7 +85,7 @@ function Controls( editor ) {
 
 	}
 
-	var playbackRateText = new UI.Text();
+	var playbackRateText = new UIText();
 	playbackRateText.setColor( '#999' );
 	playbackRateText.setMarginLeft( '8px' );
 	playbackRateText.setValue( '1.0x' );
@@ -95,7 +97,7 @@ function Controls( editor ) {
 
 	}
 
-	var fullscreenButton = new UI.Button();
+	var fullscreenButton = new UIButton();
 	fullscreenButton.setBackground( 'url(files/fullscreen.svg)' );
 	fullscreenButton.setWidth( '20px' );
 	fullscreenButton.setHeight( '20px' );

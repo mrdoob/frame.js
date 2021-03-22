@@ -2,22 +2,24 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIBreak, UIButton, UIDiv, UIInput, UIPanel, UIRow, UISelect, UIText } from './libs/ui.js';
+
 function SidebarProject( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setId( 'project' );
 
 	// Scripts
 
-	container.add( new UI.Text( 'Scripts' ).setTextTransform( 'uppercase' ) );
-	container.add( new UI.Break(), new UI.Break() );
+	container.add( new UIText( 'Scripts' ).setTextTransform( 'uppercase' ) );
+	container.add( new UIBreak(), new UIBreak() );
 
-	var scriptsContainer = new UI.Row();
+	var scriptsContainer = new UIRow();
 	container.add( scriptsContainer );
 
-	var newScript = new UI.Button( 'New' );
+	var newScript = new UIButton( 'New' );
 	newScript.onClick( function () {
 
 		editor.createScript();
@@ -25,7 +27,7 @@ function SidebarProject( editor ) {
 	} );
 	container.add( newScript );
 
-	var reload = new UI.Button( 'Reload Scripts' );
+	var reload = new UIButton( 'Reload Scripts' );
 	reload.onClick( async function () {
 
 		await editor.reloadScripts();
@@ -37,17 +39,17 @@ function SidebarProject( editor ) {
 	reload.setMarginLeft( '4px' );
 	container.add( reload );
 
-	container.add( new UI.Break(), new UI.Break() );
+	container.add( new UIBreak(), new UIBreak() );
 
 	// Effects
 
-	container.add( new UI.Text( 'Effects' ).setTextTransform( 'uppercase' ) );
-	container.add( new UI.Break(), new UI.Break() );
+	container.add( new UIText( 'Effects' ).setTextTransform( 'uppercase' ) );
+	container.add( new UIBreak(), new UIBreak() );
 
-	var effects = new UI.Select().setMultiple( true ).setWidth( '280px' ).setMarginBottom( '8px' );
+	var effects = new UISelect().setMultiple( true ).setWidth( '280px' ).setMarginBottom( '8px' );
 	container.add( effects );
 
-	var cleanEffects = new UI.Button( 'Clean Effects' );
+	var cleanEffects = new UIButton( 'Clean Effects' );
 	cleanEffects.onClick( function () {
 
 		editor.cleanEffects();
@@ -55,7 +57,7 @@ function SidebarProject( editor ) {
 	} );
 	container.add( cleanEffects );
 
-	container.add( new UI.Break(), new UI.Break() );
+	container.add( new UIBreak(), new UIBreak() );
 
 	//
 
@@ -63,9 +65,9 @@ function SidebarProject( editor ) {
 
 		var script = editor.scripts[ id ];
 
-		var div = new UI.Div().setMarginBottom( '4px' );
+		var div = new UIDiv().setMarginBottom( '4px' );
 
-		var name = new UI.Input( script.name ).setWidth( '130px' );
+		var name = new UIInput( script.name ).setWidth( '130px' );
 		name.onChange( function () {
 
 			script.name = this.getValue();
@@ -73,7 +75,7 @@ function SidebarProject( editor ) {
 		} );
 		div.add( name );
 
-		var edit = new UI.Button( 'Edit' );
+		var edit = new UIButton( 'Edit' );
 		edit.setMarginLeft( '4px' );
 		edit.onClick( function () {
 
@@ -82,7 +84,7 @@ function SidebarProject( editor ) {
 		} );
 		div.add( edit );
 
-		var remove = new UI.Button( 'Remove' );
+		var remove = new UIButton( 'Remove' );
 		remove.setMarginLeft( '4px' );
 		remove.onClick( function () {
 

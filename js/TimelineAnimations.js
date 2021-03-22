@@ -2,6 +2,8 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIPanel } from './libs/ui.js';
+
 let scale = 32;
 
 function TimelineAnimationBlock( editor, animation ) {
@@ -206,7 +208,7 @@ function TimelineAnimations( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setHeight( '100%' );
 	container.setBackground( 'linear-gradient(#555 1px, transparent 1px) 0% 0% / 32px 32px repeat' );
 

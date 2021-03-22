@@ -2,25 +2,27 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIPanel } from './libs/ui.js';
+
 function MenubarEdit( editor ) {
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setClass( 'menu' );
 
-	var title = new UI.Panel();
+	var title = new UIPanel();
 	title.setClass( 'title' );
 	title.setTextContent( 'Edit' );
 	container.add( title );
 
 	//
 
-	var options = new UI.Panel();
+	var options = new UIPanel();
 	options.setClass( 'options' );
 	container.add( options );
 
 	// duplicate
 
-	var option = new UI.Panel();
+	var option = new UIPanel();
 	option.setClass( 'option' );
 	option.setTextContent( 'Duplicate' );
 	option.onClick( function () {
@@ -34,7 +36,7 @@ function MenubarEdit( editor ) {
 
 	// remove
 
-	var option = new UI.Panel();
+	var option = new UIPanel();
 	option.setClass( 'option' );
 	option.setTextContent( 'Remove' );
 	option.onClick( function () {

@@ -2,11 +2,13 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIButton, UICheckbox, UIColor, UIHorizontalRule, UIInput, UIInteger, UINumber, UIPanel, UIRow, UISelect, UIText } from './libs/ui.js';
+
 function SidebarAnimation( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setId( 'animation' );
 
 	//
@@ -18,12 +20,12 @@ function SidebarAnimation( editor ) {
 
 		if ( parameter === null ) return;
 
-		var parameterRow = new UI.Row();
-		parameterRow.add( new UI.Text( parameter.name ).setWidth( '90px' ) );
+		var parameterRow = new UIRow();
+		parameterRow.add( new UIText( parameter.name ).setWidth( '90px' ) );
 
 		if ( parameter.isBoolean ) {
 
-			var parameterValue = new UI.Checkbox()
+			var parameterValue = new UICheckbox()
 				.setValue( parameter.value )
 				.onChange( function () {
 
@@ -38,7 +40,7 @@ function SidebarAnimation( editor ) {
 
 		} else if ( parameter.isInteger ) {
 
-			var parameterValue = new UI.Integer()
+			var parameterValue = new UIInteger()
 				.setRange( parameter.min, parameter.max )
 				.setValue( parameter.value )
 				.setWidth( '150px' )
@@ -55,7 +57,7 @@ function SidebarAnimation( editor ) {
 
 		} else if ( parameter.isFloat ) {
 
-			var parameterValue = new UI.Number()
+			var parameterValue = new UINumber()
 				.setRange( parameter.min, parameter.max )
 				.setValue( parameter.value )
 				.setWidth( '150px' )
@@ -72,7 +74,7 @@ function SidebarAnimation( editor ) {
 
 		} else if ( parameter.isVector2 ) {
 
-			var vectorX = new UI.Number()
+			var vectorX = new UINumber()
 				.setValue( parameter.value[ 0 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
@@ -82,7 +84,7 @@ function SidebarAnimation( editor ) {
 
 				} );
 
-			var vectorY = new UI.Number()
+			var vectorY = new UINumber()
 				.setValue( parameter.value[ 1 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
@@ -97,7 +99,7 @@ function SidebarAnimation( editor ) {
 
 		} else if ( parameter.isVector3 ) {
 
-			var vectorX = new UI.Number()
+			var vectorX = new UINumber()
 				.setValue( parameter.value[ 0 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
@@ -107,7 +109,7 @@ function SidebarAnimation( editor ) {
 
 				} );
 
-			var vectorY = new UI.Number()
+			var vectorY = new UINumber()
 				.setValue( parameter.value[ 1 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
@@ -117,7 +119,7 @@ function SidebarAnimation( editor ) {
 
 				} );
 
-			var vectorZ = new UI.Number()
+			var vectorZ = new UINumber()
 				.setValue( parameter.value[ 2 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
@@ -133,7 +135,7 @@ function SidebarAnimation( editor ) {
 
 		} else if ( parameter.isString ) {
 
-			var parameterValue = new UI.Input()
+			var parameterValue = new UIInput()
 				.setValue( parameter.value )
 				.setWidth( '150px' )
 				.onKeyUp( function () {
@@ -147,7 +149,7 @@ function SidebarAnimation( editor ) {
 
 		} else if ( parameter.isColor ) {
 
-			var parameterValue = new UI.Color()
+			var parameterValue = new UIColor()
 				.setHexValue( parameter.value )
 				.setWidth( '150px' )
 				.onChange( function () {
@@ -175,11 +177,11 @@ function SidebarAnimation( editor ) {
 
 		// Name
 
-		var row = new UI.Row();
-		row.add( new UI.Text( 'Name' ).setWidth( '90px' ) );
+		var row = new UIRow();
+		row.add( new UIText( 'Name' ).setWidth( '90px' ) );
 		container.add( row );
 
-		var animationName = new UI.Input( selected.name )
+		var animationName = new UIInput( selected.name )
 		animationName.onChange( function () {
 
 			selected.name = this.getValue();
@@ -190,11 +192,11 @@ function SidebarAnimation( editor ) {
 
 		// Time
 
-		var row = new UI.Row();
-		row.add( new UI.Text( 'Time' ).setWidth( '90px' ) );
+		var row = new UIRow();
+		row.add( new UIText( 'Time' ).setWidth( '90px' ) );
 		container.add( row );
 
-		var animationStart = new UI.Number( selected.start ).setWidth( '80px' );
+		var animationStart = new UINumber( selected.start ).setWidth( '80px' );
 		animationStart.onChange( function () {
 
 			selected.start = this.getValue();
@@ -203,7 +205,7 @@ function SidebarAnimation( editor ) {
 		} );
 		row.add( animationStart );
 
-		var animationEnd = new UI.Number( selected.end ).setWidth( '80px' );
+		var animationEnd = new UINumber( selected.end ).setWidth( '80px' );
 		animationEnd.onChange( function () {
 
 			selected.end = this.getValue();
@@ -214,11 +216,11 @@ function SidebarAnimation( editor ) {
 
 		// Layer
 
-		var row = new UI.Row();
-		row.add( new UI.Text( 'Layer' ).setWidth( '90px' ) );
+		var row = new UIRow();
+		row.add( new UIText( 'Layer' ).setWidth( '90px' ) );
 		container.add( row );
 
-		var animationLayer = new UI.Integer( selected.layer ).setWidth( '80px' );
+		var animationLayer = new UIInteger( selected.layer ).setWidth( '80px' );
 		animationLayer.onChange( function () {
 
 			selected.layer = this.getValue();
@@ -229,11 +231,11 @@ function SidebarAnimation( editor ) {
 
 		// Enabled
 
-		var row = new UI.Row();
-		row.add( new UI.Text( 'Enabled' ).setWidth( '90px' ) );
+		var row = new UIRow();
+		row.add( new UIText( 'Enabled' ).setWidth( '90px' ) );
 		container.add( row );
 
-		var animationEnabled = new UI.Checkbox( selected.enabled )
+		var animationEnabled = new UICheckbox( selected.enabled )
 		animationEnabled.onChange( function () {
 
 			selected.enabled = this.getValue();
@@ -244,12 +246,12 @@ function SidebarAnimation( editor ) {
 
 		//
 
-		container.add( new UI.HorizontalRule().setMargin( '20px 0px' ) );
+		container.add( new UIHorizontalRule().setMargin( '20px 0px' ) );
 
 		//
 
-		var row = new UI.Row();
-		row.add( new UI.Text( 'Effect' ).setWidth( '90px' ) );
+		var row = new UIRow();
+		row.add( new UIText( 'Effect' ).setWidth( '90px' ) );
 		container.add( row );
 
 		var effects = editor.effects;
@@ -261,7 +263,7 @@ function SidebarAnimation( editor ) {
 
 		}
 
-		var effectsSelect = new UI.Select().setWidth( '130px' );
+		var effectsSelect = new UISelect().setWidth( '130px' );
 		effectsSelect.setOptions( options ).setValue( effects.indexOf( selected.effect ) );
 		effectsSelect.onChange( function () {
 
@@ -275,7 +277,7 @@ function SidebarAnimation( editor ) {
 		} );
 		row.add( effectsSelect );
 
-		var edit = new UI.Button( 'EDIT' ).setMarginLeft( '8px' );
+		var edit = new UIButton( 'EDIT' ).setMarginLeft( '8px' );
 		edit.onClick( function () {
 
 			editor.selectEffect( selected.effect );
@@ -284,11 +286,11 @@ function SidebarAnimation( editor ) {
 		row.add( edit );
 
 
-		var row = new UI.Row();
-		row.add( new UI.Text( 'Name' ).setWidth( '90px' ) );
+		var row = new UIRow();
+		row.add( new UIText( 'Name' ).setWidth( '90px' ) );
 		container.add( row );
 
-		var effectName = new UI.Input( selected.effect.name );
+		var effectName = new UIInput( selected.effect.name );
 		effectName.onChange( function () {
 
 			selected.effect.name = this.getValue();

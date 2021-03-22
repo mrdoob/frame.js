@@ -2,54 +2,56 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIBreak, UIButton, UIInteger, UIPanel, UIRow, UIText } from './libs/ui.js';
+
 function SidebarRender( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setId( 'render' );
 
 	// Video
 
-	container.add( new UI.Text( 'Video' ).setTextTransform( 'uppercase' ) );
-	container.add( new UI.Break(), new UI.Break() );
+	container.add( new UIText( 'Video' ).setTextTransform( 'uppercase' ) );
+	container.add( new UIBreak(), new UIBreak() );
 
 	// Resolution
 
-	var resolutionRow = new UI.Row();
-	resolutionRow.add( new UI.Text( 'Resolution' ).setWidth( '90px' ) );
+	var resolutionRow = new UIRow();
+	resolutionRow.add( new UIText( 'Resolution' ).setWidth( '90px' ) );
 
-	var videoWidth = new UI.Integer( 768 ).setWidth( '50px' );
+	var videoWidth = new UIInteger( 768 ).setWidth( '50px' );
 	resolutionRow.add( videoWidth );
 
-	var videoHeight = new UI.Integer( 432 ).setWidth( '50px' );
+	var videoHeight = new UIInteger( 432 ).setWidth( '50px' );
 	resolutionRow.add( videoHeight );
 
 	container.add( resolutionRow );
 
 	// Duration
 
-	var videoDurationRow = new UI.Row();
-	videoDurationRow.add( new UI.Text( 'Duration' ).setWidth( '90px' ) );
+	var videoDurationRow = new UIRow();
+	videoDurationRow.add( new UIText( 'Duration' ).setWidth( '90px' ) );
 
-	var videoDuration = new UI.Integer( 70 );
+	var videoDuration = new UIInteger( 70 );
 	videoDurationRow.add( videoDuration );
 
 	container.add( videoDurationRow );
 
 	// FPS
 
-	var videoFPSRow = new UI.Row();
-	videoFPSRow.add( new UI.Text( 'Fps' ).setWidth( '90px' ) );
+	var videoFPSRow = new UIRow();
+	videoFPSRow.add( new UIText( 'Fps' ).setWidth( '90px' ) );
 
-	var videoFPS = new UI.Integer( 30 );
+	var videoFPS = new UIInteger( 30 );
 	videoFPSRow.add( videoFPS );
 
 	container.add( videoFPSRow );
 
 	// Render
 
-	var render = new UI.Button( 'RENDER' ).setMarginLeft( '90px' );
+	var render = new UIButton( 'RENDER' ).setMarginLeft( '90px' );
 	render.onClick( async () => {
 
 		const player = editor.player;

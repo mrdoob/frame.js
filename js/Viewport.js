@@ -2,12 +2,14 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIPanel } from './libs/ui.js';
+
 function Viewport( editor ) {
 
 	var scope = this;
 	var signals = editor.signals;
 
-	var container = this.container = new UI.Panel();
+	var container = this.container = new UIPanel();
 	container.setId( 'viewport' );
 
 	editor.resources.set( 'dom', container.dom );

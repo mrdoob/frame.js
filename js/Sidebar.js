@@ -2,22 +2,24 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIDiv, UIPanel, UISpan, UIText } from './libs/ui.js';
+
 import { SidebarAnimation } from './SidebarAnimation.js';
 import { SidebarProject } from './SidebarProject.js'
 import { SidebarRender } from './SidebarRender.js'
 
 function Sidebar( editor ) {
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setId( 'sidebar' );
 
 	//
 
-	var animationTab = new UI.Text( 'ANIMATION' ).onClick( onClick );
-	var projectTab = new UI.Text( 'PROJECT' ).onClick( onClick );
-	var renderTab = new UI.Text( 'RENDER' ).onClick( onClick );
+	var animationTab = new UIText( 'ANIMATION' ).onClick( onClick );
+	var projectTab = new UIText( 'PROJECT' ).onClick( onClick );
+	var renderTab = new UIText( 'RENDER' ).onClick( onClick );
 
-	var tabs = new UI.Div();
+	var tabs = new UIDiv();
 	tabs.setId( 'tabs' );
 	tabs.add( animationTab, projectTab, renderTab );
 	container.add( tabs );
@@ -30,17 +32,17 @@ function Sidebar( editor ) {
 
 	//
 
-	var animation = new UI.Span().add(
+	var animation = new UISpan().add(
 		new SidebarAnimation( editor )
 	);
 	container.add( animation );
 
-	var project = new UI.Span().add(
+	var project = new UISpan().add(
 		new SidebarProject( editor )
 	);
 	container.add( project );
 
-	var render = new UI.Span().add(
+	var render = new UISpan().add(
 		new SidebarRender( editor )
 	);
 	container.add( render );

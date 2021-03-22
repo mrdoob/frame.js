@@ -2,6 +2,8 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIPanel } from './libs/ui.js';
+
 import { MenubarFile } from './MenubarFile.js';
 import { MenubarEdit } from './MenubarEdit.js';
 import { MenubarExamples } from './MenubarExamples.js';
@@ -9,7 +11,7 @@ import { MenubarHelp } from './MenubarHelp.js';
 
 function Menubar( editor ) {
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setId( 'menubar' );
 
 	container.add( new MenubarFile( editor ) );

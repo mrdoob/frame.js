@@ -2,25 +2,27 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIPanel, UIRow } from './libs/ui.js';
+
 function MenubarFile( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setClass( 'menu' );
 
-	var title = new UI.Panel();
+	var title = new UIPanel();
 	title.setClass( 'title' );
 	title.setTextContent( 'File' );
 	container.add( title );
 
-	var options = new UI.Panel();
+	var options = new UIPanel();
 	options.setClass( 'options' );
 	container.add( options );
 
 	// New
 
-	var option = new UI.Row();
+	var option = new UIRow();
 	option.setClass( 'option' );
 	option.setTextContent( 'New' );
 	option.onClick( function () {
@@ -36,7 +38,7 @@ function MenubarFile( editor ) {
 
 	// import
 
-	var option = new UI.Panel();
+	var option = new UIPanel();
 	option.setClass( 'option' );
 	option.setTextContent( 'Import' );
 	option.onClick( Import );
@@ -67,7 +69,7 @@ function MenubarFile( editor ) {
 
 	// export
 
-	var option = new UI.Panel();
+	var option = new UIPanel();
 	option.setClass( 'option' );
 	option.setTextContent( 'Export' );
 	option.onClick( Export );

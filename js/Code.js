@@ -2,21 +2,23 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIDiv, UIElement, UIPanel, UIText } from './libs/ui.js';
+
 function Code( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setId( 'effect' );
 	container.setPosition( 'absolute' );
 	container.setBackgroundColor( '#272822' );
 	container.setDisplay( 'none' );
 
-	var header = new UI.Panel();
+	var header = new UIPanel();
 	header.setPadding( '10px' );
 	container.add( header );
 
-	var title = new UI.Text().setColor( '#fff' );
+	var title = new UIText().setColor( '#fff' );
 	header.add( title );
 
 	var buttonSVG = ( function () {
@@ -30,7 +32,7 @@ function Code( editor ) {
 		return svg;
 	} )();
 
-	var close = new UI.Element( buttonSVG );
+	var close = new UIElement( buttonSVG );
 	close.setPosition( 'absolute' );
 	close.setTop( '3px' );
 	close.setRight( '1px' );
@@ -145,7 +147,7 @@ function Code( editor ) {
 
 	//
 
-	var errorDiv = new UI.Div();
+	var errorDiv = new UIDiv();
 	errorDiv.setPosition( 'absolute' );
 	errorDiv.setDisplay( 'none' );
 	errorDiv.setTop( '8px' );
@@ -154,7 +156,7 @@ function Code( editor ) {
 	errorDiv.setZIndex( '3' );
 	container.add( errorDiv );
 
-	var errorText = new UI.Text();
+	var errorText = new UIText();
 	errorText.setBackgroundColor( '#f00' );
 	errorText.setColor( '#fff' );
 	errorText.setPadding( '4px' );

@@ -2,6 +2,8 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIPanel } from './libs/ui.js';
+
 import { TimelineAnimations } from './TimelineAnimations.js'
 
 function Timeline( editor ) {
@@ -9,19 +11,19 @@ function Timeline( editor ) {
 	var signals = editor.signals;
 	var player = editor.player;
 
-	var container = new UI.Panel();
+	var container = new UIPanel();
 	container.setId( 'timeline' );
 
 	// controls
 
 	/*
-	var buttons = new UI.Div();
+	var buttons = new UIDiv();
 	buttons.setPosition( 'absolute' );
 	buttons.setTop( '5px' );
 	buttons.setRight( '5px' );
 	controls.add( buttons );
 
-	var button = new UI.Button();
+	var button = new UIButton();
 	button.setLabel( 'ANIMATIONS' );
 	button.onClick( function () {
 
@@ -31,7 +33,7 @@ function Timeline( editor ) {
 	 } );
 	buttons.add( button );
 
-	var button = new UI.Button();
+	var button = new UIButton();
 	button.setLabel( 'CURVES' );
 	button.setMarginLeft( '4px' );
 	button.onClick( function () {
@@ -54,7 +56,7 @@ function Timeline( editor ) {
 	var scale = 32;
 	var prevScale = scale;
 
-	var timeline = new UI.Panel();
+	var timeline = new UIPanel();
 	timeline.setPosition( 'absolute' );
 	timeline.setTop( '0px' );
 	timeline.setBottom( '0px' );
