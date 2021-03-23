@@ -1,4 +1,4 @@
-// r4
+const cacheName = 'framejs-editor-r4';
 
 const assets = [
 	'./',
@@ -54,7 +54,7 @@ const assets = [
 
 self.addEventListener( 'install', async function () {
 
-	const cache = await caches.open( 'framejs-editor' );
+	const cache = await caches.open( cacheName );
 
 	assets.forEach( function ( asset ) {
 
