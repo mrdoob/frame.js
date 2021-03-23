@@ -44,6 +44,21 @@ input.Number {
 	cursor: col-resize;
 }
 
+progress {
+	height: 10px;
+	padding: 2px;
+	background: none;
+}
+
+progress::-webkit-progress-bar {
+	background-color: #444;
+	border-radius: 15px;
+}
+progress::-webkit-progress-value {
+	background-color: #3A85C7;
+	border-radius: 15px;
+}
+
 select.Select {
 	color: #3AC785;
 	font-size: 12px;
