@@ -191,36 +191,6 @@
 
 			if ( 'serviceWorker' in navigator ) {
 
-				if ( location.search === '?update' ) {
-
-					navigator.serviceWorker.getRegistrations()
-						.then( function ( registrations ) {
-
-							for ( const registration of registrations ) {
-
-								registration.update();
-
-							}
-
-						} );
-
-				}
-
-				if ( location.search === '?unregister' ) {
-
-					navigator.serviceWorker.getRegistrations()
-						.then( function ( registrations ) {
-
-							for ( const registration of registrations ) {
-
-								registration.unregister();
-
-							}
-
-						} );
-
-				}
-
 				try {
 
 					navigator.serviceWorker.register( 'sw.js' );
