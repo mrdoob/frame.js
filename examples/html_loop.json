@@ -1,7 +1,7 @@
 {
 	"config": {},
 	"libraries": [],
-	"includes": [],
+	"scripts": [],
 	"effects": [
 		{
 			"name": "Color",

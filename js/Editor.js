@@ -440,13 +440,6 @@ Editor.prototype = {
 
 		var scripts = json.scripts;
 
-		if ( scripts === undefined ) {
-
-			console.warn( 'Editor: Converting legacy includes to scripts.' );
-			scripts = json.includes;
-
-		}
-
 		for ( var i = 0, l = scripts.length; i < l; i ++ ) {
 
 			var data = scripts[ i ];
