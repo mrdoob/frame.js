@@ -4,13 +4,13 @@ Work in progress.
 
 ### Editor
 
-* https://mrdoob.github.io/frame.js/
+* https://framejs.app/
 
 ### Examples
 
-* https://mrdoob.github.io/frame.js/player.html?file=examples/html_colors.json
-* https://mrdoob.github.io/frame.js/player.html?file=examples/threejs_cube.json
-* https://mrdoob.github.io/frame.js/player.html?file=examples/threejs_shaders.json
+* https://framejs.app/player.html?file=examples/html_colors.json
+* https://framejs.app/player.html?file=examples/threejs_cube.json
+* https://framejs.app/player.html?file=examples/threejs_shaders.json
 
 ### Projects
 
