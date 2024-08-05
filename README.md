@@ -4,13 +4,13 @@ Work in progress.
 
 ### Editor
 
-* https://framejs.app/
+* https://framejs.org/
 
 ### Examples
 
-* https://framejs.app/player.html?file=examples/html_colors.json
-* https://framejs.app/player.html?file=examples/threejs_cube.json
-* https://framejs.app/player.html?file=examples/threejs_shaders.json
+* https://framejs.org/player.html?file=examples/html_colors.json
+* https://framejs.org/player.html?file=examples/threejs_cube.json
+* https://framejs.org/player.html?file=examples/threejs_shaders.json
 
 ### Projects
 
