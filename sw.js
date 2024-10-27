@@ -45,9 +45,9 @@ const assets = [
 	'./js/SidebarAnimation.js',
 	'./js/SidebarProject.js',
 	'./js/SidebarRender.js',
-	'./js/Timeline.Curves.js',
 	'./js/Timeline.js',
 	'./js/TimelineAnimations.js',
+	'./js/TimelineCurves.js',
 	'./js/Viewport.js'
 
 ];

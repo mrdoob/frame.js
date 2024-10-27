@@ -2,6 +2,8 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+import { UIPanel } from './libs/ui.js';
+
 function TimelineCurves( editor ) {
 
 	var signals = editor.signals;
@@ -28,7 +30,6 @@ function TimelineCurves( editor ) {
 
 	function drawCurve() {
 
-		/*
 		var curve = selected;
 		var drawing = '';
 
@@ -41,7 +42,6 @@ function TimelineCurves( editor ) {
 		}
 
 		path.setAttribute( 'd', drawing );
-		*/
 
 	}
 

@@ -2,9 +2,10 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel } from './libs/ui.js';
+import { UIButton, UISpan, UIPanel } from './libs/ui.js';
 
-import { TimelineAnimations } from './TimelineAnimations.js'
+import { TimelineAnimations } from './TimelineAnimations.js';
+import { TimelineCurves } from './TimelineCurves.js';
 
 function Timeline( editor ) {
 
@@ -14,27 +15,24 @@ function Timeline( editor ) {
 	var container = new UIPanel();
 	container.setId( 'timeline' );
 
-	// controls
+	// Tabs
 
-	/*
-	var buttons = new UIDiv();
-	buttons.setPosition( 'absolute' );
-	buttons.setTop( '5px' );
-	buttons.setRight( '5px' );
-	controls.add( buttons );
+	var tabs = new UISpan();
+	tabs.setWidth( '200px' );
+	container.add( tabs );
 
 	var button = new UIButton();
-	button.setLabel( 'ANIMATIONS' );
+	button.setTextContent( 'ANIMATIONS' );
 	button.onClick( function () {
 
 		elements.setDisplay( '' );
 		curves.setDisplay( 'none' );
 
 	 } );
-	buttons.add( button );
+	tabs.add( button );
 
 	var button = new UIButton();
-	button.setLabel( 'CURVES' );
+	button.setTextContent( 'CURVES' );
 	button.setMarginLeft( '4px' );
 	button.onClick( function () {
 
@@ -44,8 +42,7 @@ function Timeline( editor ) {
 		curves.setDisplay( '' );
 
 	} );
-	buttons.add( button );
-	*/
+	tabs.add( button );
 
 	// timeline
 
@@ -58,9 +55,10 @@ function Timeline( editor ) {
 
 	var timeline = new UIPanel();
 	timeline.setPosition( 'absolute' );
+	timeline.setLeft( '200px' );
 	timeline.setTop( '0px' );
 	timeline.setBottom( '0px' );
-	timeline.setWidth( '100%' );
+	timeline.setRight( '0px' );
 	timeline.setOverflow( 'hidden' );
 	timeline.dom.addEventListener( 'wheel', function ( event ) {
 
@@ -171,11 +169,9 @@ function Timeline( editor ) {
 	var elements = new TimelineAnimations( editor );
 	scroller.appendChild( elements.dom );
 
-	/*
-	var curves = new Timeline.Curves( editor );
+	var curves = new TimelineCurves( editor );
 	curves.setDisplay( 'none' );
 	scroller.appendChild( curves.dom );
-	*/
 
 	function updateContainers() {
 
