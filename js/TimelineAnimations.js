@@ -10,8 +10,6 @@ function TimelineAnimationBlock( editor, animation ) {
 
 	var signals = editor.signals;
 
-	var scope = this;
-
 	var dom = document.createElement( 'div' );
 	dom.className = 'block';
 	dom.style.position = 'absolute';
@@ -160,6 +158,101 @@ function TimelineAnimationBlock( editor, animation ) {
 	}, false );
 	dom.appendChild( resizeRight );
 
+	// Add waveform handling
+
+	async function updateWaveform() {
+		const source = animation.effect.source;
+		if (source && source.match(/document\.createElement\(\s*['"]audio['"]\s*\)/)) {
+			const srcMatch = source.match(/\.src\s*=\s*['"](.+?)['"];?/);
+			if (srcMatch && srcMatch[1]) {
+				const audioUrl = srcMatch[1];
+				
+				try {
+					const response = await fetch(audioUrl);
+					const arrayBuffer = await response.arrayBuffer();
+					
+					// Create offline context and decode audio
+					const offlineContext = new OfflineAudioContext({
+						numberOfChannels: 1,
+						length: 44100 * 2,
+						sampleRate: 44100
+					});
+					
+					const audioBuffer = await offlineContext.decodeAudioData(arrayBuffer);
+					const duration = audioBuffer.duration;
+					
+					// Create new context with correct duration
+					const finalContext = new OfflineAudioContext({
+						numberOfChannels: 1,
+						length: Math.ceil(44100 * duration),
+						sampleRate: 44100
+					});
+					
+					const source = finalContext.createBufferSource();
+					source.buffer = audioBuffer;
+					source.connect(finalContext.destination);
+					source.start();
+					
+					const renderedBuffer = await finalContext.startRendering();
+					const channelData = renderedBuffer.getChannelData(0);
+					
+					// Create SVG path
+					let path = 'M 0 15 '; // Start at middle
+					const width = dom.clientWidth;  // Use container width
+					const height = 30;
+					const increment = 10;  // Draw every 10th point
+
+					// Calculate sample offset based on animation start time
+					const samplesPerSecond = 44100;
+					const startSample = Math.floor(animation.start * samplesPerSecond);
+					const endSample = Math.floor(animation.end * samplesPerSecond);
+					const totalSamples = endSample - startSample;
+					const sliceWidth = width / (totalSamples / increment);
+
+					// Draw only the samples within our time window
+					for (let i = startSample; i < endSample; i += increment) {
+						const x = ((i - startSample) / increment) * sliceWidth;
+						const y = channelData[i];
+						
+						// Skip any NaN values
+						if (isNaN(y)) continue;
+						
+						const yPos = (y * height / 2) + height / 2;
+						path += `L ${x} ${yPos} `;
+					}
+					
+					// Create SVG element
+					const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+					svg.setAttribute('width', '100%');
+					svg.setAttribute('height', '100%');
+					svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+					svg.setAttribute('preserveAspectRatio', 'none');  // Allow independent scaling
+					svg.style.position = 'absolute';
+					svg.style.left = '0';
+					svg.style.top = '0';
+					svg.style.width = '100%';
+					svg.style.height = '100%';
+					svg.style.pointerEvents = 'none';
+					
+					// Add waveform path
+					const waveform = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+					waveform.setAttribute('d', path);
+					waveform.setAttribute('stroke', 'rgba(255, 255, 255, 0.2)');
+					waveform.setAttribute('stroke-width', '1');
+					waveform.setAttribute('vector-effect', 'non-scaling-stroke');
+					waveform.setAttribute('fill', 'none');
+					svg.appendChild(waveform);
+					
+					// Add new waveform
+					dom.appendChild(svg);
+
+				} catch (error) {
+					console.error('Error generating waveform:', error);
+				}
+			}
+		}
+	}
+
 	//
 
 	function getAnimation() {
@@ -193,6 +286,7 @@ function TimelineAnimationBlock( editor, animation ) {
 	}
 
 	update();
+	updateWaveform();
 
 	return {
 		dom: dom,
