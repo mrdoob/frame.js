@@ -15,35 +15,6 @@ function Timeline( editor ) {
 	var container = new UIPanel();
 	container.setId( 'timeline' );
 
-	// Tabs
-
-	var tabs = new UISpan();
-	tabs.setWidth( '200px' );
-	container.add( tabs );
-
-	var button = new UIButton();
-	button.setTextContent( 'ANIMATIONS' );
-	button.onClick( function () {
-
-		elements.setDisplay( '' );
-		curves.setDisplay( 'none' );
-
-	 } );
-	tabs.add( button );
-
-	var button = new UIButton();
-	button.setTextContent( 'CURVES' );
-	button.setMarginLeft( '4px' );
-	button.onClick( function () {
-
-		scroller.style.background = '';
-
-		elements.setDisplay( 'none' );
-		curves.setDisplay( '' );
-
-	} );
-	tabs.add( button );
-
 	// timeline
 
 	var keysDown = {};
@@ -55,23 +26,24 @@ function Timeline( editor ) {
 
 	var timeline = new UIPanel();
 	timeline.setPosition( 'absolute' );
-	timeline.setLeft( '200px' );
+	timeline.setLeft( '0px' );
 	timeline.setTop( '0px' );
 	timeline.setBottom( '0px' );
 	timeline.setRight( '0px' );
 	timeline.setOverflow( 'hidden' );
 	timeline.dom.addEventListener( 'wheel', function ( event ) {
-
 		if ( event.altKey === true ) {
-
 			event.preventDefault();
 
+			// Calculate the time at the center of the view before scaling
+			const centerTime = (scroller.scrollLeft + (timeline.dom.clientWidth / 2)) / scale;
+			
 			scale = Math.max( 2, scale + ( event.deltaY / 10 ) );
-
 			signals.timelineScaled.dispatch( scale );
 
+			// Adjust scroll to keep the same time at the center
+			scroller.scrollLeft = (centerTime * scale) - (timeline.dom.clientWidth / 2);
 		}
-
 	} );
 	container.add( timeline );
 
@@ -178,7 +150,7 @@ function Timeline( editor ) {
 		var width = editor.duration * scale;
 
 		elements.setWidth( width + 'px' );
-		// curves.setWidth( width + 'px' );
+		curves.setWidth( width + 'px' );
 
 	}
 
@@ -279,17 +251,11 @@ function Timeline( editor ) {
 	} );
 
 	signals.timelineScaled.add( function ( value ) {
-
 		scale = value;
-
-		scroller.scrollLeft = ( scroller.scrollLeft * value ) / prevScale;
-
 		updateMarks();
 		updateTimeMark();
 		updateContainers();
-
 		prevScale = value;
-
 	} );
 
 	signals.windowResized.add( function () {
@@ -298,6 +264,16 @@ function Timeline( editor ) {
 		updateContainers();
 
 	} );
+
+	signals.showAnimations.add(function () {
+		elements.setDisplay('');
+		curves.setDisplay('none');
+	});
+
+	signals.showCurves.add(function () {
+		elements.setDisplay('none');
+		curves.setDisplay('');
+	});
 
 	return container;
 

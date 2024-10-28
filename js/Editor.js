@@ -52,8 +52,11 @@ function Editor() {
 		playbackRateChanged: new Signal(),
 		timeChanged: new Signal(),
 		timelineScaled: new Signal(),
+		windowResized: new Signal(),
 
-		windowResized: new Signal()
+		// timeline views
+		showAnimations: new Signal(),
+		showCurves: new Signal()
 
 	};
 

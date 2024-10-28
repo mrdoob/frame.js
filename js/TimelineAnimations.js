@@ -158,6 +158,13 @@ function TimelineAnimationBlock( editor, animation ) {
 	}, false );
 	dom.appendChild( resizeRight );
 
+	dom.addEventListener('dblclick', function(event) {
+		event.stopPropagation();  // Prevent container's dblclick from firing
+		
+		// Switch to curve editor
+		editor.signals.showCurves.dispatch(animation.id);
+	});
+
 	// Add waveform handling
 
 	async function updateWaveform() {
