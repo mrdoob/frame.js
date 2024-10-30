@@ -22,7 +22,6 @@ function Timeline( editor ) {
 	document.addEventListener( 'keyup',   function ( event ) { keysDown[ event.keyCode ] = false; } );
 
 	var scale = 32;
-	var prevScale = scale;
 
 	var timeline = new UIPanel();
 	timeline.setPosition( 'absolute' );
@@ -35,14 +34,19 @@ function Timeline( editor ) {
 		if ( event.altKey === true ) {
 			event.preventDefault();
 
-			// Calculate the time at the center of the view before scaling
-			const centerTime = (scroller.scrollLeft + (timeline.dom.clientWidth / 2)) / scale;
+			// Get mouse position relative to the timeline
+			const rect = timeline.dom.getBoundingClientRect();
+			const mouseX = event.clientX - rect.left;
 			
+			// Calculate the time at the mouse position
+			const mouseTime = (scroller.scrollLeft + mouseX) / scale;
+			
+			// Update scale
 			scale = Math.max( 2, scale + ( event.deltaY / 10 ) );
 			signals.timelineScaled.dispatch( scale );
 
-			// Adjust scroll to keep the same time at the center
-			scroller.scrollLeft = (centerTime * scale) - (timeline.dom.clientWidth / 2);
+			// Adjust scroll to keep the time under mouse position
+			scroller.scrollLeft = (mouseTime * scale) - mouseX;
 		}
 	} );
 	container.add( timeline );
@@ -255,7 +259,6 @@ function Timeline( editor ) {
 		updateMarks();
 		updateTimeMark();
 		updateContainers();
-		prevScale = value;
 	} );
 
 	signals.windowResized.add( function () {
