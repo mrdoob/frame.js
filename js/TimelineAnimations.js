@@ -204,25 +204,20 @@ function TimelineAnimationBlock( editor, animation ) {
 					const channelData = renderedBuffer.getChannelData(0);
 					
 					// Create SVG path
-					let path = 'M 0 15 '; // Start at middle
-					const width = dom.clientWidth;  // Use container width
+					let path = 'M 0 15 ';
+					const width = duration;
 					const height = 30;
-					const increment = 10;  // Draw every 10th point
+					const increment = 20;
 
-					// Calculate sample offset based on animation start time
+					// Calculate width based on total samples
 					const samplesPerSecond = 44100;
-					const startSample = Math.floor(animation.start * samplesPerSecond);
-					const endSample = Math.floor(animation.end * samplesPerSecond);
-					const totalSamples = endSample - startSample;
+					const totalSamples = Math.floor(duration * samplesPerSecond);
 					const sliceWidth = width / (totalSamples / increment);
 
-					// Draw only the samples within our time window
-					for (let i = startSample; i < endSample; i += increment) {
-						const x = ((i - startSample) / increment) * sliceWidth;
+					// Draw samples
+					for (let i = 0; i < totalSamples; i += increment) {
+						const x = (i / increment) * sliceWidth;
 						const y = channelData[i];
-						
-						// Skip any NaN values
-						if (isNaN(y)) continue;
 						
 						const yPos = (y * height / 2) + height / 2;
 						path += `L ${x} ${yPos} `;
@@ -230,15 +225,14 @@ function TimelineAnimationBlock( editor, animation ) {
 					
 					// Create SVG element
 					const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-					svg.setAttribute('width', '100%');
-					svg.setAttribute('height', '100%');
+					svg.setAttribute('width', width);
+					svg.setAttribute('height', height);
 					svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-					svg.setAttribute('preserveAspectRatio', 'none');  // Allow independent scaling
+					svg.setAttribute('preserveAspectRatio', 'none');
 					svg.style.position = 'absolute';
 					svg.style.left = '0';
 					svg.style.top = '0';
-					svg.style.width = '100%';
-					svg.style.height = '100%';
+					svg.style.width = width * scale + 'px';
 					svg.style.pointerEvents = 'none';
 					
 					// Add waveform path
@@ -290,6 +284,13 @@ function TimelineAnimationBlock( editor, animation ) {
 
 		name.innerHTML = animation.name + ' <span style="opacity:0.5">' + animation.effect.name + '</span>';
 
+		const lastChild = dom.lastChild;
+
+		if ( lastChild.tagName === 'svg' ) {
+			const width = Number(lastChild.attributes.width.value);
+			lastChild.style.width = ( width * scale ) + 'px';
+		}
+		
 	}
 
 	update();
