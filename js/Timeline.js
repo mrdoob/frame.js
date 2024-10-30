@@ -51,8 +51,11 @@ function Timeline( editor ) {
 	} );
 	container.add( timeline );
 
+	const devicePixelRatio = window.devicePixelRatio;
+
 	var canvas = document.createElement( 'canvas' );
-	canvas.height = 32;
+	canvas.height = 32 * devicePixelRatio;
+	canvas.style.height = '32px';
 	canvas.style.position = 'absolute';
 	canvas.addEventListener( 'mousedown', function ( event ) {
 
@@ -81,9 +84,11 @@ function Timeline( editor ) {
 
 	function updateMarks() {
 
-		canvas.width = scroller.clientWidth;
+		canvas.width = scroller.clientWidth * devicePixelRatio;
+		canvas.style.width = scroller.clientWidth + 'px';
 
 		var context = canvas.getContext( '2d', { alpha: false } );
+		context.scale( devicePixelRatio, devicePixelRatio );
 
 		context.fillStyle = '#555';
 		context.fillRect( 0, 0, canvas.width, canvas.height );
@@ -120,7 +125,7 @@ function Timeline( editor ) {
 			var minute = Math.floor( i / 60 );
 			var second = Math.floor( i % 60 );
 
-			var text = ( minute > 0 ? minute + ':' : '' ) + ( '0' + second ).slice( - 2 );
+			var text = `${ minute }:${ second.toString().padStart( 2, '0' ) }`;
 
 			context.fillText( text, i * scale, 13 );
 
