@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIButton, UISpan, UIPanel } from './libs/ui.js';
+import { UIPanel } from './libs/ui.js';
 
 import { TimelineAnimations } from './TimelineAnimations.js';
 import { TimelineCurves } from './TimelineCurves.js';
