@@ -42,7 +42,7 @@ function Timeline( editor ) {
 			const mouseTime = (scroller.scrollLeft + mouseX) / scale;
 			
 			// Update scale
-			scale = Math.max( 2, scale + ( event.deltaY / 10 ) );
+			scale = Math.max( 2, scale - ( event.deltaY / 10 ) );
 			signals.timelineScaled.dispatch( scale );
 
 			// Adjust scroll to keep the time under mouse position
