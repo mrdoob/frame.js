@@ -385,7 +385,7 @@ Editor.prototype = {
 		var effect = new Code( { name: 'Effect' } );
 		this.addEffect( effect );
 
-		var animation = new Animation( { name: 'Animation', start: start, end: end, layer: layer, effect: effect } );
+		var animation = new Animation( { name: '', start: start, end: end, layer: layer, effect: effect } );
 		this.addAnimation( animation );
 
 	},
