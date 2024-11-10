@@ -162,7 +162,7 @@ function TimelineAnimationBlock( editor, animation ) {
 	dom.addEventListener( 'dblclick', function( event ) {
 
 		event.stopPropagation();  // Prevent container's dblclick from firing
-		
+
 		// Switch to curve editor
 		editor.signals.showCurves.dispatch( animation.id );
 
@@ -173,31 +173,31 @@ function TimelineAnimationBlock( editor, animation ) {
 
 		const source = animation.effect.source;
 
-		if ( source && source.match( /document\.createElement\(\s*['"]audio['"]\s*\)/ ) ) {
+		if ( source ) {
 
-			const srcMatch = source.match( /\.src\s*=\s*['"](.+?)['"];?/ );
+			const srcMatch = source.match( /audio\.src\s*=\s*['"](.+?)['"];?/ );
 
 			if ( srcMatch && srcMatch[ 1 ] ) {
 
 				const audioUrl = srcMatch[ 1 ];
-				
+
 				try {
 
 					const response = await fetch( audioUrl );
 					const arrayBuffer = await response.arrayBuffer();
-					
+
 					// Create offline context and decode audio
 					const offlineContext = new OfflineAudioContext( {
 						numberOfChannels: 1,
 						length: 44100 * 2,
 						sampleRate: 44100
 					} 	);
-					
+
 					const audioBuffer = await offlineContext.decodeAudioData( arrayBuffer );
-					
+
 					// Generate waveform
 					const generator = new WaveformGenerator();
-					const svg = await generator.generate( audioBuffer, scale );
+					const svg = generator.generate( audioBuffer, scale );
 					dom.appendChild( svg );
 
 				} catch ( error ) {
@@ -248,7 +248,7 @@ function TimelineAnimationBlock( editor, animation ) {
 			const width = Number( lastChild.attributes.width.value );
 			lastChild.style.width = ( width * scale ) + 'px';
 		}
-		
+
 	}
 
 	update();
