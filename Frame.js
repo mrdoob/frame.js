@@ -2,8 +2,6 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-window.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
-
 const	VERSION = 5;
 
 const FRAME = {
