@@ -272,6 +272,12 @@ function TimelineAnimations( editor ) {
 	container.setHeight( '100%' );
 	container.setBackground( 'linear-gradient(#555 1px, transparent 1px) 0% 0% / 32px 32px repeat' );
 
+	container.dom.addEventListener( 'click', function ( event ) {
+
+		editor.selectAnimation( null );
+
+	}, true );
+
 	container.dom.addEventListener( 'dblclick', function ( event ) {
 
 		var start = event.offsetX / scale;
@@ -280,7 +286,7 @@ function TimelineAnimations( editor ) {
 
 		editor.createAnimation( start, end, layer );
 
-	} );
+	}, true );
 
 	// signals
 
