@@ -190,9 +190,9 @@
 	],
 	"effects": [
 		{
-			"name": "Audio Player",
+			"name": "Audio",
 			"source": [
-				"var audio = document.createElement( 'audio' );",
+				"const audio = new WebAudio();",
 				"audio.src = './examples/files/lug00ber-bastion_amstel.mp3';",
 				"",
 				"function start(){",
@@ -402,7 +402,7 @@
 		{
 			"name": "",
 			"start": 0,
-			"end": 71,
+			"end": 70.04761904761891,
 			"layer": 0,
 			"effectId": 0,
 			"enabled": true
@@ -410,7 +410,7 @@
 		{
 			"name": "Scene 1",
 			"start": 0,
-			"end": 14,
+			"end": 14.11331444759207,
 			"layer": 1,
 			"effectId": 1,
 			"enabled": true
@@ -418,46 +418,46 @@
 		{
 			"name": "",
 			"start": 0,
-			"end": 14,
+			"end": 14.110166824047848,
 			"layer": 2,
 			"effectId": 9,
 			"enabled": true
 		},
 		{
 			"name": "Scene 2",
-			"start": 14,
-			"end": 21,
+			"start": 14.116462071136288,
+			"end": 21.170556552962285,
 			"layer": 1,
 			"effectId": 2,
 			"enabled": true
 		},
 		{
 			"name": "Animation",
-			"start": 21,
-			"end": 28,
+			"start": 21.17280071813286,
+			"end": 28.233393177737863,
 			"layer": 1,
 			"effectId": 3,
 			"enabled": true
 		},
 		{
 			"name": "Animation",
-			"start": 28,
-			"end": 35,
+			"start": 28.235637342908447,
+			"end": 35.291741472172404,
 			"layer": 1,
 			"effectId": 4,
 			"enabled": true
 		},
 		{
 			"name": "Animation",
-			"start": 35,
-			"end": 42,
+			"start": 35.29398563734295,
+			"end": 42.34707158351422,
 			"layer": 1,
 			"effectId": 5,
 			"enabled": true
 		},
 		{
 			"name": "Animation",
-			"start": 35,
+			"start": 35.293985637342956,
 			"end": 37,
 			"layer": 2,
 			"effectId": 10,
@@ -465,15 +465,7 @@
 		},
 		{
 			"name": "Animation",
-			"start": 42,
-			"end": 49,
-			"layer": 1,
-			"effectId": 6,
-			"enabled": true
-		},
-		{
-			"name": "Animation",
-			"start": 42,
+			"start": 42.34924078091104,
 			"end": 44,
 			"layer": 2,
 			"effectId": 10,
@@ -481,34 +473,42 @@
 		},
 		{
 			"name": "Animation",
-			"start": 49,
-			"end": 56,
+			"start": 42.34924078091118,
+			"end": 49.40563991323218,
+			"layer": 1,
+			"effectId": 6,
+			"enabled": true
+		},
+		{
+			"name": "Animation",
+			"start": 49.40780911062914,
+			"end": 56.466377440347145,
 			"layer": 1,
 			"effectId": 7,
 			"enabled": true
 		},
 		{
 			"name": "",
-			"start": 56,
-			"end": 71,
+			"start": 56.466377440347145,
+			"end": 60,
+			"layer": 3,
+			"effectId": 10,
+			"enabled": true
+		},
+		{
+			"name": "",
+			"start": 56.468546637744126,
+			"end": 70.04772234273308,
 			"layer": 1,
 			"effectId": 8,
 			"enabled": true
 		},
 		{
 			"name": "",
-			"start": 56,
-			"end": 71,
+			"start": 56.46854663774414,
+			"end": 70.0477223427332,
 			"layer": 2,
 			"effectId": 11,
-			"enabled": true
-		},
-		{
-			"name": "",
-			"start": 56,
-			"end": 60,
-			"layer": 3,
-			"effectId": 10,
 			"enabled": true
 		}
 	]
