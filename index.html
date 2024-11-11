@@ -133,11 +133,14 @@
 						break;
 					case 38:
 						event.preventDefault();
-						editor.speedUp();
+						editor.player.playbackRate += 0.1;
+						editor.signals.playbackRateChanged.dispatch( editor.player.playbackRate );
 						break;
 					case 40:
 						event.preventDefault();
-						editor.speedDown();
+						editor.player.playbackRate -= 0.1;
+						editor.player.playbackRate = Math.max( 0, editor.player.playbackRate );
+						editor.signals.playbackRateChanged.dispatch( editor.player.playbackRate );
 						break;
 					case 83:
 						break;
