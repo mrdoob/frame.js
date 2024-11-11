@@ -60,6 +60,7 @@
 
 			// LocalStorage
 
+			editor.signals.durationChanged.add( saveState );
 			editor.signals.animationAdded.add( saveState );
 			editor.signals.animationModified.add( saveState );
 			editor.signals.animationRemoved.add( saveState );

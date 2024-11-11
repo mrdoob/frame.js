@@ -1,5 +1,7 @@
 {
-	"config": {},
+	"config": {
+		"duration": 70
+	},
 	"scripts": [
 		{
 			"name": "Renderer",

@@ -37,10 +37,10 @@ function Timeline( editor ) {
 			// Get mouse position relative to the timeline
 			const rect = timeline.dom.getBoundingClientRect();
 			const mouseX = event.clientX - rect.left;
-			
+
 			// Calculate the time at the mouse position
 			const mouseTime = (scroller.scrollLeft + mouseX) / scale;
-			
+
 			// Update scale
 			scale = Math.max( 2, scale - ( event.deltaY / 10 ) );
 			signals.timelineScaled.dispatch( scale );
@@ -252,6 +252,13 @@ function Timeline( editor ) {
 	}
 
 	// signals
+
+	signals.durationChanged.add( function () {
+
+		updateMarks();
+		updateContainers();
+
+	} );
 
 	signals.timeChanged.add( function () {
 

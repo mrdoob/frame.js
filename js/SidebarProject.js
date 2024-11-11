@@ -11,6 +11,47 @@ function SidebarProject( editor ) {
 	var container = new UIPanel();
 	container.setId( 'project' );
 
+	// Config
+
+	container.add( new UIText( 'Config' ).setTextTransform( 'uppercase' ) );
+	container.add( new UIBreak(), new UIBreak() );
+
+	var row = new UIRow();
+	row.add( new UIText( 'Duration' ).setWidth( '90px' ) );
+	container.add( row );
+
+	function toSeconds( time ) {
+
+		const parts = time.split( ':' );
+		return parseInt( parts[ 0 ] ) * 60 + parseInt( parts[ 1 ] );
+
+	}
+
+	function fromSeconds( seconds ) {
+
+		var minute = Math.floor( seconds / 60 );
+		var second = Math.floor( seconds % 60 );
+
+		return `${ minute }:${ second.toString().padStart( 2, '0' ) }`;
+
+	}
+
+	var duration = new UIInput( '2:00' ).setWidth( '80px' );
+	duration.onChange( function () {
+
+		signals.duration.dispatch( toSeconds( this.getValue() ) );
+
+	} );
+	row.add( duration );
+
+	signals.projectLoaded.add( function () {
+
+		duration.setValue( fromSeconds( editor.duration ) );
+
+	} );
+
+	container.add( new UIBreak() );
+
 	// Scripts
 
 	container.add( new UIText( 'Scripts' ).setTextTransform( 'uppercase' ) );

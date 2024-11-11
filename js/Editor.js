@@ -12,6 +12,12 @@ function Editor() {
 	this.signals = {
 
 		editorCleared: new Signal(),
+		projectLoaded: new Signal(),
+
+		// config
+
+		duration: new Signal(),
+		durationChanged: new Signal(),
 
 		// scripts
 
@@ -65,7 +71,7 @@ function Editor() {
 	this.player = new Player();
 	this.resources = new Resources();
 
-	this.duration = 500;
+	this.duration = 120;
 
 	this.scripts = [];
 	this.effects = [];
@@ -76,6 +82,13 @@ function Editor() {
 	// signals
 
 	var scope = this;
+
+	this.signals.duration.add( function ( value ) {
+
+		scope.duration = value;
+		scope.signals.durationChanged.dispatch();
+
+	} );
 
 	this.signals.animationModified.add( function () {
 
@@ -441,6 +454,12 @@ Editor.prototype = {
 
 		var scope = this;
 
+		if ( json.config && json.config.duration ) {
+
+			scope.duration = json.config.duration;
+
+		}
+
 		var scripts = json.scripts;
 
 		for ( var i = 0, l = scripts.length; i < l; i ++ ) {
@@ -498,6 +517,7 @@ Editor.prototype = {
 
 		}
 
+		scope.signals.projectLoaded.dispatch();
 		scope.setTime( 0 );
 
 	},
@@ -505,7 +525,9 @@ Editor.prototype = {
 	toJSON: function () {
 
 		var json = {
-			"config": {},
+			"config": {
+				"duration": this.duration,
+			},
 			"scripts": [],
 			"effects": [],
 			// "curves": [],
