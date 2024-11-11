@@ -39,14 +39,14 @@ function Timeline( editor ) {
 			const mouseX = event.clientX - rect.left;
 
 			// Calculate the time at the mouse position
-			const mouseTime = (scroller.scrollLeft + mouseX) / scale;
+			const mouseTime = ( scroller.scrollLeft + mouseX ) / scale;
 
 			// Update scale
 			scale = Math.max( 2, scale - ( event.deltaY / 10 ) );
 			signals.timelineScaled.dispatch( scale );
 
 			// Adjust scroll to keep the time under mouse position
-			scroller.scrollLeft = (mouseTime * scale) - mouseX;
+			scroller.scrollLeft = ( mouseTime * scale ) - mouseX;
 		}
 	} );
 	container.add( timeline );
@@ -260,6 +260,24 @@ function Timeline( editor ) {
 
 	} );
 
+	signals.timeBackward.add( function () {
+
+		const player = editor.player;
+		const time = player.currentTime - ( 32 / scale );
+
+		editor.setTime( time );
+
+	} );
+
+	signals.timeForward.add( function () {
+
+		const player = editor.player;
+		const time = player.currentTime + ( 32 / scale );
+
+		editor.setTime( time );
+
+	} );
+
 	signals.timeChanged.add( function () {
 
 		updateTimeMark();
@@ -267,10 +285,13 @@ function Timeline( editor ) {
 	} );
 
 	signals.timelineScaled.add( function ( value ) {
+
 		scale = value;
+
 		updateMarks();
 		updateTimeMark();
 		updateContainers();
+
 	} );
 
 	signals.windowResized.add( function () {

@@ -56,7 +56,11 @@ function Editor() {
 
 		playingChanged: new Signal(),
 		playbackRateChanged: new Signal(),
+
+		timeForward: new Signal(),
+		timeBackward: new Signal(),
 		timeChanged: new Signal(),
+
 		timelineScaled: new Signal(),
 		windowResized: new Signal(),
 
