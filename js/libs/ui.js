@@ -259,8 +259,6 @@ class UIInput extends UIElement {
 		super( document.createElement( 'input' ) );
 
 		this.dom.className = 'Input';
-		this.dom.style.padding = '2px';
-		this.dom.style.border = '1px solid transparent';
 
 		this.dom.addEventListener( 'keydown', function ( event ) {
 
@@ -341,7 +339,6 @@ class UISelect extends UIElement {
 		super( document.createElement( 'select' ) );
 
 		this.dom.className = 'Select';
-		this.dom.style.padding = '2px';
 
 	}
 
@@ -444,7 +441,6 @@ class UIColor extends UIElement {
 		this.dom.style.width = '32px';
 		this.dom.style.height = '16px';
 		this.dom.style.border = '0px';
-		this.dom.style.padding = '2px';
 		this.dom.style.backgroundColor = 'transparent';
 
 		try {

@@ -97,7 +97,9 @@ function SidebarProject( editor ) {
 
 	var effects = new UISelect().setWidth( '280px' ).setMarginBottom( '8px' );
 	effects.onChange( function () {
+
 		editor.selectEffect( editor.effects[ this.getValue() ] );
+
 	} );
 	container.add( effects );
 
@@ -128,7 +130,7 @@ function SidebarProject( editor ) {
 		div.add( name );
 
 		var edit = new UIButton( 'Edit' );
-		edit.setMarginLeft( '4px' );
+		edit.setMarginLeft( '6px' );
 		edit.onClick( function () {
 
 			editor.selectScript( script );
@@ -137,7 +139,7 @@ function SidebarProject( editor ) {
 		div.add( edit );
 
 		var remove = new UIButton( 'Remove' );
-		remove.setMarginLeft( '4px' );
+		remove.setMarginLeft( '6px' );
 		remove.onClick( function () {
 
 			if ( confirm( 'Are you sure?' ) ) {
