@@ -60,9 +60,9 @@ function SidebarProject( editor ) {
 
 	container.add( new UIBreak() );
 
-	// Scripts
+	// Setup
 
-	container.add( new UIText( 'Scripts' ).setTextTransform( 'uppercase' ) );
+	container.add( new UIText( 'Setup' ).setTextTransform( 'uppercase' ) );
 	container.add( new UIBreak(), new UIBreak() );
 
 	var scriptsContainer = new UIRow();
@@ -76,7 +76,7 @@ function SidebarProject( editor ) {
 	} );
 	container.add( newScript );
 
-	var reload = new UIButton( 'Reload Scripts' );
+	var reload = new UIButton( 'Reload All' );
 	reload.onClick( async function () {
 
 		await editor.reloadScripts();

@@ -462,6 +462,13 @@ class Frame {
 
 	fromMarkdown( markdown ) {
 
+		const sections = {
+			'Config': 'config',
+			'Setup': 'scripts',
+			'Effects': 'effects',
+			'Animations': 'animations'
+		};
+
 		const lines = markdown.split( '\n' );
 		const json = { name: '', config: { duration: 120 }, scripts: [], effects: [], animations: [] };
 
@@ -484,7 +491,7 @@ class Frame {
 
 			if ( line.startsWith( '## ' ) ) {
 
-				currentSection = line.substring( 3 ).toLowerCase();
+				currentSection = sections[ line.substring( 3 ) ];
 				continue;
 
 			}

@@ -511,7 +511,7 @@ Editor.prototype = {
 		markdown += ` * Duration: ${ this.duration }\n\n`;
 		
 		if ( this.scripts.length > 0 ) {
-			markdown += '## Scripts\n\n';
+			markdown += '## Setup\n\n';
 			for ( const script of this.scripts ) {
 				markdown += `### ${ script.name }\n\n`;
 				markdown += '```js\n';

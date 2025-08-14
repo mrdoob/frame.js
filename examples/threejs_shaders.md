@@ -6,7 +6,7 @@
 
  * Duration: 70
 
-## Scripts
+## Setup
 
 ### Renderer
 

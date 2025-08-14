@@ -2,7 +2,7 @@
 
 # Three.js Shaders
 
-## Scripts
+## Setup
 
 ### Renderer
 
