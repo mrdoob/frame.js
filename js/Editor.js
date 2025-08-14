@@ -533,7 +533,7 @@ Editor.prototype = {
 		if ( this.timeline.animations.length > 0 ) {
 			markdown += '## Animations\n\n';
 			for ( const animation of this.timeline.animations ) {
-				markdown += '### \n\n';
+				markdown += `### ${ animation.name }\n\n`;
 				markdown += ` * start: ${ animation.start }\n`;
 				markdown += ` * end: ${ animation.end }\n`;
 				markdown += ` * layer: ${ animation.layer }\n`;
