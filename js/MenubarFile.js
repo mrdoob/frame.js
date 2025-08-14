@@ -52,7 +52,16 @@ function MenubarFile( editor ) {
 		reader.addEventListener( 'load', function ( event ) {
 
 			editor.clear();
-			editor.fromJSON( JSON.parse( event.target.result ) );
+
+			if ( fileInput.files[ 0 ].name.endsWith( '.md' ) ) {
+
+				editor.fromMarkdown( event.target.result );
+
+			} else {
+
+				editor.fromJSON( JSON.parse( event.target.result ) );
+
+			}
 
 		}, false );
 
@@ -79,7 +88,7 @@ function MenubarFile( editor ) {
 
 	function Export () {
 
-		var output = JSON.stringify( editor.toJSON(), null, '\t' );
+		var output = editor.toMarkdown();
 
 		var blob = new Blob( [ output ], { type: 'text/plain' } );
 		var objectURL = URL.createObjectURL( blob );

@@ -2,21 +2,21 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { Player, Resources, Code, Animation, Timeline } from '../Frame.js';
+import { Player, Resources, Code, Animation, Timeline, Frame } from '../Frame.js';
 import { Config } from './Config.js';
 
 function Editor() {
 
-	var Signal = signals.Signal;
+	const Signal = signals.Signal;
 
 	this.signals = {
 
 		editorCleared: new Signal(),
 		projectLoaded: new Signal(),
 
-		// config
+		// settings
 
-		duration: new Signal(),
+		nameChanged: new Signal(),
 		durationChanged: new Signal(),
 
 		// scripts
@@ -75,6 +75,7 @@ function Editor() {
 	this.player = new Player();
 	this.resources = new Resources();
 
+	this.name = '';
 	this.duration = 120;
 
 	this.scripts = [];
@@ -86,13 +87,6 @@ function Editor() {
 	// signals
 
 	var scope = this;
-
-	this.signals.duration.add( function ( value ) {
-
-		scope.duration = value;
-		scope.signals.durationChanged.dispatch();
-
-	} );
 
 	this.signals.animationModified.add( function () {
 
@@ -179,6 +173,20 @@ Editor.prototype = {
 
 	},
 
+	setName: function ( name ) {
+
+		this.name = name;
+		this.signals.nameChanged.dispatch();
+
+	},
+
+	setDuration: function ( duration ) {
+
+		this.duration = duration;
+		this.signals.durationChanged.dispatch();
+
+	},
+
 	setTime: function ( time ) {
 
 		// location.hash = time;
@@ -215,7 +223,7 @@ Editor.prototype = {
 
 	removeScript: function ( script ) {
 
-		var index = this.scripts.indexOf( script );
+		const index = this.scripts.indexOf( script );
 
 		this.scripts.splice( index, 1 );
 		this.signals.scriptRemoved.dispatch();
@@ -354,7 +362,7 @@ Editor.prototype = {
 
 	addAnimation: async function ( animation ) {
 
-		var effect = animation.effect;
+		const effect = animation.effect;
 
 		if ( effect.program === null ) {
 
@@ -425,6 +433,9 @@ Editor.prototype = {
 
 		this.player.setAudio( null );
 
+		this.name = '';
+		this.duration = 120;
+
 		this.scripts = [];
 		this.effects = [];
 
@@ -442,142 +453,169 @@ Editor.prototype = {
 
 	fromJSON: async function ( json ) {
 
-		var scope = this;
+		// Backwards compatibility
 
-		if ( json.config && json.config.duration ) {
+		json = fixLegacyJSON( json );
 
-			scope.duration = json.config.duration;
+		const frame = new Frame();
+		frame.fromJSON( json );
 
+		this.name = frame.name;
+		this.duration = frame.duration;
+
+		for ( const script of frame.scripts ) {
+			await this.addScript( script );
+		}
+		for ( const effect of frame.effects ) {
+			this.addEffect( effect );
+		}
+		for ( const animation of frame.timeline.animations ) {
+			await this.addAnimation( animation );
 		}
 
-		var scripts = json.scripts;
-
-		for ( var i = 0, l = scripts.length; i < l; i ++ ) {
-
-			var data = scripts[ i ];
-
-			if ( Array.isArray( data ) ) {
-
-				console.warn( 'Editor: Converting legacy Code format:', data );
-				data = { name: data[ 0 ], source: data[ 1 ] };
-
-			}
-
-			if ( Array.isArray( data.source ) ) data.source = data.source.join( '\n' );
-
-			await scope.addScript( new Code( data ) );
-
-		}
-
-		const effects = json.effects;
-
-		for ( let i = 0, l = effects.length; i < l; i ++ ) {
-
-			let data = effects[ i ];
-
-			if ( Array.isArray( data ) ) {
-
-				console.warn( 'Editor: Converting legacy Code format:', data );
-				data = { name: data[ 0 ], source: data[ 1 ] };
-
-			}
-
-			if ( Array.isArray( data.source ) ) data.source = data.source.join( '\n' );
-
-			scope.addEffect( new Code( data ) );
-
-		}
-
-		const animations = json.animations;
-
-		for ( let i = 0, l = animations.length; i < l; i ++ ) {
-
-			let data = animations[ i ];
-
-			if ( Array.isArray( data ) ) {
-
-				console.warn( 'Editor: Converting legacy Animation format:', data );
-				data = { name: data[ 0 ], start: data[ 1 ], end: data[ 2 ], layer: data[ 3 ], effectId: data[ 4 ], enabled: data[ 5 ] };
-
-			}
-
-			data.effect = scope.effects[ data.effectId ];
-
-			await scope.addAnimation( new Animation( data ) );
-
-		}
-
-		scope.signals.projectLoaded.dispatch();
-		scope.setTime( 0 );
+		this.signals.projectLoaded.dispatch();
+		this.setTime( 0 );
 
 	},
 
-	toJSON: function () {
+	fromMarkdown: async function ( markdown ) {
 
-		var json = {
-			"config": {
-				"duration": this.duration,
-			},
-			"scripts": [],
-			"effects": [],
-			// "curves": [],
-			"animations": []
-		};
+		const frame = new Frame();
+		frame.fromMarkdown( markdown );
 
-		/*
-		// curves
+		this.name = frame.name;
+		this.duration = frame.duration;
 
-		var curves = this.timeline.curves;
+		for ( const script of frame.scripts ) {
+			await this.addScript( script );
+		}
+		for ( const effect of frame.effects ) {
+			this.addEffect( effect );
+		}
+		for ( const animation of frame.timeline.animations ) {
+			await this.addAnimation( animation );
+		}
 
-		for ( var i = 0, l = curves.length; i < l; i ++ ) {
+		this.signals.projectLoaded.dispatch();
+		this.setTime( 0 );
 
-			var curve = curves[ i ];
+	},
 
-			if ( curve instanceof Curves.Linear ) {
+	toMarkdown: function () {
 
-				json.curves.push( [ 'linear', curve.points ] );
-
+		let markdown = '<!-- Frame.js Script r6 -->\n\n';
+		
+		markdown += `# ${ this.name }\n\n`;
+		
+		markdown += '## Config\n\n';
+		markdown += ` * Duration: ${ this.duration }\n\n`;
+		
+		if ( this.scripts.length > 0 ) {
+			markdown += '## Scripts\n\n';
+			for ( const script of this.scripts ) {
+				markdown += `### ${ script.name }\n\n`;
+				markdown += '```js\n';
+				markdown += script.source;
+				markdown += '\n```\n\n';
 			}
-
 		}
-		*/
-
-		// scripts
-
-		var scripts = this.scripts;
-
-		for ( var i = 0, l = scripts.length; i < l; i ++ ) {
-
-			var script = scripts[ i ];
-			json.scripts.push( script.serialise() );
-
+		
+		if ( this.effects.length > 0 ) {
+			markdown += '## Effects\n\n';
+			for ( const effect of this.effects ) {
+				markdown += `### ${ effect.name }\n\n`;
+				markdown += '```js\n';
+				markdown += effect.source;
+				markdown += '\n```\n\n';
+			}
 		}
-
-		// effects
-
-		var effects = this.effects;
-
-		for ( var i = 0, l = effects.length; i < l; i ++ ) {
-
-			var effect = effects[ i ];
-			json.effects.push( effect.serialise() );
-
+		
+		if ( this.timeline.animations.length > 0 ) {
+			markdown += '## Animations\n\n';
+			for ( const animation of this.timeline.animations ) {
+				markdown += '### \n\n';
+				markdown += ` * start: ${ animation.start }\n`;
+				markdown += ` * end: ${ animation.end }\n`;
+				markdown += ` * layer: ${ animation.layer }\n`;
+				markdown += ` * effect: ${ animation.effect.name }\n`;
+				markdown += ` * enabled: ${ animation.enabled }\n\n`;
+			}
 		}
-
-		// animations
-
-		var animations = this.timeline.animations;
-
-		for ( var i = 0, l = animations.length; i < l; i ++ ) {
-
-			var animation = animations[ i ];
-			json.animations.push( animation.serialise( effects ) );
-
-		}
-
-		return json;
+		
+		return markdown;
 
 	}
+
+}
+
+function fixLegacyJSON( json ) {
+
+	const scripts = json.scripts;
+
+	for ( let i = 0, l = scripts.length; i < l; i ++ ) {
+
+		let data = scripts[ i ];
+
+		if ( Array.isArray( data ) ) {
+
+			// console.warn( 'Editor: Converting legacy Code format:', data );
+			data = { name: data[ 0 ], source: data[ 1 ] };
+
+		}
+
+		if ( Array.isArray( data.source ) ) {
+		
+			// console.warn( 'Editor: Converting legacy Code format:', data );
+			data.source = data.source.join( '\n' );
+
+		}
+
+		scripts[ i ] = data;
+
+	}
+
+	const effects = json.effects;
+
+	for ( let i = 0, l = effects.length; i < l; i ++ ) {
+
+		let data = effects[ i ];
+
+		if ( Array.isArray( data ) ) {
+
+			// console.warn( 'Editor: Converting legacy Code format:', data );
+			data = { name: data[ 0 ], source: data[ 1 ] };
+
+		}
+
+		if ( Array.isArray( data.source ) ) {
+
+			//console.warn( 'Editor: Converting legacy Code format:', data );
+			data.source = data.source.join( '\n' );
+
+		}
+
+		effects[ i ] = data;
+
+	}
+
+	const animations = json.animations;
+
+	for ( let i = 0, l = animations.length; i < l; i ++ ) {
+
+		let data = animations[ i ];
+
+		if ( Array.isArray( data ) ) {
+
+			// console.warn( 'Editor: Converting legacy Animation format:', data );
+			data = { name: data[ 0 ], start: data[ 1 ], end: data[ 2 ], layer: data[ 3 ], effectId: data[ 4 ], enabled: data[ 5 ] };
+
+		}
+
+		animations[ i ] = data;
+
+	}
+
+	return json;
 
 }
 

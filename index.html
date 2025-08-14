@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>frame.js / editor</title>
+		<title>frame.js</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link rel="manifest" href="manifest.json">
@@ -60,6 +60,7 @@
 
 			// LocalStorage
 
+			editor.signals.nameChanged.add( saveState );
 			editor.signals.durationChanged.add( saveState );
 			editor.signals.animationAdded.add( saveState );
 			editor.signals.animationModified.add( saveState );
@@ -79,7 +80,7 @@
 
 				timeout = setTimeout( function () {
 
-					editor.config.setKey( 'state', JSON.stringify( editor.toJSON() ) );
+					editor.config.setKey( 'state', editor.toMarkdown() );
 
 				}, 1000 );
 
@@ -91,7 +92,7 @@
 
 			if ( state !== undefined ) {
 
-				editor.fromJSON( JSON.parse( state ) );
+				editor.fromMarkdown( state );
 
 			}
 

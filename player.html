@@ -16,54 +16,88 @@
 			#container {
 				height: 100%;
 			}
+
+			#controls {
+				position: fixed;
+				top: 20px;
+				left: 20px;
+			}
+				#controls button {
+					width: 60px;
+					height: 40px;
+					padding: 10px 20px;
+					background: #007bff;
+					color: white;
+					border: none;
+					border-radius: 5px;
+					cursor: pointer;
+				}
 		</style>
 	</head>
 	<body>
 		<div id="container"></div>
+		<div id="controls">
+			<button id="playButton">▶</button>
+		</div>
 
 		<script type="module">
 
-			import { Resources, Player, Timeline } from './Frame.js';
+			import { Frame } from './Frame.js';
 
-			var resources = new Resources();
-			resources.set( 'dom', document.getElementById( 'container' ) );
+			const frame = new Frame();
+			frame.resources.set( 'dom', document.getElementById( 'container' ) );
 
-			var timeline = new Timeline();
-			var player = new Player();
+			// Play button
 
-			//
+			const playButton = document.getElementById( 'playButton' );
+			playButton.addEventListener( 'click', function() {
 
-			var query = window.location.search;
+				if ( frame.player.isPlaying === false ) {
+
+					playButton.textContent = '⏸';
+					frame.player.play();
+
+				} else {
+
+					playButton.textContent = '▶';
+					frame.player.pause();
+
+				}
+
+			} );
+
+			// Load file from URL
+
+			const query = window.location.search;
 
 			if ( query.substr( 1, 5 ) === 'file=' ) {
-
 				load( query.substr( 6 ) );
-
 			}
 
 			//
 
 			async function load( path ) {
 
-				await timeline.load( path );
-				await timeline.compile( resources, player );
+				const response = await fetch( path );
 
-				player.play();
+				frame.fromMarkdown( await response.text() );
 
-				animate( prevTime = performance.now() );
+				await frame.compile();
+
+				requestAnimationFrame( animate );
 
 			}
 
-			var prevTime = 0;
+			let prevTime = 0;
 
 			function animate( time ) {
 
-				player.tick( time - prevTime );
-				timeline.update( player.currentTime );
+				requestAnimationFrame( animate );
+
+				frame.player.tick( time - prevTime );
+				frame.timeline.update( frame.player.currentTime );
 
 				prevTime = time;
-
-				window.requestAnimationFrame( animate );
 
 			}
 

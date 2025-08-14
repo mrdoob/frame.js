@@ -4,7 +4,7 @@
 
 window.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
-const	VERSION = 5;
+const VERSION = 6;
 
 const FRAME = {
 
@@ -261,7 +261,7 @@ Code.prototype.serialise = function () {
 
 	return {
 		name: this.name,
-		source: this.source.split( '\n' )
+		source: this.source
 	};
 
 };
@@ -297,9 +297,6 @@ Animation.prototype.serialise = function ( effects ) {
 
 function Timeline() {
 
-	const scripts = [];
-	const effects = [];
-
 	const animations = [];
 	const curves = [];
 
@@ -315,80 +312,6 @@ function Timeline() {
 
 		animations: animations,
 		curves: curves,
-
-		load: async function ( url ) {
-
-			const response = await fetch( url );
-			this.parse( await response.json() );
-
-		},
-
-		parse: function ( json ) {
-
-			const scope = this;
-
-			// scripts
-
-			for ( let i = 0; i < json.scripts.length; i ++ ) {
-
-				const data = json.scripts[ i ];
-
-				if ( Array.isArray( data.source ) ) data.source = data.source.join( '\n' );
-
-				scripts.push( new Code( data ) );
-
-			}
-
-			// Effects
-
-			for ( let i = 0; i < json.effects.length; i ++ ) {
-
-				const data = json.effects[ i ];
-
-				if ( Array.isArray( data.source ) ) data.source = data.source.join( '\n' );
-
-				effects.push( new Code( data ) );
-
-			}
-
-			for ( let i = 0; i < json.animations.length; i ++ ) {
-
-				const data = json.animations[ i ];
-
-				data.effect = effects[ data.effectId ];
-
-				const animation = new Animation( data );
-
-				animations.push( animation );
-
-			}
-
-			scope.sort();
-
-		},
-
-		compile: async function ( resources, player ) {
-
-			for ( let i = 0, l = scripts.length; i < l; i ++ ) {
-
-				const script = scripts[ i ];
-				await script.compile( resources, player );
-
-			}
-
-			for ( let i = 0, l = animations.length; i < l; i ++ ) {
-
-				const animation = animations[ i ];
-
-				if ( animation.effect.program === null ) {
-
-					await animation.effect.compile( resources, player );
-
-				}
-
-			}
-
-		},
 
 		add: function ( animation ) {
 
@@ -521,13 +444,218 @@ function Timeline() {
 
 }
 
+class Frame {
+
+	constructor() {
+
+		this.name = '';
+		this.duration = 120;
+
+		this.scripts = [];
+		this.effects = [];
+
+		this.resources = new Resources();
+		this.timeline = new Timeline();
+		this.player = new Player();
+
+	}
+
+	fromMarkdown( markdown ) {
+
+		const lines = markdown.split( '\n' );
+		const json = { name: '', config: { duration: 120 }, scripts: [], effects: [], animations: [] };
+
+		let currentSection = null;
+		let currentItem = null;
+
+		let inCodeBlock = false;
+		let codeBlockContent = [];
+
+		for ( let i = 0, l = lines.length; i < l; i ++ ) {
+
+			const line = lines[ i ];
+
+			if ( line.startsWith( '# ' ) ) {
+
+				json.name = line.substring( 2 ).trim();
+				continue;
+
+			}
+
+			if ( line.startsWith( '## ' ) ) {
+
+				currentSection = line.substring( 3 ).toLowerCase();
+				continue;
+
+			}
+
+			if ( line.startsWith( '###' ) ) {
+
+				const name = line.substring( 3 ).trim();
+
+				switch ( currentSection ) {
+
+					case 'animations':
+						currentItem = { name, start: 0, end: 0, layer: 0, effectId: 0, enabled: true };
+						break;
+
+					case 'scripts':
+					case 'effects':
+						currentItem = { name, source: '' };
+						break;
+
+				}
+
+				json[ currentSection ].push( currentItem );
+				continue;
+
+			}
+
+			if ( line.startsWith( '```' ) ) {
+
+				if ( inCodeBlock === false ) {
+
+					inCodeBlock = true;
+
+				} else {
+
+					inCodeBlock = false;
+
+					currentItem.source = codeBlockContent.join( '\n' );
+					codeBlockContent = [];
+
+				}
+
+				continue;
+
+			}
+
+			if ( inCodeBlock ) {
+
+				codeBlockContent.push( line );
+				continue;
+
+			}
+
+			switch ( currentSection ) {
+
+				case 'animations':
+
+					if ( line.startsWith( ' * ' ) ) {
+
+						const [ property, value ] = line.substring( 3 ).split( ': ' );
+
+						switch ( property ) {
+
+							case 'start':
+								currentItem.start = parseFloat( value );
+								break;	
+
+							case 'end':
+								currentItem.end = parseFloat( value );
+								break;
+
+							case 'layer':
+								currentItem.layer = parseInt( value );
+								break;
+
+							case 'effect':
+								currentItem.effectId = json.effects.findIndex( e => e.name === value );
+								break;
+
+							case 'enabled':
+								currentItem.enabled = value === 'true';
+								break;
+
+						}
+
+						continue;
+
+					}
+
+					break;
+
+				case 'config':
+
+					if ( line.startsWith( ' * ' ) ) {
+
+						const [ property, value ] = line.substring( 3 ).toLowerCase().split( ': ' );
+
+						switch ( property ) {
+
+							case 'duration':
+								json.config.duration = parseFloat( value );
+								break;
+
+						}
+
+					}
+
+					break;
+
+			}
+
+		}
+
+		//
+
+		this.name = json.name;
+		this.duration = json.config.duration;
+
+		const scripts = this.scripts;
+		const effects = this.effects;
+		const timeline = this.timeline;
+
+		for ( const data of json.scripts ) {
+			scripts.push( new Code( data ) );
+		}
+
+		for ( const data of json.effects ) {
+			effects.push( new Code( data ) );
+		}
+
+		for ( const data of json.animations ) {
+			data.effect = effects[ data.effectId ];
+			timeline.animations.push( new Animation( data ) );
+		}
+
+		this.timeline.sort();
+
+	}
+
+	async compile() {
+
+		const resources = this.resources;
+		const player = this.player;
+
+		const scripts = this.scripts;
+		const effects = this.effects;
+
+		for ( let i = 0, l = scripts.length; i < l; i ++ ) {
+
+			const script = scripts[ i ];
+			await script.compile( resources, player );
+
+		}
+
+		for ( let i = 0, l = effects.length; i < l; i ++ ) {
+
+			const effect = effects[ i ];
+			await effect.compile( resources, player );
+
+		}
+
+	}
+
+}
+
 // WebAudio
 
 function WebAudio( context ) {
 
 	if ( context === undefined ) {
 
-		context = WebAudio.context;
+		context = WebAudio.getContext();
 
 	}
 
@@ -554,16 +682,13 @@ function WebAudio( context ) {
 		request.open( 'GET', url, true );
 		request.responseType = 'arraybuffer';
 		request.addEventListener( 'load', function ( event ) {
-			binary = event.target.response;
-			if ( context ) {
-				decode();
-			}
+			decode( event.target.response );
 		} );
 		request.send();
 
 	}
 
-	function decode() {
+	function decode( binary ) {
 
 		context.decodeAudioData( binary, function ( data ) {
 			buffer = data;
@@ -594,16 +719,6 @@ function WebAudio( context ) {
 	}
 
 	function play() {
-
-		if ( context === undefined ) {
-
-			context = WebAudio.getContext();
-			createVolume();
-
-			paused = false;
-			decode();
-
-		}
 
 		if ( buffer === undefined ) return;
 
@@ -695,4 +810,4 @@ WebAudio.getContext = function() {
 
 window.WebAudio = WebAudio;
 
-export { Player, Resources, Code, Animation, Timeline };
+export { Frame, Code, Animation, Resources, Timeline, Player };

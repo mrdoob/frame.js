@@ -16,6 +16,20 @@ function SidebarProject( editor ) {
 	container.add( new UIText( 'Config' ).setTextTransform( 'uppercase' ) );
 	container.add( new UIBreak(), new UIBreak() );
 
+	// Name
+
+	var row = new UIRow();
+	row.add( new UIText( 'Name' ).setWidth( '90px' ) );
+	container.add( row );
+
+	var name = new UIInput( editor.name ).setWidth( '130px' );
+	name.onChange( function () {
+		editor.setName( this.getValue() );
+	} );
+	row.add( name );
+
+	//
+
 	var row = new UIRow();
 	row.add( new UIText( 'Duration' ).setWidth( '90px' ) );
 	container.add( row );
@@ -39,16 +53,10 @@ function SidebarProject( editor ) {
 	var duration = new UIInput( '2:00' ).setWidth( '80px' );
 	duration.onChange( function () {
 
-		signals.duration.dispatch( toSeconds( this.getValue() ) );
+		editor.setDuration( toSeconds( this.getValue() ) );
 
 	} );
 	row.add( duration );
-
-	signals.projectLoaded.add( function () {
-
-		duration.setValue( fromSeconds( editor.duration ) );
-
-	} );
 
 	container.add( new UIBreak() );
 
@@ -146,8 +154,16 @@ function SidebarProject( editor ) {
 
 	function update() {
 
+		updateConfig();
 		updateScripts();
 		updateEffects();
+
+	}
+
+	function updateConfig() {
+
+		name.setValue( editor.name );
+		duration.setValue( fromSeconds( editor.duration ) );
 
 	}
 
@@ -157,7 +173,7 @@ function SidebarProject( editor ) {
 
 		var scripts = editor.scripts;
 
-		for ( var i = 0; i < scripts.length; i ++ ) {
+		for ( let i = 0; i < scripts.length; i ++ ) {
 
 			scriptsContainer.add( buildScript( i ) );
 
@@ -169,7 +185,7 @@ function SidebarProject( editor ) {
 
 		var names = [];
 
-		for ( var i = 0; i < editor.effects.length; i ++ ) {
+		for ( let i = 0; i < editor.effects.length; i ++ ) {
 
 			names.push( editor.effects[ i ].name );
 
@@ -182,6 +198,7 @@ function SidebarProject( editor ) {
 
 	// signals
 
+	signals.projectLoaded.add( update );
 	signals.editorCleared.add( update );
 
 	signals.scriptAdded.add( updateScripts );
