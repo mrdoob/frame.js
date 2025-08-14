@@ -21,10 +21,10 @@ function MenubarExamples( editor ) {
 	// Examples
 
 	var items = [
-		{ title: 'HTML Colors', file: 'html_colors.json' },
-		{ title: 'HTML Loop', file: 'html_loop.json' },
-		{ title: 'Three.js Cube', file: 'threejs_cube.json' },
-		{ title: 'Three.js Shaders', file: 'threejs_shaders.json' }
+		{ title: 'HTML Colors', file: 'html_colors.md' },
+		{ title: 'HTML Loop', file: 'html_loop.md' },
+		{ title: 'Three.js Cube', file: 'threejs_cube.md' },
+		{ title: 'Three.js Shaders', file: 'threejs_shaders.md' }
 	];
 
 	for ( var i = 0; i < items.length; i ++ ) {
@@ -43,7 +43,7 @@ function MenubarExamples( editor ) {
 					editor.clear();
 
 					const response = await fetch( './examples/' + item.file );
-					await editor.fromJSON( await response.json() );
+					await editor.fromMarkdown( await response.text() );
 
 				}
 
