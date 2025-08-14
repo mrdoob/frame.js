@@ -283,6 +283,8 @@ Editor.prototype = {
 
 	addEffect: function ( effect ) {
 
+		makeNameUnique( this.effects, effect );
+
 		this.effects.push( effect );
 		this.signals.effectAdded.dispatch( effect );
 
@@ -543,6 +545,24 @@ Editor.prototype = {
 		}
 		
 		return markdown;
+
+	}
+
+}
+
+function makeNameUnique( array, item ) {
+
+	if ( array.some( e => e.name === item.name ) ) {
+
+		let counter = 1;
+		let newName = item.name + ' ' + counter;
+		
+		while ( array.some( e => e.name === newName ) ) {
+			counter++;
+			newName = item.name + ' ' + counter;
+		}
+		
+		item.name = newName;
 
 	}
 

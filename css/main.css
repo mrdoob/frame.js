@@ -68,6 +68,10 @@ select.Select {
 	border-radius: 4px;
 }
 
+	select.Select:focus {
+		outline: none;
+	}
+
 .CodeMirror {
 	position: absolute !important;
 	top: 37px;

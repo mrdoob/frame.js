@@ -95,10 +95,13 @@ function SidebarProject( editor ) {
 	container.add( new UIText( 'Effects' ).setTextTransform( 'uppercase' ) );
 	container.add( new UIBreak(), new UIBreak() );
 
-	var effects = new UISelect().setMultiple( true ).setWidth( '280px' ).setMarginBottom( '8px' );
+	var effects = new UISelect().setWidth( '280px' ).setMarginBottom( '8px' );
+	effects.onChange( function () {
+		editor.selectEffect( editor.effects[ this.getValue() ] );
+	} );
 	container.add( effects );
 
-	var cleanEffects = new UIButton( 'Clean Effects' );
+	var cleanEffects = new UIButton( 'Remove unused' );
 	cleanEffects.onClick( function () {
 
 		editor.cleanEffects();
