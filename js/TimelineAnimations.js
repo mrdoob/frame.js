@@ -332,7 +332,7 @@ function TimelineAnimations( editor ) {
 
 	} );
 
-	signals.timelineScaled.add( function ( value ) {
+	signals.timelineZoomed.add( function ( value ) {
 
 		scale = value;
 

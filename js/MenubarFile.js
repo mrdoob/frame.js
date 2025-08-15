@@ -49,19 +49,21 @@ function MenubarFile( editor ) {
 	fileInput.addEventListener( 'change', function ( event ) {
 
 		var reader = new FileReader();
-		reader.addEventListener( 'load', function ( event ) {
+		reader.addEventListener( 'load', async function ( event ) {
 
 			editor.clear();
 
 			if ( fileInput.files[ 0 ].name.endsWith( '.md' ) ) {
 
-				editor.fromMarkdown( event.target.result );
+				await editor.fromMarkdown( event.target.result );
 
 			} else {
 
-				editor.fromJSON( JSON.parse( event.target.result ) );
+				await editor.fromJSON( JSON.parse( event.target.result ) );
 
 			}
+
+			editor.setTime( 0 );
 
 		}, false );
 

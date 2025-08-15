@@ -45,6 +45,8 @@ function MenubarExamples( editor ) {
 					const response = await fetch( './examples/' + item.file );
 					await editor.fromMarkdown( await response.text() );
 
+					editor.setTime( 0 );
+
 				}
 
 			} );

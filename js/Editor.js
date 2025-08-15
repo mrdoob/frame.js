@@ -61,7 +61,10 @@ function Editor() {
 		timeBackward: new Signal(),
 		timeChanged: new Signal(),
 
-		timelineScaled: new Signal(),
+		timelineZoomIn: new Signal(),
+		timelineZoomOut: new Signal(),
+		timelineZoomed: new Signal(),
+
 		windowResized: new Signal(),
 
 		// timeline views
@@ -189,9 +192,9 @@ Editor.prototype = {
 
 	setTime: function ( time ) {
 
-		// location.hash = time;
+		location.hash = time;
 
-		this.player.currentTime = Math.max( 0, time );
+		this.player.currentTime = Math.max( 0, Math.min( this.duration, time ) );
 		this.signals.timeChanged.dispatch( this.player.currentTime );
 
 	},
@@ -325,7 +328,7 @@ Editor.prototype = {
 
 	},
 
-	// Remove any effects that are not bound to any animations.
+	// Remove unused effects
 
 	cleanEffects: function () {
 
@@ -476,7 +479,6 @@ Editor.prototype = {
 		}
 
 		this.signals.projectLoaded.dispatch();
-		this.setTime( 0 );
 
 	},
 
@@ -499,7 +501,6 @@ Editor.prototype = {
 		}
 
 		this.signals.projectLoaded.dispatch();
-		this.setTime( 0 );
 
 	},
 

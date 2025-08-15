@@ -232,7 +232,7 @@ function TimelineCurves( editor ) {
 		drawSpline();
 	} );
 
-	editor.signals.timelineScaled.add( function() {
+	editor.signals.timelineZoomed.add( function() {
 		drawSpline();
 	} );
 

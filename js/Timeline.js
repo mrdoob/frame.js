@@ -30,25 +30,6 @@ function Timeline( editor ) {
 	timeline.setBottom( '0px' );
 	timeline.setRight( '0px' );
 	timeline.setOverflow( 'hidden' );
-	timeline.dom.addEventListener( 'wheel', function ( event ) {
-		if ( event.altKey === true ) {
-			event.preventDefault();
-
-			// Get mouse position relative to the timeline
-			const rect = timeline.dom.getBoundingClientRect();
-			const mouseX = event.clientX - rect.left;
-
-			// Calculate the time at the mouse position
-			const mouseTime = ( scroller.scrollLeft + mouseX ) / scale;
-
-			// Update scale
-			scale = Math.max( 2, scale - ( event.deltaY / 10 ) );
-			signals.timelineScaled.dispatch( scale );
-
-			// Adjust scroll to keep the time under mouse position
-			scroller.scrollLeft = ( mouseTime * scale ) - mouseX;
-		}
-	} );
 	container.add( timeline );
 
 	const devicePixelRatio = window.devicePixelRatio;
@@ -260,6 +241,26 @@ function Timeline( editor ) {
 
 	} );
 
+	function checkTimeMarkVisibility() {
+
+		const timeMarkRect = timeMark.getBoundingClientRect();
+		const timelineRect = timeline.dom.getBoundingClientRect();
+		
+		// Check if timeMark is outside the visible timeline area
+		if ( timeMarkRect.left < timelineRect.left || timeMarkRect.right > timelineRect.right ) {
+			
+			// Calculate the scroll position to center the timeMark
+			// Need to account for scale since timeMark position is based on scaled time
+			const timeMarkX = ( player.currentTime * scale ) - 8; // Same calculation as updateTimeMark()
+			const timelineWidth = timelineRect.width;
+			const scrollTo = timeMarkX - ( timelineWidth / 2 );
+			
+			// Instant scroll to the timeMark
+			scroller.scrollLeft = scrollTo;
+		}
+
+	}
+
 	signals.timeBackward.add( function () {
 
 		const player = editor.player;
@@ -281,10 +282,37 @@ function Timeline( editor ) {
 	signals.timeChanged.add( function () {
 
 		updateTimeMark();
+		checkTimeMarkVisibility();
 
 	} );
 
-	signals.timelineScaled.add( function ( value ) {
+	signals.timelineZoomIn.add( function () {
+
+		const newScale = scale + 5;
+
+		const timeMarkX = timeMark.offsetLeft;
+		const timeMarkTime = ( scroller.scrollLeft + timeMarkX ) / scale;
+
+		signals.timelineZoomed.dispatch( newScale );
+
+		scroller.scrollLeft = ( timeMarkTime * scale ) - timeMarkX;
+
+	} );
+
+	signals.timelineZoomOut.add( function () {
+
+		const newScale = Math.max( 10, scale - 5 );
+
+		const timeMarkX = timeMark.offsetLeft;
+		const timeMarkTime = ( scroller.scrollLeft + timeMarkX ) / scale;
+		
+		signals.timelineZoomed.dispatch( newScale );
+		
+		scroller.scrollLeft = ( timeMarkTime * scale ) - timeMarkX;
+
+	} );
+
+	signals.timelineZoomed.add( function ( value ) {
 
 		scale = value;
 

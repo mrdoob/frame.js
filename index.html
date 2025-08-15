@@ -86,9 +86,11 @@
 
 			}
 
-			//
+			// State
 
-			var state = editor.config.getKey( 'state' );
+			editor.setTime( parseFloat( location.hash.substring( 1 ) ) );
+
+			const state = editor.config.getKey( 'state' );
 
 			if ( state !== undefined ) {
 
@@ -121,27 +123,35 @@
 					case 8: // prevent browser back
 						event.preventDefault();
 						break;
-					case 32:
+					case 32: // space
 						editor.player.isPlaying ? editor.stop() : editor.play();
 						break;
-					case 37:
+					case 37: // left
 						event.preventDefault();
 						editor.signals.timeBackward.dispatch();
 						break;
-					case 39:
+					case 39: // right
 						event.preventDefault();
 						editor.signals.timeForward.dispatch();
 						break;
-					case 38:
+					case 38: // up
 						event.preventDefault();
 						editor.player.playbackRate += 0.1;
 						editor.signals.playbackRateChanged.dispatch( editor.player.playbackRate );
 						break;
-					case 40:
+					case 40: // down
 						event.preventDefault();
 						editor.player.playbackRate -= 0.1;
 						editor.player.playbackRate = Math.max( 0, editor.player.playbackRate );
 						editor.signals.playbackRateChanged.dispatch( editor.player.playbackRate );
+						break;
+					case 189: // -
+						event.preventDefault();
+						editor.signals.timelineZoomOut.dispatch();
+						break;
+					case 187: // +
+						event.preventDefault();
+						editor.signals.timelineZoomIn.dispatch();
 						break;
 					case 83:
 						break;
@@ -165,18 +175,31 @@
 
 				if ( event.dataTransfer.files.length > 0 ) {
 
-					var reader = new FileReader();
-					reader.addEventListener( 'load', function ( event ) {
+					const file = event.dataTransfer.files[ 0 ];
+
+					const reader = new FileReader();
+					reader.addEventListener( 'load', async function ( event ) {
 
 						if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
 
 							editor.clear();
-							editor.fromJSON( JSON.parse( event.target.result ) );
+
+							if ( file.name.endsWith( '.md' ) ) {
+
+								await editor.fromMarkdown( event.target.result );
+
+							} else {
+
+								await editor.fromJSON( JSON.parse( event.target.result ) );
+
+							}
+
+							editor.setTime( 0 );
 
 						}
 
 					}, false );
-					reader.readAsText( event.dataTransfer.files[ 0 ] );
+					reader.readAsText( file );
 
 				}
 
