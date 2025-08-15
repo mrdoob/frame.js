@@ -68,13 +68,13 @@ function SidebarProject( editor ) {
 	var scriptsContainer = new UIRow();
 	container.add( scriptsContainer );
 
-	var newScript = new UIButton( 'New' );
-	newScript.onClick( function () {
+	var addScript = new UIButton( 'Add' );
+	addScript.onClick( function () {
 
 		editor.createScript();
 
 	} );
-	container.add( newScript );
+	container.add( addScript );
 
 	var reload = new UIButton( 'Reload All' );
 	reload.onClick( async function () {
@@ -95,7 +95,7 @@ function SidebarProject( editor ) {
 	container.add( new UIText( 'Effects' ).setTextTransform( 'uppercase' ) );
 	container.add( new UIBreak(), new UIBreak() );
 
-	var effects = new UISelect().setWidth( '280px' ).setMarginBottom( '8px' );
+	var effects = new UISelect().setMultiple( true ).setWidth( '280px' ).setHeight( '140px' ).setMarginBottom( '8px' );
 	effects.onChange( function () {
 
 		editor.selectEffect( editor.effects[ this.getValue() ] );
@@ -103,7 +103,16 @@ function SidebarProject( editor ) {
 	} );
 	container.add( effects );
 
+	var addEffect = new UIButton( 'Add' );
+	addEffect.onClick( function () {
+
+		editor.createEffect();
+
+	} );
+	container.add( addEffect );
+
 	var cleanEffects = new UIButton( 'Remove unused' );
+	cleanEffects.setMarginLeft( '4px' );
 	cleanEffects.onClick( function () {
 
 		editor.cleanEffects();

@@ -284,6 +284,13 @@ Editor.prototype = {
 
 	// effects
 
+	createEffect: function () {
+
+		const effect = new Code( { name: 'Effect' } );
+		this.addEffect( effect );
+
+	},
+
 	addEffect: function ( effect ) {
 
 		makeNameUnique( this.effects, effect );
