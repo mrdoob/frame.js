@@ -88,7 +88,13 @@
 
 			// State
 
-			editor.setTime( parseFloat( location.hash.substring( 1 ) ) );
+			const hashTime = parseFloat( location.hash.substring( 1 ) );
+
+			if ( isNaN( hashTime ) === false ) {
+
+				editor.setTime( hashTime );
+
+			}
 
 			const state = editor.config.getKey( 'state' );
 
