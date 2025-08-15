@@ -22,16 +22,17 @@ function Editor() {
 		// scripts
 
 		scriptAdded: new Signal(),
-		scriptSelected: new Signal(),
-		scriptChanged: new Signal(),
 		scriptRemoved: new Signal(),
+		scriptRenamed: new Signal(),
+		scriptChanged: new Signal(),
+		scriptSelected: new Signal(),
 		scriptsCleared: new Signal(),
 
 		// effects
 
 		effectAdded: new Signal(),
-		effectRenamed: new Signal(),
 		effectRemoved: new Signal(),
+		effectRenamed: new Signal(),
 		effectSelected: new Signal(),
 		effectCompiled: new Signal(),
 
@@ -235,7 +236,7 @@ Editor.prototype = {
 
 	createScript: function () {
 
-		this.scripts.push( new Code( { name: '', source: '' } ) );
+		this.scripts.push( new Code( { name: 'Unnamed', source: '' } ) );
 		this.signals.scriptAdded.dispatch();
 
 	},

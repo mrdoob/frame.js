@@ -216,9 +216,11 @@ function SidebarProject( editor ) {
 	signals.editorCleared.add( update );
 
 	signals.scriptAdded.add( updateScripts );
+	signals.scriptRenamed.add( updateScripts );
 	signals.scriptRemoved.add( updateScripts );
 
 	signals.effectAdded.add( updateEffects );
+	signals.effectRenamed.add( updateEffects );
 	signals.effectRemoved.add( updateEffects );
 
 	return container;

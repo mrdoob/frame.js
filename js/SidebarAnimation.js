@@ -277,28 +277,6 @@ function SidebarAnimation( editor ) {
 		} );
 		row.add( effectsSelect );
 
-		var edit = new UIButton( 'EDIT' ).setMarginLeft( '8px' );
-		edit.onClick( function () {
-
-			editor.selectEffect( selected.effect );
-
-		} );
-		row.add( edit );
-
-
-		var row = new UIRow();
-		row.add( new UIText( 'Name' ).setWidth( '90px' ) );
-		container.add( row );
-
-		var effectName = new UIInput( selected.effect.name );
-		effectName.onChange( function () {
-
-			selected.effect.name = this.getValue();
-			signals.effectRenamed.dispatch( selected.effect );
-
-		} );
-		row.add( effectName );
-
 		//
 
 		var parameters = selected.effect.program.parameters;

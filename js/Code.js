@@ -19,6 +19,27 @@ function Code( editor ) {
 	container.add( header );
 
 	var title = new UIText().setColor( '#fff' );
+	title.dom.contentEditable = true;
+	title.dom.style.cursor = 'text';
+	title.dom.style.outline = 'none';
+	title.dom.addEventListener( 'keydown', function ( event ) {
+		event.stopPropagation();
+		if ( event.key === 'Enter' ) {
+			event.preventDefault();
+			this.blur();
+		}
+	} );
+	title.dom.addEventListener( 'blur', function ( event ) {
+		event.stopPropagation();
+		if ( currentEffect !== null ) {
+			currentEffect.name = this.textContent;
+			editor.signals.effectRenamed.dispatch( currentEffect );
+		}
+		if ( currentScript !== null ) {
+			currentScript.name = this.textContent;
+			editor.signals.scriptRenamed.dispatch( currentScript );
+		}
+	} );
 	header.add( title );
 
 	var buttonSVG = ( function () {
