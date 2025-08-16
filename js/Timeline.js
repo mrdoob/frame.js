@@ -267,6 +267,7 @@ function Timeline( editor ) {
 		const time = player.currentTime - ( 32 / scale );
 
 		editor.setTime( time );
+		checkTimeMarkVisibility();
 
 	} );
 
@@ -276,13 +277,13 @@ function Timeline( editor ) {
 		const time = player.currentTime + ( 32 / scale );
 
 		editor.setTime( time );
+		checkTimeMarkVisibility();
 
 	} );
 
 	signals.timeChanged.add( function () {
 
 		updateTimeMark();
-		checkTimeMarkVisibility();
 
 	} );
 
