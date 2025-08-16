@@ -40,6 +40,8 @@
 
 			var editor = new Editor();
 
+			window.editor = editor; // Expose editor to Console
+
 			var viewport = new Viewport( editor );
 			document.body.appendChild( viewport.dom );
 
