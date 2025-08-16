@@ -2,7 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-window.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+if ( 'AsyncFunction' in window === false ) {
+	window.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+}
 
 const VERSION = 6;
 
@@ -257,15 +259,6 @@ function Code( data ) {
 
 }
 
-Code.prototype.serialise = function () {
-
-	return {
-		name: this.name,
-		source: this.source
-	};
-
-};
-
 let animationId = 0;
 
 function Animation( data ) {
@@ -281,19 +274,6 @@ function Animation( data ) {
 	this.enabled = data.enabled !== undefined ? data.enabled : true;
 
 }
-
-Animation.prototype.serialise = function ( effects ) {
-
-	return {
-		name: this.name,
-		start: this.start,
-		end: this.end,
-		layer: this.layer,
-		effectId: effects.indexOf( this.effect ),
-		enabled: this.enabled
-	};
-
-};
 
 function Timeline() {
 
