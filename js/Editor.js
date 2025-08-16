@@ -193,7 +193,7 @@ Editor.prototype = {
 
 	setTime: function ( time ) {
 
-		location.hash = time;
+		location.hash = time.toFixed( 4 );
 
 		this.player.currentTime = Math.max( 0, Math.min( this.duration, time ) );
 		this.signals.timeChanged.dispatch( this.player.currentTime );
@@ -219,18 +219,25 @@ Editor.prototype = {
 
 	},
 
-	selectScript: function ( script ) {
-
-		this.signals.scriptSelected.dispatch( script );
-
-	},
-
 	removeScript: function ( script ) {
 
 		const index = this.scripts.indexOf( script );
 
 		this.scripts.splice( index, 1 );
 		this.signals.scriptRemoved.dispatch();
+
+	},
+
+	renameScript: function ( script, name ) {
+
+		script.name = name;
+		this.signals.scriptRenamed.dispatch( script );
+
+	},
+
+	selectScript: function ( script ) {
+
+		this.signals.scriptSelected.dispatch( script );
 
 	},
 
@@ -301,12 +308,6 @@ Editor.prototype = {
 
 	},
 
-	selectEffect: function ( effect ) {
-
-		this.signals.effectSelected.dispatch( effect );
-
-	},
-
 	removeEffect: function ( effect ) {
 
 		var index = this.effects.indexOf( effect );
@@ -317,6 +318,19 @@ Editor.prototype = {
 			this.signals.effectRemoved.dispatch( effect );
 
 		}
+
+	},
+
+	renameEffect: function ( effect, name ) {
+
+		effect.name = name;
+		this.signals.effectRenamed.dispatch( effect );
+
+	},
+
+	selectEffect: function ( effect ) {
+
+		this.signals.effectSelected.dispatch( effect );
 
 	},
 

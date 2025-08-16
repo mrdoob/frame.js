@@ -62,6 +62,46 @@ function SidebarProject( editor ) {
 
 	// Setup
 
+	function buildScript( id ) {
+
+		var script = editor.scripts[ id ];
+
+		var div = new UIDiv().setMarginBottom( '4px' );
+
+		var name = new UIInput( script.name ).setWidth( '130px' );
+		name.onChange( function () {
+
+			editor.renameScript( script, this.getValue() );
+
+		} );
+		div.add( name );
+
+		var edit = new UIButton( 'Edit' );
+		edit.setMarginLeft( '6px' );
+		edit.onClick( function () {
+
+			editor.selectScript( script );
+
+		} );
+		div.add( edit );
+
+		var remove = new UIButton( 'Remove' );
+		remove.setMarginLeft( '6px' );
+		remove.onClick( function () {
+
+			if ( confirm( 'Are you sure?' ) ) {
+
+				editor.removeScript( script );
+
+			}
+
+		} );
+		div.add( remove );
+
+		return div;
+
+	}
+
 	container.add( new UIText( 'Setup' ).setTextTransform( 'uppercase' ) );
 	container.add( new UIBreak(), new UIBreak() );
 
@@ -92,16 +132,38 @@ function SidebarProject( editor ) {
 
 	// Effects
 
+	function buildEffect( id ) {
+
+		var effect = editor.effects[ id ];
+
+		var div = new UIDiv().setMarginBottom( '4px' );
+
+		var name = new UIInput( effect.name ).setWidth( '130px' );
+		name.onChange( function () {
+
+			editor.renameEffect( effect, this.getValue() );
+
+		} );
+		div.add( name );
+
+		var edit = new UIButton( 'Edit' );
+		edit.setMarginLeft( '6px' );
+		edit.onClick( function () {
+
+			editor.selectEffect( effect );
+
+		} );
+		div.add( edit );
+
+		return div;
+
+	}
+
 	container.add( new UIText( 'Effects' ).setTextTransform( 'uppercase' ) );
 	container.add( new UIBreak(), new UIBreak() );
 
-	var effects = new UISelect().setMultiple( true ).setWidth( '280px' ).setHeight( '140px' ).setMarginBottom( '8px' );
-	effects.onChange( function () {
-
-		editor.selectEffect( editor.effects[ this.getValue() ] );
-
-	} );
-	container.add( effects );
+	var effectsContainer = new UIRow();
+	container.add( effectsContainer );
 
 	var addEffect = new UIButton( 'Add' );
 	addEffect.onClick( function () {
@@ -121,48 +183,6 @@ function SidebarProject( editor ) {
 	container.add( cleanEffects );
 
 	container.add( new UIBreak(), new UIBreak() );
-
-	//
-
-	function buildScript( id ) {
-
-		var script = editor.scripts[ id ];
-
-		var div = new UIDiv().setMarginBottom( '4px' );
-
-		var name = new UIInput( script.name ).setWidth( '130px' );
-		name.onChange( function () {
-
-			script.name = this.getValue();
-
-		} );
-		div.add( name );
-
-		var edit = new UIButton( 'Edit' );
-		edit.setMarginLeft( '6px' );
-		edit.onClick( function () {
-
-			editor.selectScript( script );
-
-		} );
-		div.add( edit );
-
-		var remove = new UIButton( 'Remove' );
-		remove.setMarginLeft( '6px' );
-		remove.onClick( function () {
-
-			if ( confirm( 'Are you sure?' ) ) {
-
-				editor.removeScript( script );
-
-			}
-
-		} );
-		div.add( remove );
-
-		return div;
-
-	}
 
 	//
 
@@ -197,16 +217,15 @@ function SidebarProject( editor ) {
 
 	function updateEffects() {
 
-		var names = [];
+		effectsContainer.clear();
 
-		for ( let i = 0; i < editor.effects.length; i ++ ) {
+		var effects = editor.effects;
 
-			names.push( editor.effects[ i ].name );
+		for ( let i = 0; i < effects.length; i ++ ) {
+
+			effectsContainer.add( buildEffect( i ) );
 
 		}
-
-		effects.setOptions( names );
-		effects.dom.size = editor.effects.length;
 
 	}
 
@@ -216,11 +235,9 @@ function SidebarProject( editor ) {
 	signals.editorCleared.add( update );
 
 	signals.scriptAdded.add( updateScripts );
-	signals.scriptRenamed.add( updateScripts );
 	signals.scriptRemoved.add( updateScripts );
 
 	signals.effectAdded.add( updateEffects );
-	signals.effectRenamed.add( updateEffects );
 	signals.effectRemoved.add( updateEffects );
 
 	return container;
