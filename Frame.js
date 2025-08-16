@@ -259,11 +259,8 @@ function Code( data ) {
 
 }
 
-let animationId = 0;
-
 function Animation( data ) {
 
-	this.id = animationId ++;
 	this.name = data.name;
 	this.start = data.start;
 	this.end = data.end;
