@@ -263,15 +263,13 @@ let animationId = 0;
 
 function Animation( data ) {
 
-	if ( typeof data === 'string' ) console.error( '!!!' );
-
 	this.id = animationId ++;
 	this.name = data.name;
 	this.start = data.start;
 	this.end = data.end;
 	this.layer = data.layer;
 	this.effect = data.effect;
-	this.enabled = data.enabled !== undefined ? data.enabled : true;
+	this.enabled = data.enabled;
 
 }
 
