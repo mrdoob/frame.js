@@ -349,6 +349,14 @@ function Timeline() {
 
 							if ( animationParameters[ key ] !== undefined ) {
 
+								if ( Array.isArray( programParameters[ key ].value ) && typeof animationParameters[ key ] === 'string' ) {
+
+									// Convert string to array
+
+									animationParameters[ key ] = animationParameters[ key ].split( ',' ).map( Number );
+
+								}
+								
 								programParameters[ key ].value = animationParameters[ key ];
 
 							} else {

@@ -16,6 +16,30 @@ function SidebarAnimation( editor ) {
 	var selected = null;
 	var values;
 
+	function getVector2( animation, key ) {
+
+		if ( animation.parameters[ key ] === undefined ) {
+
+			animation.parameters[ key ] = [ 0, 0 ];
+
+		}
+
+		return animation.parameters[ key ];
+
+	}
+
+	function getVector3( animation, key ) {
+
+		if ( animation.parameters[ key ] === undefined ) {
+
+			animation.parameters[ key ] = [ 0, 0, 0 ];
+
+		}
+
+		return animation.parameters[ key ];
+
+	}
+
 	function createParameterRow( animation, program, key ) {
 
 		const parameter = program.parameters[ key ];
@@ -25,7 +49,7 @@ function SidebarAnimation( editor ) {
 
 		if ( isDefined === false ) {
 
-			console.log( 'TODO: Parameter not defined', key, parameter );
+			// console.log( 'TODO: Parameter not defined', key, parameter );
 			value = program._parameters[ key ].value;
 
 		}
@@ -92,7 +116,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					animation.parameters[ key ][ 0 ] = this.getValue();
+					getVector2( animation, key )[ 0 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -102,7 +126,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					animation.parameters[ key ][ 1 ] = this.getValue();
+					getVector2( animation, key )[ 1 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -117,7 +141,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					animation.parameters[ key ][ 0 ] = this.getValue();
+					getVector3( animation, key )[ 0 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -127,7 +151,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					animation.parameters[ key ][ 1 ] = this.getValue();
+					getVector3( animation, key )[ 1 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -137,7 +161,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					animation.parameters[ key ][ 2 ] = this.getValue();
+					getVector3( animation, key )[ 2 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
