@@ -437,7 +437,9 @@ Editor.prototype = {
 			start: animation.start + offset,
 			end: animation.end + offset,
 			layer: animation.layer,
-			effect: animation.effect
+			effect: animation.effect,
+			enabled: animation.enabled,
+			parameters: JSON.parse( JSON.stringify( animation.parameters ) )
 		} );
 
 		this.addAnimation( duplicate );

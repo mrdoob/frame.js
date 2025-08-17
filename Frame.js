@@ -257,6 +257,14 @@ function Code( data ) {
 
 		}
 
+		// Save default parameters
+
+		if ( this.program.parameters !== undefined ) {
+
+			this.program._parameters = JSON.parse( JSON.stringify( this.program.parameters ) );
+
+		}
+
 	};
 
 }
@@ -271,8 +279,8 @@ function Animation( data ) {
 	this.end = data.end;
 	this.layer = data.layer;
 	this.effect = data.effect;
-	this.enabled = data.enabled;
-	this.parameters = data.parameters || {};
+	this.enabled = data.enabled ?? true;
+	this.parameters = data.parameters ?? {};
 
 }
 
@@ -339,9 +347,21 @@ function Timeline() {
 
 					if ( animation.end > time ) {
 
-						for ( const key in animation.parameters ) {
+						const animationParameters = animation.parameters;
+						const programParameters = animation.effect.program.parameters;
+						const defaultParameters = animation.effect.program._parameters;
 
-							animation.effect.program.parameters[ key ].value = animation.parameters[ key ];
+						for ( const key in programParameters ) {
+
+							if ( animationParameters[ key ] !== undefined ) {
+
+								programParameters[ key ].value = animationParameters[ key ];
+
+							} else {
+
+								programParameters[ key ].value = defaultParameters[ key ].value;
+
+							}
 
 						}
 

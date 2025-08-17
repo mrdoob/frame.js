@@ -20,23 +20,26 @@ function SidebarAnimation( editor ) {
 
 		const parameter = program.parameters[ key ];
 
-		if ( animation.parameters[ key ] == undefined ) {
+		let value = animation.parameters[ key ];
+		let isDefined = value !== undefined;
 
-			// TODO:
-			// Unset parameters reuse the values from the previous effect usage
-			// Find a solution for that as it could be very confusing
+		if ( isDefined === false ) {
 
 			console.log( 'TODO: Parameter not defined', key, parameter );
+			value = program._parameters[ key ].value;
 
 		}
 
 		var parameterRow = new UIRow();
-		parameterRow.add( new UIText( parameter.name ).setWidth( '90px' ) );
+
+		var name = new UIText( parameter.name ).setWidth( '90px' );
+		name.setTextDecoration( isDefined ? 'underline' : 'none' );
+		parameterRow.add( name );
 
 		if ( parameter.isBoolean ) {
 
 			var parameterValue = new UICheckbox()
-				.setValue( parameter.value )
+				.setValue( value )
 				.onChange( function () {
 
 					animation.parameters[ key ] = this.getValue();
@@ -52,7 +55,7 @@ function SidebarAnimation( editor ) {
 
 			var parameterValue = new UIInteger()
 				.setRange( parameter.min, parameter.max )
-				.setValue( parameter.value )
+				.setValue( value )
 				.setWidth( '150px' )
 				.onChange( function () {
 
@@ -69,7 +72,7 @@ function SidebarAnimation( editor ) {
 
 			var parameterValue = new UINumber()
 				.setRange( parameter.min, parameter.max )
-				.setValue( parameter.value )
+				.setValue( value )
 				.setWidth( '150px' )
 				.onChange( function () {
 
@@ -85,7 +88,7 @@ function SidebarAnimation( editor ) {
 		} else if ( parameter.isVector2 ) {
 
 			var vectorX = new UINumber()
-				.setValue( parameter.value[ 0 ] )
+				.setValue( value[ 0 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
 
@@ -95,7 +98,7 @@ function SidebarAnimation( editor ) {
 				} );
 
 			var vectorY = new UINumber()
-				.setValue( parameter.value[ 1 ] )
+				.setValue( value[ 1 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
 
@@ -110,7 +113,7 @@ function SidebarAnimation( editor ) {
 		} else if ( parameter.isVector3 ) {
 
 			var vectorX = new UINumber()
-				.setValue( parameter.value[ 0 ] )
+				.setValue( value[ 0 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
 
@@ -120,7 +123,7 @@ function SidebarAnimation( editor ) {
 				} );
 
 			var vectorY = new UINumber()
-				.setValue( parameter.value[ 1 ] )
+				.setValue( value[ 1 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
 
@@ -130,7 +133,7 @@ function SidebarAnimation( editor ) {
 				} );
 
 			var vectorZ = new UINumber()
-				.setValue( parameter.value[ 2 ] )
+				.setValue( value[ 2 ] )
 				.setWidth( '50px' )
 				.onChange( function () {
 
@@ -146,7 +149,7 @@ function SidebarAnimation( editor ) {
 		} else if ( parameter.isString ) {
 
 			var parameterValue = new UIInput()
-				.setValue( parameter.value )
+				.setValue( value )
 				.setWidth( '150px' )
 				.onKeyUp( function () {
 
@@ -160,7 +163,7 @@ function SidebarAnimation( editor ) {
 		} else if ( parameter.isColor ) {
 
 			var parameterValue = new UIColor()
-				.setHexValue( parameter.value )
+				.setHexValue( value )
 				.setWidth( '150px' )
 				.onChange( function () {
 
