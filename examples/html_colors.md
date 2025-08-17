@@ -12,7 +12,7 @@
 
 ```js
 var parameters = {
-	color: new FRAME.Parameters.Color( 'Color', 0x0000ff )
+	color: new FRAME.Color( 'Color', 0x0000ff )
 };
 
 var dom = resources.get( 'dom' );

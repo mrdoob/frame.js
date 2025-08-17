@@ -38,7 +38,7 @@ resources.set( 'renderer', renderer );
 const THREE = await import( './examples/js/libs/three.module.js' );
 
 var parameters = {
-	color: new FRAME.Parameters.Color( 'Color', 0x000000 )
+	color: new FRAME.Color( 'Color', 0x000000 )
 };
 
 var renderer = resources.get( 'renderer' );
@@ -99,8 +99,8 @@ function update( progress ){
 const THREE = await import( './examples/js/libs/three.module.js' );
 
 var parameters = {
-	color:   new FRAME.Parameters.Color( 'Color', 0xffffff ),
-	opacity: new FRAME.Parameters.Float( 'Opacity', 1, 0, 1 )
+	color:   new FRAME.Color( 'Color', 0xffffff ),
+	opacity: new FRAME.Float( 'Opacity', 1, 0, 1 )
 };
 
 var renderer = resources.get( 'renderer' );

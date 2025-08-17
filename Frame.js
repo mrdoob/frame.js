@@ -8,58 +8,52 @@ if ( 'AsyncFunction' in window === false ) {
 
 const VERSION = 6;
 
-// TODO: Not a fan of this new FRAME.Parameters.Float API...
-
 const FRAME = {
 
-	Parameters: {
+	Boolean: function ( name, value ) {
+		this.name = name;
+		this.value = value !== undefined ? value : true;
+		this.isBoolean = true;
+	},
 
-		Boolean: function ( name, value ) {
-			this.name = name;
-			this.value = value !== undefined ? value : true;
-			this.isBoolean = true;
-		},
+	Color: function ( name, value ) {
+		this.name = name;
+		this.value = value !== undefined ? value : 0xffffff;
+		this.isColor = true;
+	},
 
-		Color: function ( name, value ) {
-			this.name = name;
-			this.value = value !== undefined ? value : 0xffffff;
-			this.isColor = true;
-		},
+	Float: function ( name, value, min, max ) {
+		this.name = name;
+		this.value = value || 0.0;
+		this.min = min !== undefined ? min : - Infinity;
+		this.max = max !== undefined ? max : Infinity;
+		this.isFloat = true;
+	},
 
-		Float: function ( name, value, min, max ) {
-			this.name = name;
-			this.value = value || 0.0;
-			this.min = min !== undefined ? min : - Infinity;
-			this.max = max !== undefined ? max : Infinity;
-			this.isFloat = true;
-		},
+	Integer: function ( name, value, min, max ) {
+		this.name = name;
+		this.value = value || 0;
+		this.min = min !== undefined ? min : - Infinity;
+		this.max = max !== undefined ? max : Infinity;
+		this.isInteger = true;
+	},
 
-		Integer: function ( name, value, min, max ) {
-			this.name = name;
-			this.value = value || 0;
-			this.min = min !== undefined ? min : - Infinity;
-			this.max = max !== undefined ? max : Infinity;
-			this.isInteger = true;
-		},
+	String: function ( name, value ) {
+		this.name = name;
+		this.value = value !== undefined ? value : '';
+		this.isString = true;
+	},
 
-		String: function ( name, value ) {
-			this.name = name;
-			this.value = value !== undefined ? value : '';
-			this.isString = true;
-		},
+	Vector2: function ( name, value ) {
+		this.name = name;
+		this.value = value !== undefined ? value : [ 0, 0 ];
+		this.isVector2 = true;
+	},
 
-		Vector2: function ( name, value ) {
-			this.name = name;
-			this.value = value !== undefined ? value : [ 0, 0 ];
-			this.isVector2 = true;
-		},
-
-		Vector3: function ( name, value ) {
-			this.name = name;
-			this.value = value !== undefined ? value : [ 0, 0, 0 ];
-			this.isVector3 = true;
-		}
-
+	Vector3: function ( name, value ) {
+		this.name = name;
+		this.value = value !== undefined ? value : [ 0, 0, 0 ];
+		this.isVector3 = true;
 	}
 
 };
@@ -235,7 +229,7 @@ Curves: {
 },
 */
 
-const DEFAULT_SOURCE = 'var parameters = {\n\tvalue: new FRAME.Parameters.Float( \'Value\', 1.0 )\n};\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
+const DEFAULT_SOURCE = 'var parameters = {\n\tvalue: new FRAME.Float( \'Value\', 1.0 )\n};\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
 
 function Code( data ) {
 
