@@ -14,7 +14,6 @@ function SidebarAnimation( editor ) {
 	//
 
 	var selected = null;
-	var values;
 
 	function getVector2( animation, key ) {
 
@@ -73,8 +72,6 @@ function SidebarAnimation( editor ) {
 
 			parameterRow.add( parameterValue );
 
-			values[ key ] = parameterValue;
-
 		} else if ( parameter.isInteger ) {
 
 			var parameterValue = new UIInteger()
@@ -90,8 +87,6 @@ function SidebarAnimation( editor ) {
 
 			parameterRow.add( parameterValue );
 
-			values[ key ] = parameterValue;
-
 		} else if ( parameter.isFloat ) {
 
 			var parameterValue = new UINumber()
@@ -106,8 +101,6 @@ function SidebarAnimation( editor ) {
 				} );
 
 			parameterRow.add( parameterValue );
-
-			values[ key ] = parameterValue;
 
 		} else if ( parameter.isVector2 ) {
 
@@ -209,8 +202,6 @@ function SidebarAnimation( editor ) {
 		container.clear();
 
 		if ( selected === null ) return;
-
-		values = {};
 
 		// Name
 
@@ -353,22 +344,6 @@ function SidebarAnimation( editor ) {
 	} );
 
 	signals.effectCompiled.add( build );
-
-	/*
-	signals.timeChanged.add( function () {
-
-		if ( selected !== null ) {
-
-			for ( var key in values ) {
-
-				values[ key ].setValue( selected.module.parameters[ key ].value );
-
-			}
-
-		}
-
-	} );
-	*/
 
 	return container;
 
