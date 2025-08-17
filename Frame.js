@@ -8,6 +8,8 @@ if ( 'AsyncFunction' in window === false ) {
 
 const VERSION = 6;
 
+// TODO: Not a fan of this new FRAME.Parameters.Float API...
+
 const FRAME = {
 
 	Parameters: {
@@ -259,14 +261,18 @@ function Code( data ) {
 
 }
 
+let animationId = 0;
+
 function Animation( data ) {
 
+	this.id = animationId ++;
 	this.name = data.name;
 	this.start = data.start;
 	this.end = data.end;
 	this.layer = data.layer;
 	this.effect = data.effect;
 	this.enabled = data.enabled;
+	this.parameters = data.parameters || {};
 
 }
 
@@ -332,6 +338,12 @@ function Timeline() {
 					if ( animation.start > time ) break;
 
 					if ( animation.end > time ) {
+
+						for ( const key in animation.parameters ) {
+
+							animation.effect.program.parameters[ key ].value = animation.parameters[ key ];
+
+						}
 
 						if ( animation.effect.program.start ) {
 
@@ -478,7 +490,7 @@ class Frame {
 				switch ( currentSection ) {
 
 					case 'animations':
-						currentItem = { name, start: 0, end: 0, layer: 0, effectId: 0, enabled: true };
+						currentItem = { name, start: 0, end: 0, layer: 0, effectId: 0, enabled: true, parameters: {} };
 						break;
 
 					case 'scripts':
@@ -523,9 +535,9 @@ class Frame {
 
 				case 'animations':
 
-					if ( line.startsWith( ' * ' ) ) {
+					if ( line.startsWith( '* ' ) ) {
 
-						const [ property, value ] = line.substring( 3 ).split( ': ' );
+						const [ property, value ] = line.substring( 2 ).split( ': ' );
 
 						switch ( property ) {
 
@@ -555,13 +567,21 @@ class Frame {
 
 					}
 
+					if ( line.startsWith( '    * ' ) ) {
+
+						const [ property, value ] = line.substring( 6 ).split( ': ' );
+						currentItem.parameters[ property ] = value;
+						continue;
+
+					}
+
 					break;
 
 				case 'config':
 
-					if ( line.startsWith( ' * ' ) ) {
+					if ( line.startsWith( '* ' ) ) {
 
-						const [ property, value ] = line.substring( 3 ).toLowerCase().split( ': ' );
+						const [ property, value ] = line.substring( 2 ).toLowerCase().split( ': ' );
 
 						switch ( property ) {
 
@@ -579,7 +599,7 @@ class Frame {
 
 		}
 
-		//
+		// console.log( json );
 
 		this.name = json.name;
 		this.duration = json.config.duration;
@@ -790,6 +810,7 @@ WebAudio.getContext = function() {
 
 };
 
+// TODO: Pass it to the effect
 window.WebAudio = WebAudio;
 
 export { Frame, Code, Animation, Resources, Timeline, Player };

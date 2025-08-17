@@ -4,7 +4,7 @@
 
 ## Config
 
- * Duration: 70
+* Duration: 70
 
 ## Setup
 
@@ -835,114 +835,114 @@ function update( progress ){
 
 ## Animations
 
-###
+### 
 
- * start: 0
- * end: 70.04761904761891
- * layer: 0
- * effect: Audio
- * enabled: true
+* start: 0
+* end: 70.04761904761891
+* layer: 0
+* effect: Audio
+* enabled: true
 
-###
+### 
 
- * start: 0
- * end: 14.11331444759207
- * layer: 1
- * effect: Lights
- * enabled: true
+* start: 0
+* end: 14.11331444759207
+* layer: 1
+* effect: Lights
+* enabled: true
 
-###
+### 
 
- * start: 0
- * end: 14.110166824047848
- * layer: 2
- * effect: Black Fade Out
- * enabled: true
+* start: 0
+* end: 14.110166824047848
+* layer: 2
+* effect: Black Fade Out
+* enabled: true
 
-###
+### 
 
- * start: 14.116462071136288
- * end: 21.170556552962285
- * layer: 1
- * effect: CubeBalls 1
- * enabled: true
+* start: 14.116462071136288
+* end: 21.170556552962285
+* layer: 1
+* effect: CubeBalls 1
+* enabled: true
 
-###
+### 
 
- * start: 21.17280071813286
- * end: 28.233393177737863
- * layer: 1
- * effect: CubeBalls 2
- * enabled: true
+* start: 21.17280071813286
+* end: 28.233393177737863
+* layer: 1
+* effect: CubeBalls 2
+* enabled: true
 
-###
+### 
 
- * start: 28.235637342908447
- * end: 35.291741472172404
- * layer: 1
- * effect: PlaneDistort 1
- * enabled: true
+* start: 28.235637342908447
+* end: 35.291741472172404
+* layer: 1
+* effect: PlaneDistort 1
+* enabled: true
 
-###
+### 
 
- * start: 35.29398563734295
- * end: 42.34707158351422
- * layer: 1
- * effect: PlaneDistort 2
- * enabled: true
+* start: 35.29398563734295
+* end: 42.34707158351422
+* layer: 1
+* effect: PlaneDistort 2
+* enabled: true
 
-###
+### 
 
- * start: 35.293985637342956
- * end: 37
- * layer: 2
- * effect: White Fade Out
- * enabled: true
+* start: 35.293985637342956
+* end: 37
+* layer: 2
+* effect: White Fade Out
+* enabled: true
 
-###
+### 
 
- * start: 42.34924078091104
- * end: 44
- * layer: 2
- * effect: White Fade Out
- * enabled: true
+* start: 42.34924078091104
+* end: 44
+* layer: 2
+* effect: White Fade Out
+* enabled: true
 
-###
+### 
 
- * start: 42.34924078091118
- * end: 49.40563991323218
- * layer: 1
- * effect: Field 1
- * enabled: true
+* start: 42.34924078091118
+* end: 49.40563991323218
+* layer: 1
+* effect: Field 1
+* enabled: true
 
-###
+### 
 
- * start: 49.40780911062914
- * end: 56.466377440347145
- * layer: 1
- * effect: Field 2
- * enabled: true
+* start: 49.40780911062914
+* end: 56.466377440347145
+* layer: 1
+* effect: Field 2
+* enabled: true
 
-###
+### 
 
- * start: 56.466377440347145
- * end: 60
- * layer: 3
- * effect: White Fade Out
- * enabled: true
+* start: 56.466377440347145
+* end: 60
+* layer: 3
+* effect: White Fade Out
+* enabled: true
 
-###
+### 
 
- * start: 56.468546637744126
- * end: 70.04772234273308
- * layer: 1
- * effect: Blobs
- * enabled: true
+* start: 56.468546637744126
+* end: 70.04772234273308
+* layer: 1
+* effect: Blobs
+* enabled: true
 
-###
+### 
 
- * start: 56.46854663774414
- * end: 70.0477223427332
- * layer: 2
- * effect: Image
- * enabled: true
+* start: 56.46854663774414
+* end: 70.0477223427332
+* layer: 2
+* effect: Image
+* enabled: true

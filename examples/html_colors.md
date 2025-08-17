@@ -2,6 +2,10 @@
 
 # HTML Colors
 
+## Config
+
+* Duration: 120
+
 ## Effects
 
 ### backgroundColor Parameter
@@ -38,18 +42,18 @@ function update( progress ){
 
 ## Animations
 
-###
+### 
 
- * start: 0
- * end: 5
- * layer: 0
- * effect: backgroundColor Parameter
- * enabled: true
+* start: 0
+* end: 5
+* layer: 0
+* effect: backgroundColor Parameter
+* enabled: true
 
-###
+### 
 
- * start: 5
- * end: 10
- * layer: 1
- * effect: backgroundColor Fade In
- * enabled: true
+* start: 5
+* end: 10
+* layer: 1
+* effect: backgroundColor Fade In
+* enabled: true

@@ -16,9 +16,19 @@ function SidebarAnimation( editor ) {
 	var selected = null;
 	var values;
 
-	function createParameterRow( key, parameter ) {
+	function createParameterRow( animation, program, key ) {
 
-		if ( parameter === null ) return;
+		const parameter = program.parameters[ key ];
+
+		if ( animation.parameters[ key ] == undefined ) {
+
+			// TODO:
+			// Unset parameters reuse the values from the previous effect usage
+			// Find a solution for that as it could be very confusing
+
+			console.log( 'TODO: Parameter not defined', key, parameter );
+
+		}
 
 		var parameterRow = new UIRow();
 		parameterRow.add( new UIText( parameter.name ).setWidth( '90px' ) );
@@ -29,7 +39,7 @@ function SidebarAnimation( editor ) {
 				.setValue( parameter.value )
 				.onChange( function () {
 
-					parameter.value = this.getValue();
+					animation.parameters[ key ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -46,7 +56,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '150px' )
 				.onChange( function () {
 
-					parameter.value = this.getValue();
+					animation.parameters[ key ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -63,7 +73,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '150px' )
 				.onChange( function () {
 
-					parameter.value = this.getValue();
+					animation.parameters[ key ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -79,7 +89,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					parameter.value[ 0 ] = this.getValue();
+					animation.parameters[ key ][ 0 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -89,7 +99,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					parameter.value[ 1 ] = this.getValue();
+					animation.parameters[ key ][ 1 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -104,7 +114,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					parameter.value[ 0 ] = this.getValue();
+					animation.parameters[ key ][ 0 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -114,7 +124,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					parameter.value[ 1 ] = this.getValue();
+					animation.parameters[ key ][ 1 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -124,7 +134,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '50px' )
 				.onChange( function () {
 
-					parameter.value[ 2 ] = this.getValue();
+					animation.parameters[ key ][ 2 ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -140,7 +150,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '150px' )
 				.onKeyUp( function () {
 
-					parameter.value = this.getValue();
+					animation.parameters[ key ] = this.getValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -154,7 +164,7 @@ function SidebarAnimation( editor ) {
 				.setWidth( '150px' )
 				.onChange( function () {
 
-					parameter.value = this.getHexValue();
+					animation.parameters[ key ] = this.getHexValue();
 					signals.animationModified.dispatch( selected );
 
 				} );
@@ -279,11 +289,12 @@ function SidebarAnimation( editor ) {
 
 		//
 
-		var parameters = selected.effect.program.parameters;
+		var program = selected.effect.program;
+		var parameters = program.parameters;
 
 		for ( var key in parameters ) {
 
-			container.add( createParameterRow( key, parameters[ key ] ) );
+			container.add( createParameterRow( selected, program, key ) );
 
 		}
 

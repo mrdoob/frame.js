@@ -2,6 +2,10 @@
 
 # Three.js Shaders
 
+## Config
+
+* Duration: 120
+
 ## Setup
 
 ### Renderer
@@ -122,26 +126,26 @@ function update( progress ){
 
 ## Animations
 
-###
+### 
 
- * start: 0
- * end: 9
- * layer: 0
- * effect: Clear
- * enabled: true
+* start: 0
+* end: 9
+* layer: 0
+* effect: Clear
+* enabled: true
 
-###
+### 
 
- * start: 0
- * end: 16
- * layer: 1
- * effect: Cube
- * enabled: true
+* start: 0
+* end: 16
+* layer: 1
+* effect: Cube
+* enabled: true
 
-###
+### 
 
- * start: 4.5
- * end: 7.5
- * layer: 2
- * effect: Fade Out
- * enabled: true
+* start: 4.5
+* end: 7.5
+* layer: 2
+* effect: Fade Out
+* enabled: true

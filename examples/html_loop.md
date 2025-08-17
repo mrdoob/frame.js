@@ -2,6 +2,10 @@
 
 # HTML Loop
 
+## Config
+
+* Duration: 120
+
 ## Effects
 
 ### Color
@@ -38,18 +42,18 @@ function update( progress ){}
 
 ## Animations
 
-###
+### 
 
- * start: 0
- * end: 12
- * layer: 0
- * effect: Color
- * enabled: true
+* start: 0
+* end: 12
+* layer: 0
+* effect: Color
+* enabled: true
 
-###
+### 
 
- * start: 4
- * end: 8
- * layer: 1
- * effect: Loop
- * enabled: true
+* start: 4
+* end: 8
+* layer: 1
+* effect: Loop
+* enabled: true

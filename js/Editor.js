@@ -533,7 +533,7 @@ Editor.prototype = {
 		markdown += `# ${ this.name }\n\n`;
 		
 		markdown += '## Config\n\n';
-		markdown += ` * Duration: ${ this.duration }\n\n`;
+		markdown += `* Duration: ${ this.duration }\n\n`;
 		
 		if ( this.scripts.length > 0 ) {
 			markdown += '## Setup\n\n';
@@ -559,11 +559,19 @@ Editor.prototype = {
 			markdown += '## Animations\n\n';
 			for ( const animation of this.timeline.animations ) {
 				markdown += `### ${ animation.name }\n\n`;
-				markdown += ` * start: ${ animation.start }\n`;
-				markdown += ` * end: ${ animation.end }\n`;
-				markdown += ` * layer: ${ animation.layer }\n`;
-				markdown += ` * effect: ${ animation.effect.name }\n`;
-				markdown += ` * enabled: ${ animation.enabled }\n\n`;
+				markdown += `* start: ${ animation.start }\n`;
+				markdown += `* end: ${ animation.end }\n`;
+				markdown += `* layer: ${ animation.layer }\n`;
+				markdown += `* effect: ${ animation.effect.name }\n`;
+				markdown += `* enabled: ${ animation.enabled }\n`;
+				const array = Object.entries( animation.parameters );
+				if ( array.length > 0 ) {
+					markdown += '* parameters:\n';
+					for ( const [ key, value ] of array ) {
+						markdown += `    * ${ key }: ${ value }\n`;
+					}
+				}
+				markdown += '\n';
 			}
 		}
 		
