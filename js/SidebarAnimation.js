@@ -290,6 +290,14 @@ function SidebarAnimation( editor ) {
 		} );
 		row.add( effectsSelect );
 
+		var effectEditor = new UIButton( 'Edit' ).setMarginLeft( '6px' );
+		effectEditor.onClick( function () {
+
+			editor.selectEffect( selected.effect );
+
+		} );
+		row.add( effectEditor );
+
 		//
 
 		var program = selected.effect.program;
