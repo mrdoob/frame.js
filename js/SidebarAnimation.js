@@ -43,15 +43,8 @@ function SidebarAnimation( editor ) {
 
 		const parameter = program.parameters[ key ];
 
-		let value = animation.parameters[ key ];
-		let isDefined = value !== undefined;
-
-		if ( isDefined === false ) {
-
-			// console.log( 'TODO: Parameter not defined', key, parameter );
-			value = program._parameters[ key ].value;
-
-		}
+		const isDefined = animation.parameters[ key ] !== undefined;
+		const value = animation.parameters[ key ] ?? parameter._default;
 
 		var parameterRow = new UIRow();
 
@@ -314,6 +307,8 @@ function SidebarAnimation( editor ) {
 		row.add( effectEditor );
 
 		//
+
+		selected.initialize();
 
 		var program = selected.effect.program;
 		var parameters = program.parameters;

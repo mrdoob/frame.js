@@ -281,6 +281,47 @@ function Animation( data ) {
 	this.effect = data.effect;
 	this.enabled = data.enabled ?? true;
 	this.parameters = data.parameters ?? {};
+	
+	let initialized = false;
+	
+	this.initialize = function () {
+
+		if ( initialized === true ) return;
+
+		const parameters = this.parameters;
+		const program = this.effect.program;
+
+		for ( const key in program.parameters ) {
+
+			const parameter = parameters[ key ];
+
+			if ( parameter === undefined ) continue;
+
+			const programParameter = program.parameters[ key ];
+
+			if ( programParameter.isBoolean ) {
+
+				parameters[ key ] = parameter === 'true';
+
+			} else if ( programParameter.isFloat ) {
+
+				parameters[ key ] = parseFloat( parameter );
+
+			} else if ( programParameter.isColor || programParameter.isInteger ) {
+
+				parameters[ key ] = parseInt( parameter );
+
+			} else if ( programParameter.isVector2 || programParameter.isVector3 ) {
+
+				parameters[ key ] = parameter.split( ',' ).map( Number );
+
+			}
+
+		}
+
+		initialized = true;
+
+	}
 
 }
 
@@ -347,46 +388,12 @@ function Timeline() {
 
 					if ( animation.end > time ) {
 
-						const animationParameters = animation.parameters;
-						const programParameters = animation.effect.program.parameters;		
-						
-						// initialize parameters
-
-						if ( animationParameters._initialized === undefined ) {
-
-							for ( const key in programParameters ) {
-
-								const animationParameter = animationParameters[ key ];
-						
-								if ( animationParameter === undefined ) continue;
-
-								const programParameter = programParameters[ key ];
-
-								if ( programParameter.isBoolean ) {
-						
-									animationParameters[ key ] = animationParameter === 'true';
-						
-								} else if ( programParameter.isFloat ) {
-						
-									animationParameters[ key ] = parseFloat( animationParameter );
-						
-								} else if ( programParameter.isColor || programParameter.isInteger ) {
-						
-									animationParameters[ key ] = parseInt( animationParameter );
-						
-								} else if ( programParameter.isVector2 || programParameter.isVector3 ) {
-						
-									animationParameters[ key ] = animationParameter.split( ',' ).map( Number );
-						
-								}
-						
-							}
-
-							animationParameters._initialized = true;
-
-						}
+						animation.initialize();
 
 						// update parameters
+
+						const animationParameters = animation.parameters;
+						const programParameters = animation.effect.program.parameters;
 
 						for ( const key in programParameters ) {
 					
