@@ -539,90 +539,6 @@ function ShaderRenderer( shader_name ){
 resources.set( 'ShaderRenderer', ShaderRenderer );
 ```
 
-### ImageRenderer
-
-```js
-const THREE = await import( './examples/js/libs/three.module.js' );
-
-const dom = resources.get( 'dom' );
-
-function ImageRenderer( url, width, height ) {
-	
-	const renderer = resources.get( 'renderer' );
-
-	const scene = new THREE.Scene();
-
-	const camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
-	
-	const geometry = new THREE.PlaneGeometry( 1, 1 );
-	const material = new THREE.MeshBasicMaterial( {
-		map: new THREE.TextureLoader().load( url ),
-		depthTest: false,
-		depthWrite: false
-	} );
-
-	const mesh = new THREE.Mesh( geometry, material );
-	scene.add( mesh );
-	
-	//
-	
-	this.render = function () {
-
-		const element = renderer.domElement;
-
-		mesh.scale.x = width / element.clientWidth;
-		mesh.scale.y = height / element.clientHeight;
-
-		renderer.render( scene, camera );
-	
-	};
-	
-}
-
-resources.set( 'ImageRenderer', ImageRenderer );
-```
-
-### ColorRenderer
-
-```js
-const THREE = await import( './examples/js/libs/three.module.js' );
-
-function ColorRenderer( color ){
-	
-	const renderer = resources.get( 'renderer' );
-	
-	const scene = new THREE.Scene();
-
-	const camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
-
-	const geometry = new THREE.PlaneGeometry( 2, 2 );
-	const material = new THREE.MeshBasicMaterial( {
-		color: color,
-		depthTest: false,
-		depthWrite: false,
-		transparent: true
-	} );
-	
-	
-	const mesh = new THREE.Mesh( geometry, material );
-	scene.add( mesh );
-	
-	//
-	
-	this.render = function ( opacity ) {
-		
-		
-		material.opacity = opacity;
-		renderer.render( scene, camera );
-		
-		
-	}
-	
-}
-
-resources.set( 'ColorRenderer', ColorRenderer );
-```
-
 ## Effects
 
 ### Audio
@@ -663,11 +579,15 @@ function update( progress ){
 }
 ```
 
-### CubeBalls 1
+### CubeBalls
 
 ```js
+var parameters = {
+	mouse: new FRAME.Vector2( 'Mouse', [ 0, 0 ] )
+}
+
 const ShaderRenderer = resources.get( 'ShaderRenderer' );
-const shader = new ShaderRenderer( 'cubeballs' ).setMouse( [ 0.75, 0.75 ] );
+const shader = new ShaderRenderer( 'cubeballs' );
 
 function start(){}
 
@@ -675,31 +595,19 @@ function end(){}
 
 function update( progress ){
 
+	shader.setMouse( parameters.mouse.value );
 	shader.render( progress * 6 );
 
 }
 ```
 
-### CubeBalls 2
+### PlaneDistort
 
 ```js
-const ShaderRenderer = resources.get( 'ShaderRenderer' );
-const shader = new ShaderRenderer( 'cubeballs' ).setMouse( [ -0.75, 0.25 ] );
+var parameters = {
+	offset: new FRAME.Float( 'Offset', 0.0 )	
+};
 
-function start(){}
-
-function end(){}
-
-function update( progress ){
-
-	shader.render( progress * 6 );
-
-}
-```
-
-### PlaneDistort 1
-
-```js
 const ShaderRenderer = resources.get( 'ShaderRenderer' );
 const shader = new ShaderRenderer( 'planedistort' );
 
@@ -709,31 +617,18 @@ function end(){}
 
 function update( progress ){
 
-	shader.render( progress * 20 );
+	shader.render( progress * 20 + parameters.offset.value  );
 
 }
 ```
 
-### PlaneDistort 2
+### Field
 
 ```js
-const ShaderRenderer = resources.get( 'ShaderRenderer' );
-const shader = new ShaderRenderer( 'planedistort' );
+var parameters = {
+	offset: new FRAME.Float( 'Offset', 0.0 )	
+};
 
-function start(){}
-
-function end(){}
-
-function update( progress ){
-
-	shader.render( progress * 20 + 450 );
-
-}
-```
-
-### Field 1
-
-```js
 const ShaderRenderer = resources.get( 'ShaderRenderer' );
 const shader = new ShaderRenderer( 'field' );
 
@@ -743,24 +638,7 @@ function end(){}
 
 function update( progress ){
 
-	shader.render( progress * 20 );
-
-}
-```
-
-### Field 2
-
-```js
-const ShaderRenderer = resources.get( 'ShaderRenderer' );
-const shader = new ShaderRenderer( 'field' );
-
-function start(){}
-
-function end(){}
-
-function update( progress ){
-
-	shader.render( progress * 20 + 450 );
+	shader.render( progress * 20 + parameters.offset.value );
 
 }
 ```
@@ -782,11 +660,34 @@ function update( progress ){
 }
 ```
 
-### Black Fade Out
+### Fade Out
 
 ```js
-const ColorRenderer = resources.get( 'ColorRenderer' );
-const color = new ColorRenderer( 0x000000 );
+var parameters = {
+	color: new FRAME.Color( 'Color', 0xffffff )
+};
+
+const THREE = await import( './examples/js/libs/three.module.js' );
+
+const renderer = resources.get( 'renderer' );
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 1 );
+
+const geometry = new THREE.PlaneGeometry( 2, 2 );
+const material = new THREE.MeshBasicMaterial( {
+	color: 0xffffff,
+	depthTest: false,
+	depthWrite: false,
+	transparent: true
+} );
+
+
+const mesh = new THREE.Mesh( geometry, material );
+scene.add( mesh );
+
+//
 
 function start(){}
 
@@ -794,24 +695,10 @@ function end(){}
 
 function update( progress ){
 
-	color.render( 1 - progress );
+	material.color.setHex( parameters.color.value );
+	material.opacity = 1 - progress;
+	renderer.render( scene, camera );
 
-}
-```
-
-### White Fade Out
-
-```js
-const ColorRenderer = resources.get( 'ColorRenderer' );
-const color = new ColorRenderer( 0xffffff );
-
-function start(){}
-
-function end(){}
-
-function update( progress ){
-
-	color.render( 1 - progress );
 
 }
 ```
@@ -819,8 +706,25 @@ function update( progress ){
 ### Image
 
 ```js
-const ImageRenderer = resources.get( 'ImageRenderer' );
-const image = new ImageRenderer( './examples/files/credits.png', 1024, 256 );
+const THREE = await import( './examples/js/libs/three.module.js' );
+
+const renderer = resources.get( 'renderer' );
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
+
+const geometry = new THREE.PlaneGeometry( 1, 1 );
+const material = new THREE.MeshBasicMaterial( {
+	map: new THREE.TextureLoader().load( './examples/files/credits.png' ),
+	depthTest: false,
+	depthWrite: false
+} );
+
+const mesh = new THREE.Mesh( geometry, material );
+scene.add( mesh );
+
+//
 
 function start(){}
 
@@ -828,7 +732,12 @@ function end(){}
 
 function update( progress ){
 
-	image.render();
+	const element = renderer.domElement;
+
+	mesh.scale.x = 1024 / element.clientWidth;
+	mesh.scale.y = 256 / element.clientHeight;
+
+	renderer.render( scene, camera );
 
 }
 ```
@@ -856,31 +765,37 @@ function update( progress ){
 * start: 0
 * end: 14.110166824047848
 * layer: 2
-* effect: Black Fade Out
+* effect: Fade Out
 * enabled: true
+* parameters:
+    * color: 0
 
 ### 
 
 * start: 14.116462071136288
 * end: 21.170556552962285
 * layer: 1
-* effect: CubeBalls 1
+* effect: CubeBalls
 * enabled: true
+* parameters:
+    * mouse: 0.75,0.75
 
 ### 
 
 * start: 21.17280071813286
 * end: 28.233393177737863
 * layer: 1
-* effect: CubeBalls 2
+* effect: CubeBalls
 * enabled: true
+* parameters:
+    * mouse: -0.75,0.25
 
 ### 
 
 * start: 28.235637342908447
 * end: 35.291741472172404
 * layer: 1
-* effect: PlaneDistort 1
+* effect: PlaneDistort
 * enabled: true
 
 ### 
@@ -888,15 +803,17 @@ function update( progress ){
 * start: 35.29398563734295
 * end: 42.34707158351422
 * layer: 1
-* effect: PlaneDistort 2
+* effect: PlaneDistort
 * enabled: true
+* parameters:
+    * offset: 450
 
 ### 
 
 * start: 35.293985637342956
 * end: 37
 * layer: 2
-* effect: White Fade Out
+* effect: Fade Out
 * enabled: true
 
 ### 
@@ -904,7 +821,7 @@ function update( progress ){
 * start: 42.34924078091104
 * end: 44
 * layer: 2
-* effect: White Fade Out
+* effect: Fade Out
 * enabled: true
 
 ### 
@@ -912,7 +829,7 @@ function update( progress ){
 * start: 42.34924078091118
 * end: 49.40563991323218
 * layer: 1
-* effect: Field 1
+* effect: Field
 * enabled: true
 
 ### 
@@ -920,15 +837,17 @@ function update( progress ){
 * start: 49.40780911062914
 * end: 56.466377440347145
 * layer: 1
-* effect: Field 2
+* effect: Field
 * enabled: true
+* parameters:
+    * offset: 450
 
 ### 
 
 * start: 56.466377440347145
 * end: 60
 * layer: 3
-* effect: White Fade Out
+* effect: Fade Out
 * enabled: true
 
 ### 
@@ -946,3 +865,5 @@ function update( progress ){
 * layer: 2
 * effect: Image
 * enabled: true
+* parameters:
+    * url: 
