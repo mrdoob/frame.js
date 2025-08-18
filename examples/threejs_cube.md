@@ -1,6 +1,6 @@
 <!-- Frame.js Script r6 -->
 
-# Three.js Shaders
+# Three.js Cube
 
 ## Config
 
