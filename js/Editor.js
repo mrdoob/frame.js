@@ -570,6 +570,7 @@ Editor.prototype = {
 				if ( array.length > 0 ) {
 					markdown += '* parameters:\n';
 					for ( const [ key, value ] of array ) {
+						if ( key === '_initialized' ) continue;
 						markdown += `    * ${ key }: ${ value }\n`;
 					}
 				}

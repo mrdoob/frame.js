@@ -255,7 +255,13 @@ function Code( data ) {
 
 		if ( this.program.parameters !== undefined ) {
 
-			this.program._parameters = JSON.parse( JSON.stringify( this.program.parameters ) );
+			const parameters = this.program.parameters;
+
+			for ( const key in parameters ) {
+
+				parameters[ key ]._default = parameters[ key ].value;
+
+			}
 
 		}
 
@@ -342,29 +348,61 @@ function Timeline() {
 					if ( animation.end > time ) {
 
 						const animationParameters = animation.parameters;
-						const programParameters = animation.effect.program.parameters;
-						const defaultParameters = animation.effect.program._parameters;
+						const programParameters = animation.effect.program.parameters;		
+						
+						// initialize parameters
 
-						for ( const key in programParameters ) {
+						if ( animationParameters._initialized === undefined ) {
 
-							if ( animationParameters[ key ] !== undefined ) {
+							for ( const key in programParameters ) {
 
-								if ( Array.isArray( programParameters[ key ].value ) && typeof animationParameters[ key ] === 'string' ) {
+								const animationParameter = animationParameters[ key ];
+						
+								if ( animationParameter === undefined ) continue;
 
-									// Convert string to array
+								const programParameter = programParameters[ key ];
 
-									animationParameters[ key ] = animationParameters[ key ].split( ',' ).map( Number );
-
+								if ( programParameter.isBoolean ) {
+						
+									animationParameters[ key ] = animationParameter === 'true';
+						
+								} else if ( programParameter.isFloat ) {
+						
+									animationParameters[ key ] = parseFloat( animationParameter );
+						
+								} else if ( programParameter.isColor || programParameter.isInteger ) {
+						
+									animationParameters[ key ] = parseInt( animationParameter );
+						
+								} else if ( programParameter.isVector2 || programParameter.isVector3 ) {
+						
+									animationParameters[ key ] = animationParameter.split( ',' ).map( Number );
+						
 								}
-								
-								programParameters[ key ].value = animationParameters[ key ];
-
-							} else {
-
-								programParameters[ key ].value = defaultParameters[ key ].value;
-
+						
 							}
 
+							animationParameters._initialized = true;
+
+						}
+
+						// update parameters
+
+						for ( const key in programParameters ) {
+					
+							const animationParameter = animationParameters[ key ];
+							const programParameter = programParameters[ key ];
+					
+							if ( animationParameter !== undefined ) {
+
+								programParameter.value = animationParameter;
+					
+							} else {
+					
+								programParameter.value = programParameter._default;
+					
+							}
+					
 						}
 
 						if ( animation.effect.program.start ) {
