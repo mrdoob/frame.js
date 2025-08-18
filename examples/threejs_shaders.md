@@ -865,5 +865,3 @@ function update( progress ){
 * layer: 2
 * effect: Image
 * enabled: true
-* parameters:
-    * url: 
