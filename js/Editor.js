@@ -660,7 +660,15 @@ function fixLegacyJSON( json ) {
 		if ( Array.isArray( data ) ) {
 
 			// console.warn( 'Editor: Converting legacy Animation format:', data );
-			data = { name: data[ 0 ], start: data[ 1 ], end: data[ 2 ], layer: data[ 3 ], effectId: data[ 4 ], enabled: data[ 5 ] };
+
+			data = {
+				name: data[ 0 ],
+				start: data[ 1 ],
+				end: data[ 2 ],
+				layer: data[ 3 ],
+				effectId: data[ 4 ],
+				enabled: data[ 5 ],
+			};
 
 		}
 
