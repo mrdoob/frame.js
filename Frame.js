@@ -6,7 +6,7 @@ if ( 'AsyncFunction' in window === false ) {
 	window.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 }
 
-const VERSION = 6;
+const REVISION = 6;
 
 const FRAME = {
 
@@ -880,4 +880,4 @@ WebAudio.getContext = function() {
 // TODO: Pass it to the effect
 window.WebAudio = WebAudio;
 
-export { Frame, Code, Animation, Resources, Timeline, Player };
+export { REVISION, Frame, Code, Animation, Resources, Timeline, Player };

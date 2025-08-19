@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { Player, Resources, Code, Animation, Timeline, Frame } from '../Frame.js';
+import { REVISION, Player, Resources, Code, Animation, Timeline, Frame } from '../Frame.js';
 import { Config } from './Config.js';
 
 function Editor() {
@@ -530,7 +530,7 @@ Editor.prototype = {
 
 	toMarkdown: function () {
 
-		let markdown = '<!-- Frame.js Script r6 -->\n\n';
+		let markdown = `<!-- Frame.js Script r${ REVISION } -->\n\n`;
 		
 		markdown += `# ${ this.name }\n\n`;
 		
