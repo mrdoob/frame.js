@@ -100,7 +100,7 @@ const THREE = await import( './examples/js/libs/three.module.js' );
 
 var parameters = {
 	color:   new FRAME.Color( 'Color', 0xffffff ),
-	opacity: new FRAME.Float( 'Opacity', 1, 0, 1 )
+	opacity: new FRAME.Number( 'Opacity', 1, 0, 1 )
 };
 
 var renderer = resources.get( 'renderer' );

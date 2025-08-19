@@ -80,7 +80,7 @@ function SidebarAnimation( editor ) {
 
 			parameterRow.add( parameterValue );
 
-		} else if ( parameter.isFloat ) {
+		} else if ( parameter.isNumber ) {
 
 			var parameterValue = new UINumber()
 				.setRange( parameter.min, parameter.max )

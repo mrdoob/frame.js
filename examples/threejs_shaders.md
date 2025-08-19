@@ -605,7 +605,7 @@ function update( progress ){
 
 ```js
 var parameters = {
-	offset: new FRAME.Float( 'Offset', 0.0 )	
+	offset: new FRAME.Number( 'Offset', 0.0 )	
 };
 
 const ShaderRenderer = resources.get( 'ShaderRenderer' );
@@ -626,7 +626,7 @@ function update( progress ){
 
 ```js
 var parameters = {
-	offset: new FRAME.Float( 'Offset', 0.0 )	
+	offset: new FRAME.Number( 'Offset', 0.0 )	
 };
 
 const ShaderRenderer = resources.get( 'ShaderRenderer' );

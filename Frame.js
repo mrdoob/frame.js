@@ -22,20 +22,20 @@ const FRAME = {
 		this.isColor = true;
 	},
 
-	Float: function ( name, value, min, max ) {
-		this.name = name;
-		this.value = value || 0.0;
-		this.min = min !== undefined ? min : - Infinity;
-		this.max = max !== undefined ? max : Infinity;
-		this.isFloat = true;
-	},
-
 	Integer: function ( name, value, min, max ) {
 		this.name = name;
 		this.value = value || 0;
 		this.min = min !== undefined ? min : - Infinity;
 		this.max = max !== undefined ? max : Infinity;
 		this.isInteger = true;
+	},
+
+	Number: function ( name, value, min, max ) {
+		this.name = name;
+		this.value = value || 0.0;
+		this.min = min !== undefined ? min : - Infinity;
+		this.max = max !== undefined ? max : Infinity;
+		this.isNumber = true;
 	},
 
 	String: function ( name, value ) {
@@ -229,7 +229,7 @@ Curves: {
 },
 */
 
-const DEFAULT_SOURCE = 'var parameters = {\n\tvalue: new FRAME.Float( \'Value\', 1.0 )\n};\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
+const DEFAULT_SOURCE = 'var parameters = {\n\tvalue: new FRAME.Number( \'Value\', 1.0 )\n};\n\nfunction start(){}\n\nfunction end(){}\n\nfunction update( progress ){}';
 
 function Code( data ) {
 
@@ -303,7 +303,7 @@ function Animation( data ) {
 
 				parameters[ key ] = parameter === 'true';
 
-			} else if ( programParameter.isFloat ) {
+			} else if ( programParameter.isNumber ) {
 
 				parameters[ key ] = parseFloat( parameter );
 
